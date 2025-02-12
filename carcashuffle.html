@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarcaShuffle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            display: inline-block;
+            text-align: left;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        input {
+            width: 50px;
+            padding: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #006400;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 20px auto; /* Ensures spacing and centers the button */
+            display: block; /* Centers the button inside the container */
+        }
+        button:hover {
+            background-color: #004d00;
+        }
+        .list-container {
+            text-align: center;
+        }
+        .list-container div {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏰 CarcaShuffle 🏰</h1>
+    <h2>Selecione o número de expansões</h2>
+    <div class="container">
+        <div class="input-group">
+            <label for="expansions">Expansões:</label>
+            <input type="number" id="expansions" name="expansions" min="0">
+        </div>
+        <div class="input-group">
+            <label for="mini-expansions">Mini-expansões:</label>
+            <input type="number" id="mini-expansions" name="mini-expansions" min="0">
+        </div>
+        <button onclick="shuffle()">Shuffle!</button>
+    </div>
+    <div class="list-container">
+        <div>Expansões selecionadas:</div>
+        <div id="expansion-list"></div>
+        <br>
+        <div>Mini-expansões selecionadas:</div>
+        <div id="mini-expansion-list"></div>
+    </div>
+
+    <script>
+        const expansionList = [
+            "Estalagens e Catedrais", "Comerciantes e Construtores", "A Princesa e o Dragão", "A Torre",
+            "A Abadia e o Alcaide", "Count, King & Robber", "Mercados e Pontes", "Colinas e Ovelhas",
+            "Under the Big Top", "Nevoeiro em Carcassonne"
+        ];
+
+        const miniExpansionList = [
+            "The Abbot", "The Barber-Surgeons", "The Bets", "Crop Circles", "The Drawbridges", "The Ferries",
+            "The Festival II", "The Flying Machines", "The Fruit-Bearing Trees", "German Cathedrals", "The Gifts",
+            "The Gold Mines", "Halb so Wild", "Mage & Witch", "The Markets of Leipzig", "The Messengers",
+            "Monasteries in Germany", "The Peasant Revolts", "The Robbers", "The River", "The Signposts",
+            "The Tollkeepers", "The Wonders of Humanity", "Watchtowers"
+        ];
+
+        function shuffle() {
+            const expansions = parseInt(document.getElementById('expansions').value, 10);
+            const miniExpansions = parseInt(document.getElementById('mini-expansions').value, 10);
+            
+            const selectedExpansions = expansionList.sort(() => 0.5 - Math.random()).slice(0, expansions);
+            const selectedMiniExpansions = miniExpansionList.sort(() => 0.5 - Math.random()).slice(0, miniExpansions);
+            
+            document.getElementById('expansion-list').innerHTML = selectedExpansions.join('<br>');
+            document.getElementById('mini-expansion-list').innerHTML = selectedMiniExpansions.join('<br>');
+        }
+    </script>
+</body>
+</html>

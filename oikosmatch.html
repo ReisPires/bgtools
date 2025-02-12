@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oikos Matchmaker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #003300; /* Dark green background */
+            color: white;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #008000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #006400;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        label, select {
+            margin-top: 10px;
+            font-size: 16px;
+            padding: 5px;
+            color: white;
+        }
+        select {
+            color: black; /* Black text for the numbers in the dropdown */
+            background-color: white; /* White background for the dropdown */
+        }
+    </style>
+</head>
+<body>
+    <h1>Oikos Matchmaker</h1>
+
+    <label for="numPlayers">Número de jogadores:</label>
+    <select id="numPlayers">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+    </select>
+
+    <br>
+    <button onclick="generateGame()">Monte uma partida!</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        const animals = [
+            {name: "Onça-Pintada", class: "predator", number: 1},
+            {name: "Lobo-Guará", class: "middle", number: 3},
+            {name: "Tatu-Bola", class: "middle", number: 4},
+            {name: "Arara-Azul", class: "middle", number: 6},
+            {name: "Macaco-Prego", class: "bottom", number: 7},
+            {name: "Quati", class: "bottom", number: 8},
+            {name: "Harpia", class: "predator", number: 1},
+            {name: "Colhereiro", class: "middle", number: 4},
+            {name: "Tucano", class: "middle", number: 5},
+            {name: "Papagaio-Charão", class: "bottom", number: 7},
+            {name: "Quero-Quero", class: "bottom", number: 8},
+            {name: "Canário-da-Terra", class: "bottom", number: 9},
+            {name: "Jacaré", class: "predator", number: 1},
+            {name: "Sucuri", class: "middle", number: 3},
+            {name: "Jabuti", class: "middle", number: 4},
+            {name: "Coral", class: "middle", number: 5},
+            {name: "Iguana-Verde", class: "middle", number: 7},
+            {name: "Calango-do-Sertão", class: "bottom", number: 9},
+            {name: "Javali", class: "predator", number: 2},
+            {name: "Jaguatirica", class: "middle", number: 3},
+            {name: "Tamanduá-Bandeira", class: "middle", number: 4},
+            {name: "Bugio-Preto", class: "middle", number: 5},
+            {name: "Ariranha", class: "middle", number: 6},
+            {name: "Camundongo", class: "bottom", number: 9},
+            {name: "Osprey", class: "predator", number: 2},
+            {name: "Suindara", class: "middle", number: 3},
+            {name: "Capivara", class: "middle", number: 5},
+            {name: "Mico-Leão-Dourado", class: "middle", number: 6},
+            {name: "Preguiça", class: "middle", number: 8},
+            {name: "Sapo-Boi-Azul", class: "bottom", number: 9}
+        ];
+
+        function generateGame() {
+            const numPlayers = parseInt(document.getElementById("numPlayers").value);
+            const assignedAnimals = [];
+            let availableAnimals = [...animals];
+            let predatorAssigned = false;
+
+            for (let i = 0; i < numPlayers; i++) {
+                let playerAnimals = [];
+                let bottomAssigned = 0;
+
+                // Assign one predator per game (only one predator total)
+                if (!predatorAssigned) {
+                    let predator = getRandomAnimalByClass("predator", availableAnimals);
+                    if (predator) {
+                        playerAnimals.push(predator);
+                        predatorAssigned = true;
+                        removeAnimal(predator, availableAnimals);
+                    }
+                }
+
+                // Assign bottom animals (at least one, but no more than two)
+                while (bottomAssigned < 1 || (bottomAssigned < 2 && Math.random() < 0.5)) {
+                    let randomAnimal = getRandomAnimalByClass("bottom", availableAnimals);
+                    if (randomAnimal) {
+                        playerAnimals.push(randomAnimal);
+                        bottomAssigned++;
+                        removeAnimal(randomAnimal, availableAnimals);
+                    }
+                }
+
+                // Assign middle animals (up to two for 2-3 players, or one for 4-6 players)
+                let middleAnimalsCount = (numPlayers <= 3) ? 2 : 1;
+                while (playerAnimals.length < (numPlayers <= 3 ? 2 : 1)) {
+                    let randomAnimal = getRandomAnimalByClass("middle", availableAnimals);
+                    if (randomAnimal) {
+                        playerAnimals.push(randomAnimal);
+                        removeAnimal(randomAnimal, availableAnimals);
+                    }
+                }
+
+                assignedAnimals.push(playerAnimals);
+            }
+
+            // Display results
+            let resultHTML = "";
+            for (let i = 0; i < assignedAnimals.length; i++) {
+                resultHTML += `<p>Jogador ${i + 1}: ${assignedAnimals[i].map(animal => animal.name).join(", ")}</p>`;
+            }
+            document.getElementById("result").innerHTML = resultHTML;
+        }
+
+        // Function to get random animal by class
+        function getRandomAnimalByClass(animalClass, availableAnimals) {
+            const classAnimals = availableAnimals.filter(animal => animal.class === animalClass);
+            if (classAnimals.length > 0) {
+                const randomIndex = Math.floor(Math.random() * classAnimals.length);
+                return classAnimals[randomIndex];
+            }
+            return null;
+        }
+
+        // Function to remove animal from the available list
+        function removeAnimal(animal, availableAnimals) {
+            const index = availableAnimals.indexOf(animal);
+            if (index > -1) {
+                availableAnimals.splice(index, 1);
+            }
+        }
+    </script>
+</body>
+</html>

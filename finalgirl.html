@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Girl Randomizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: black;
+            color: white;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #600000;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🩸 Final Girl Randomizer 🩸</h1>
+    <button onclick="generateGame()">Monte uma partida!</button>
+    <div class="result" id="result"></div>
+
+    <script>
+        const killers = [
+            "🐷 Hans", "🪡 Geppetto", "💤 Dr. Fright", "👻 The Poltergeist", "👹 Inkanyamba",
+            "👽 The Evomorph", "🦠 The Organism", "👥 The Intruders", "🐺 Big Bad Wolf", "💉 Ratchet Lady", 
+            "🐦‍⬛ Birds", "🧟 Zombies", "🎁 Krampus"
+        ];
+        const locations = [
+            "🏕️ Camp Happy Trails", "🏠 Creech Manor", "🏘️ Maple Lane", "🪦 Sacred Groves", "🎪 Carnival of Blood",
+            "🚀 USS Konrad", "❄️ Station 2891", "🛖 Wingard Cottage", "📖 Storybook Woods", "💊 Wolfe Asylum",
+            "🎄 Santa's Village"
+        ];
+        const finalGirls = [
+            "👱🏻‍♀️ Laurie", "👩🏻 Reiko", "👩🏼‍🦰 Alice", "🧑🏾 Selena", "👩🏻‍🦰 Barbara", "👩🏿‍🦱 Adelaide", "👱🏼 Charlie", "👩🏻 Asami", "👩🏽 Sheila", "👩🏽 Nancy", 
+            "👩🏻‍🦱 Ellen", "🧑🏻 Jenette", "👩🏻 Kate", "👩🏻 Uki", "👩🏿‍🦱 Ava", "👩🏼‍🦱 Ginny", "👩🏿 Red", "👩🏾 Gretel", "👩🏼 Heather", "👩🏾 Veronica", 
+            "👩🏼 Melanie", "🧑🏼‍🦰 Patsy", "👵🏻 Mrs. Claus", "👧🏻 Cindy",
+            "👵🏻 Agnes", "👩🏿 Constance", "🧕🏽 Layla", "👩🏼 Julia"
+        ];
+
+        function generateGame() {
+            const killer = killers[Math.floor(Math.random() * killers.length)];
+            const location = locations[Math.floor(Math.random() * locations.length)];
+            const finalGirl = finalGirls[Math.floor(Math.random() * finalGirls.length)];
+            
+            document.getElementById('result').innerHTML = 
+                `<p>Killer: ${killer}</p>
+                 <p>Location: ${location}</p>
+                 <p>Final Girl: ${finalGirl}</p>`;
+        }
+    </script>
+</body>
+</html>
