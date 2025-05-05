@@ -24,20 +24,22 @@
       width: 50px;
       height: 50px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 12px;
       font-weight: bold;
-      border: 2px solid #e30a17; /* Turkish red border */
+      border: 2px solid #e30a17;
       color: #e30a17;
       background-color: #fff0f0;
+      line-height: 1.2;
     }
 
     button {
       padding: 10px 20px;
       font-size: 16px;
       font-weight: bold;
-      background-color: #e30a17; /* Turkish flag red */
+      background-color: #e30a17;
       color: white;
       border: none;
       cursor: pointer;
@@ -45,7 +47,7 @@
     }
 
     button:hover {
-      background-color: #b00812; /* Darker red for hover */
+      background-color: #b00812;
     }
 
     label {
@@ -56,16 +58,30 @@
 <body>
   <h1>☪️ Istanbul Map Maker ☪️</h1>
   <p>Incluir expansões?</p>
-  <label style="margin-right: 20px;"><input type="checkbox" id="mocha"> Mocha & Baksheesh</label>
-  <label><input type="checkbox" id="letters"> Letters & Seals</label><br><br>
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+    <label><input type="checkbox" id="mocha"> Mocha & Baksheesh</label>
+    <label><input type="checkbox" id="letters"> Letters & Seals</label>
+  </div>
+  <br>
   <p>Sortear mini expansões?</p>
-  <label style="margin-right: 20px;"><input type="checkbox" id="pegasus"> Pegasus Depot</label>
-  <label><input type="checkbox" id="kebab"> Kebab Shop</label>
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+    <label><input type="checkbox" id="pegasus"> Pegasus Depot</label>
+    <label><input type="checkbox" id="kebab"> Kebab Shop</label>
+  </div>
   <br><br>
   <button onclick="generateMap()">Gerar mapa!</button>
   <div id="gridContainer"></div>
 
   <script>
+    const emojiMap = {
+      1: "⚒️", 2: "🧵", 3: "🧂", 4: "🍍", 5: "✉️",
+      6: "🛌", 7: "⛲", 8: "🏴‍☠️", 9: "🍵", 10: "💵",
+      11: "💰", 12: "👮", 13: "👳🏼‍♂️", 14: "🕌", 15: "🕋",
+      16: "💎", 17: "♨️", 18: "📜", 19: "🍻", 20: "☕",
+      21: "🏛️", 22: "🛖", 23: "👨🏽‍⚖️", 24: "🤐", 25: "🐀",
+      KS: "🌯", PD: "🐎"
+    };
+
     function generateMap() {
       const mocha = document.getElementById('mocha').checked;
       const letters = document.getElementById('letters').checked;
@@ -142,14 +158,13 @@
         for (let c = 0; c < cols; c++) {
           let cell = document.createElement('div');
           cell.className = 'cell';
+
           let value = grid[r][c];
-          if (pegasus && value === 4 && Math.random() < 0.5) {
-            value = 'PD';
-          }
-          if (kebab && value === 7 && Math.random() < 0.5) {
-            value = 'KS';
-          }
-          cell.innerText = value;
+          if (pegasus && value === 4 && Math.random() < 0.5) value = 'PD';
+          if (kebab && value === 7 && Math.random() < 0.5) value = 'KS';
+
+          const emoji = emojiMap[value] || '';
+          cell.innerHTML = `${emoji}<br>${value}`;
           gridContainer.appendChild(cell);
         }
       }
