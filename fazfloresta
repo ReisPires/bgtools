@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tile Grid Randomizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 40px;
+      background-color: #002200;
+      color: #ccffcc;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #006400;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #004d00;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 8px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .tile {
+      background-color: #228B22;
+      border: 2px solid #ff0000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 13px;
+      color: white;
+      padding: 6px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌲 Faz Floresta 🌲</h1>
+  <button onclick="generateGrid()">Randomize Grid</button>
+  <div class="grid" id="grid"></div>
+
+  <script>
+    const watchtowers = [
+      ['São Matias', 'Chiqueiro'],
+      ['Talhadas', 'Pedra do Vento'],
+      ['Belmonte', 'Machoca'],
+      ['Balocas', 'Viseu']
+    ];
+
+    const forests = [
+      ['Mondego', 'Orvalho'],
+      ['Malcata', 'São Mamede'],
+      ['Margaraça', 'Gardunha'],
+      ['Estrela', 'Lousã'],
+      ['Sabugal', 'Espinhal']
+    ];
+
+    function randomSide([a, b]) {
+      return Math.random() < 0.5 ? a : b;
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function generateGrid() {
+      const corners = [0, 2, 6, 8];
+      const allIndices = Array.from({ length: 9 }, (_, i) => i);
+      const centerAndEdges = allIndices.filter(i => !corners.includes(i));
+
+      const wtTiles = [...watchtowers];
+      const fTiles = [...forests];
+      shuffle(wtTiles);
+      shuffle(fTiles);
+
+      const tiles = new Array(9);
+
+      corners.forEach((pos, i) => {
+        tiles[pos] = randomSide(wtTiles[i]);
+      });
+
+      centerAndEdges.forEach((pos, i) => {
+        tiles[pos] = randomSide(fTiles[i]);
+      });
+
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      tiles.forEach(tileName => {
+        const div = document.createElement('div');
+        div.className = 'tile';
+        div.textContent = tileName;
+        grid.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
