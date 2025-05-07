@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🪐 Terraforming Match 🪐</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #FFA500;
+      text-align: center;
+      padding: 30px;
+    }
+    select, button {
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px auto;
+      display: block;
+    }
+    button {
+      background-color: #FFA500;
+      color: #111;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #cc8400;
+    }
+    .result {
+      margin-top: 30px;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .result h2 {
+      color: #FF8C00;
+      border-bottom: 1px solid #FF8C00;
+      padding-bottom: 5px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 3px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🪐 Terraforming Match 🪐</h1>
+
+  <label for="playerCount">Número de jogadores:</label>
+  <select id="playerCount">
+    <option value="1">1 jogador</option>
+    <option value="2">2 jogadores</option>
+    <option value="3">3 jogadores</option>
+    <option value="4">4 jogadores</option>
+    <option value="5">5 jogadores</option>
+  </select>
+
+  <button onclick="generateMatch()">Monte uma partida!</button>
+
+  <div id="result" class="result"></div>
+
+  <script>
+    const maps = [
+      "Marte", "Hellas", "Elysium", 
+      "Vastitas Borealis", "Utopia Planitia", "Terra Cimmeria"
+    ];
+
+    const colonies = [
+      "Ceres", "Lua", "Miranda", "Europa", "Ganimedes", "Io",
+      "Calisto", "Encélado", "Plutão", "Titã", "Tritão"
+    ];
+
+    const milestones = [
+      "Angariador", "Astronauta", "Colono", "Comerciante", "Construtor", "Corrupto",
+      "Descongelador", "Diversificação", "Ecologista", "Energizador", "Engenheiro", "Estrategista",
+      "Fazendeiro", "Filantropo", "Generalista", "Geólogo", "Guarda Costeira", "Guarda Florestal",
+      "Jardineiro", "Lenda", "Lobista", "Magnata", "Mercador", "Metalúrgico", "Moldador",
+      "Oceanógrafo", "Patrocinador", "Pesquisador", "Pioneiro", "Planejador", "Planetólogo",
+      "Prefeito", "Produtor", "Terraformador", "Terráqueo"
+    ];
+
+    const awards = [
+      "Administrador", "Baqueiro", "Barão", "Benfeitor", "Biólogo", "Botânico", "Celebridade",
+      "Cientista", "Colecionador", "Construtor", "Corretor de Imóveis", "Cultivador", "Eletricista",
+      "Empreiteiro", "Empresário", "Excêntrico", "Fabricante", "Fundador", "Incorporador",
+      "Industrialista", "Investidor", "Magnata", "Meteorologista", "Metropolitano", "Minerador",
+      "Montanhês", "Paisagista", "Político", "Promotor", "Proprietário", "Suburbano", "Termalista",
+      "Viajante", "Visionário", "Zoólogo"
+    ];
+
+    function shuffle(array) {
+      return array.sort(() => 0.5 - Math.random());
+    }
+
+    function generateMatch() {
+      const playerCount = parseInt(document.getElementById("playerCount").value);
+
+      // Select map
+      const selectedMap = maps[Math.floor(Math.random() * maps.length)];
+
+      // Filter milestones if needed
+      const milestonePool = selectedMap === "Hellas" || selectedMap === "Utopia Planitia"
+        ? milestones.filter(m => m !== "Geólogo")
+        : milestones;
+
+      // Select colonies
+      const colonyCount = playerCount === 2 ? 5 : playerCount + 2;
+      const selectedColonies = shuffle([...colonies]).slice(0, colonyCount);
+
+      // Select milestones and awards
+      const selectedMilestones = shuffle([...milestonePool]).slice(0, 5);
+      const selectedAwards = shuffle([...awards]).slice(0, 5);
+
+      // Build result
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = `
+        <h2>Mapa</h2>
+        <p>${selectedMap}</p>
+
+        <h2>Colonias (${colonyCount})</h2>
+        <ul>${selectedColonies.map(c => `<li>${c}</li>`).join('')}</ul>
+
+        <h2>Marcos</h2>
+        <ul>${selectedMilestones.map(m => `<li>${m}</li>`).join('')}</ul>
+
+        <h2>Prêmios</h2>
+        <ul>${selectedAwards.map(a => `<li>${a}</li>`).join('')}</ul>
+      `;
+    }
+  </script>
+</body>
+</html>
