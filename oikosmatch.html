@@ -1,166 +1,197 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oikos Matchmaker</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            background-color: #003300; /* Dark green background */
-            color: white;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            background-color: #008000;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #006400;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        label, select {
-            margin-top: 10px;
-            font-size: 16px;
-            padding: 5px;
-            color: white;
-        }
-        select {
-            color: black; /* Black text for the numbers in the dropdown */
-            background-color: white; /* White background for the dropdown */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🐯 Oikos Matchmaker</title>
+  <style>
+    body {
+      background-color: #014421; /* Forest green */
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: #ffeb3b; /* Yellow */
+    }
+
+    select, button {
+      font-size: 16px;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #ffeb3b;
+      color: #014421;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #fdd835;
+    }
+
+    .results {
+      margin-top: 30px;
+    }
+
+    .player-block {
+      margin-bottom: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .animal-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .animal-info {
+      margin-top: 5px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Oikos Matchmaker</h1>
+  <h1>🐯 Oikos Matchmaker</h1>
 
-    <label for="numPlayers">Número de jogadores:</label>
-    <select id="numPlayers">
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-    </select>
+  <label for="players">Número de jogadores:</label><br>
+  <select id="players">
+    <option value="2">2 jogadores</option>
+    <option value="3">3 jogadores</option>
+    <option value="4">4 jogadores</option>
+    <option value="5">5 jogadores</option>
+    <option value="6">6 jogadores</option>
+  </select>
 
-    <br>
-    <button onclick="generateGame()">Monte uma partida!</button>
+  <br>
+  <button onclick="generateMatch()">Monte uma partida!</button>
 
-    <div class="result" id="result"></div>
+  <div class="results" id="results"></div>
 
-    <script>
-        const animals = [
-            {name: "Onça-Pintada", class: "predator", number: 1},
-            {name: "Lobo-Guará", class: "middle", number: 3},
-            {name: "Tatu-Bola", class: "middle", number: 4},
-            {name: "Arara-Azul", class: "middle", number: 6},
-            {name: "Macaco-Prego", class: "bottom", number: 7},
-            {name: "Quati", class: "bottom", number: 8},
-            {name: "Harpia", class: "predator", number: 1},
-            {name: "Colhereiro", class: "middle", number: 4},
-            {name: "Tucano", class: "middle", number: 5},
-            {name: "Papagaio-Charão", class: "bottom", number: 7},
-            {name: "Quero-Quero", class: "bottom", number: 8},
-            {name: "Canário-da-Terra", class: "bottom", number: 9},
-            {name: "Jacaré", class: "predator", number: 1},
-            {name: "Sucuri", class: "middle", number: 3},
-            {name: "Jabuti", class: "middle", number: 4},
-            {name: "Coral", class: "middle", number: 5},
-            {name: "Iguana-Verde", class: "middle", number: 7},
-            {name: "Calango-do-Sertão", class: "bottom", number: 9},
-            {name: "Javali", class: "predator", number: 2},
-            {name: "Jaguatirica", class: "middle", number: 3},
-            {name: "Tamanduá-Bandeira", class: "middle", number: 4},
-            {name: "Bugio-Preto", class: "middle", number: 5},
-            {name: "Ariranha", class: "middle", number: 6},
-            {name: "Camundongo", class: "bottom", number: 9},
-            {name: "Osprey", class: "predator", number: 2},
-            {name: "Suindara", class: "middle", number: 3},
-            {name: "Capivara", class: "middle", number: 5},
-            {name: "Mico-Leão-Dourado", class: "middle", number: 6},
-            {name: "Preguiça", class: "middle", number: 8},
-            {name: "Sapo-Boi-Azul", class: "bottom", number: 9}
-        ];
+  <script>
+    const animals = [
+      { num: 1, name: "Onça-Pintada", type: "Predador" },
+      { num: 3, name: "Lobo-Guará", type: "Meio" },
+      { num: 4, name: "Tatu-Bola", type: "Meio" },
+      { num: 6, name: "Arara-Azul", type: "Meio" },
+      { num: 7, name: "Macaco-Prego", type: "Base" },
+      { num: 8, name: "Quati", type: "Base" },
+      { num: 1, name: "Harpia", type: "Predador" },
+      { num: 4, name: "Colhereiro", type: "Meio" },
+      { num: 5, name: "Tucano", type: "Meio" },
+      { num: 7, name: "Papagaio-Charão", type: "Base" },
+      { num: 8, name: "Quero-Quero", type: "Base" },
+      { num: 9, name: "Canário-da-Terra", type: "Base" },
+      { num: 2, name: "Jacaré", type: "Predador" },
+      { num: 3, name: "Sucuri", type: "Meio" },
+      { num: 4, name: "Jabuti", type: "Meio" },
+      { num: 5, name: "Coral", type: "Meio" },
+      { num: 7, name: "Iguana-Verde", type: "Meio" },
+      { num: 9, name: "Calango-do-Sertão", type: "Base" },
+      { num: 2, name: "Javali", type: "Predador" },
+      { num: 3, name: "Jaguatirica", type: "Meio" },
+      { num: 4, name: "Tamanduá-Bandeira", type: "Meio" },
+      { num: 5, name: "Bugio-Preto", type: "Meio" },
+      { num: 6, name: "Ariranha", type: "Meio" },
+      { num: 9, name: "Camundongo", type: "Base" },
+      { num: 2, name: "Osprey", type: "Predador" },
+      { num: 3, name: "Suindara", type: "Meio" },
+      { num: 5, name: "Capivara", type: "Meio" },
+      { num: 6, name: "Mico-Leão-Dourado", type: "Meio" },
+      { num: 8, name: "Preguiça", type: "Meio" },
+      { num: 9, name: "Sapo-Boi-Azul", type: "Base" }
+    ];
 
-        function generateGame() {
-            const numPlayers = parseInt(document.getElementById("numPlayers").value);
-            const assignedAnimals = [];
-            let availableAnimals = [...animals];
-            let predatorAssigned = false;
+    function getRandomItem(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
 
-            for (let i = 0; i < numPlayers; i++) {
-                let playerAnimals = [];
-                let bottomAssigned = 0;
+    function shuffleArray(arr) {
+      return arr.slice().sort(() => 0.5 - Math.random());
+    }
 
-                // Assign one predator per game (only one predator total)
-                if (!predatorAssigned) {
-                    let predator = getRandomAnimalByClass("predator", availableAnimals);
-                    if (predator) {
-                        playerAnimals.push(predator);
-                        predatorAssigned = true;
-                        removeAnimal(predator, availableAnimals);
-                    }
-                }
+    function generateMatch() {
+      const playerCount = parseInt(document.getElementById("players").value);
+      const totalAnimals = playerCount <= 3 ? playerCount * 2 : playerCount;
 
-                // Assign bottom animals (at least one, but no more than two)
-                while (bottomAssigned < 1 || (bottomAssigned < 2 && Math.random() < 0.5)) {
-                    let randomAnimal = getRandomAnimalByClass("bottom", availableAnimals);
-                    if (randomAnimal) {
-                        playerAnimals.push(randomAnimal);
-                        bottomAssigned++;
-                        removeAnimal(randomAnimal, availableAnimals);
-                    }
-                }
+      let valid = false;
+      let selected = [];
 
-                // Assign middle animals (up to two for 2-3 players, or one for 4-6 players)
-                let middleAnimalsCount = (numPlayers <= 3) ? 2 : 1;
-                while (playerAnimals.length < (numPlayers <= 3 ? 2 : 1)) {
-                    let randomAnimal = getRandomAnimalByClass("middle", availableAnimals);
-                    if (randomAnimal) {
-                        playerAnimals.push(randomAnimal);
-                        removeAnimal(randomAnimal, availableAnimals);
-                    }
-                }
-
-                assignedAnimals.push(playerAnimals);
-            }
-
-            // Display results
-            let resultHTML = "";
-            for (let i = 0; i < assignedAnimals.length; i++) {
-                resultHTML += `<p>Jogador ${i + 1}: ${assignedAnimals[i].map(animal => animal.name).join(", ")}</p>`;
-            }
-            document.getElementById("result").innerHTML = resultHTML;
+      while (!valid) {
+        const shuffled = shuffleArray(animals);
+        selected = [];
+        const usedNums = new Set();
+        for (const animal of shuffled) {
+          if (!usedNums.has(animal.num)) {
+            selected.push(animal);
+            usedNums.add(animal.num);
+          }
+          if (selected.length === totalAnimals) break;
         }
 
-        // Function to get random animal by class
-        function getRandomAnimalByClass(animalClass, availableAnimals) {
-            const classAnimals = availableAnimals.filter(animal => animal.class === animalClass);
-            if (classAnimals.length > 0) {
-                const randomIndex = Math.floor(Math.random() * classAnimals.length);
-                return classAnimals[randomIndex];
-            }
-            return null;
+        const predadorCount = selected.filter(a => a.type === "Predador").length;
+        const baseCount = selected.filter(a => a.type === "Base").length;
+
+        valid = predadorCount === 1 && baseCount >= 1 && baseCount <= 2;
+      }
+
+      const assignments = [];
+      if (playerCount <= 3) {
+        for (let i = 0; i < playerCount; i++) {
+          const main = selected[i * 2];
+          const support = selected[i * 2 + 1];
+          assignments.push({ main, support });
+        }
+      } else {
+        selected.forEach(a => assignments.push({ main: a }));
+      }
+
+      const resultDiv = document.getElementById("results");
+      resultDiv.innerHTML = "";
+
+      assignments.forEach((assignment, i) => {
+        const block = document.createElement("div");
+        block.className = "player-block";
+
+        const playerLabel = document.createElement("div");
+        playerLabel.innerHTML = `<strong>Jogador ${i + 1}</strong>`;
+        block.appendChild(playerLabel);
+
+        const main = assignment.main;
+        const support = assignment.support;
+
+        const mainDiv = document.createElement("div");
+        mainDiv.className = "animal-name";
+        mainDiv.innerText = playerCount <= 3 ? `Espécie principal: ${main.name}` : `${main.name}`;
+        block.appendChild(mainDiv);
+
+        const mainInfo = document.createElement("div");
+        mainInfo.className = "animal-info";
+        mainInfo.innerText = `Número: ${main.num} | Tipo: ${main.type}`;
+        block.appendChild(mainInfo);
+
+        if (support) {
+          const supportDiv = document.createElement("div");
+          supportDiv.className = "animal-name";
+          supportDiv.innerText = `Espécie suporte: ${support.name}`;
+          block.appendChild(supportDiv);
+
+          const supportInfo = document.createElement("div");
+          supportInfo.className = "animal-info";
+          supportInfo.innerText = `Número: ${support.num} | Tipo: ${support.type}`;
+          block.appendChild(supportInfo);
         }
 
-        // Function to remove animal from the available list
-        function removeAnimal(animal, availableAnimals) {
-            const index = availableAnimals.indexOf(animal);
-            if (index > -1) {
-                availableAnimals.splice(index, 1);
-            }
-        }
-    </script>
+        resultDiv.appendChild(block);
+      });
+    }
+  </script>
 </body>
 </html>
