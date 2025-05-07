@@ -111,11 +111,11 @@
 
       // Select colonies
       const colonyCount = playerCount === 2 ? 5 : playerCount + 2;
-      const selectedColonies = shuffle([...colonies]).slice(0, colonyCount);
+      const selectedColonies = shuffle([...colonies]).slice(0, colonyCount).sort();
 
       // Select milestones and awards
-      const selectedMilestones = shuffle([...milestonePool]).slice(0, 5);
-      const selectedAwards = shuffle([...awards]).slice(0, 5);
+      const selectedMilestones = shuffle([...milestonePool]).slice(0, 5).sort();
+      const selectedAwards = shuffle([...awards]).slice(0, 5).sort();
 
       // Build result
       const resultDiv = document.getElementById("result");
