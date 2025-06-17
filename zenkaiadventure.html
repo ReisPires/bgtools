@@ -96,12 +96,12 @@
         };
 
         const habitatColors = {
-            "Glacial": "#a0e9f7",       // light blue
-            "Urbano": "#b0b0b0",         // gray
-            "Aquático": "#4db8ff",       // blue
-            "Campina": "#a8e6a2",        // light green
-            "Floresta": "#2e7d32",       // dark green
-            "Montanha": "#a0522d"        // reddish brown
+            "Glacial": "#14d1d1",       // light blue
+            "Urbano": "#909090",         // gray
+            "Aquático": "#1d09ea",       // blue
+            "Campina": "#09ea17",        // light green
+            "Floresta": "#017e06",       // dark green
+            "Montanha": "#cf510d"        // reddish brown
         };
 
         function gerarPartida() {
@@ -127,8 +127,8 @@
             mapa.forEach(cel => {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
-                cell.style.backgroundColor = cel.cor === 'Roxo' ? '#a371f7' : '#f68d2e';
-                cell.innerHTML = `<strong>${cel.letra}</strong><br>${cel.tipo}`;
+                cell.style.backgroundColor = cel.cor === 'Roxo' ? '#6f3ac9' : '#f68d2e';
+                cell.innerHTML = `<strong>${cel.letra}</strong><br>${cel.tipo} ${cel.numero}`;
                 grid.appendChild(cell);
             });
 
@@ -177,15 +177,17 @@
                 { letra: letras[2], cor: cores[1] },
                 { letra: letras[3], cor: cores[0] },
             ];
-
+        
             // Sortear cavernas e safáris
             const cavernas = shuffle([mapa[0], mapa[3]]);
-            cavernas[0].tipo = '❄️ Caverna';
-            cavernas[1].tipo = '❄️ Caverna';
+            cavernas[0].tipo = '❄️';
+            cavernas[1].tipo = '❄️';
+        
             mapa.forEach(m => {
-                if (!m.tipo) m.tipo = '🐾 Safari';
+                if (!m.tipo) m.tipo = '🐾';
+                m.numero = Math.floor(Math.random() * 8) + 1; // número entre 1 e 8
             });
-
+        
             return mapa;
         }
 
