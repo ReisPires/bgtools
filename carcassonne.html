@@ -17,14 +17,14 @@
     h1 {
       color: #f7c948;
       font-size: 42px;
-      text-shadow: 2px 2px #000;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     h2 {
       color: #ffffff;
-      font-size: 24px;
+      font-size: 22px;
       margin-bottom: 30px;
+      font-weight: normal;
     }
 
     .container {
@@ -32,10 +32,10 @@
       color: #333;
       padding: 25px;
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       display: inline-block;
       text-align: left;
-      max-width: 360px;
+      max-width: 400px;
+      margin-bottom: 25px;
     }
 
     .input-group {
@@ -76,12 +76,10 @@
     }
 
     .list-container {
-      margin-top: 30px;
       background-color: #ffffff;
       color: #333;
       padding: 20px;
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       display: inline-block;
       text-align: left;
       max-width: 400px;
@@ -140,8 +138,8 @@
     ];
 
     function shuffle() {
-      const expansions = parseInt(document.getElementById('expansions').value, 10);
-      const miniExpansions = parseInt(document.getElementById('mini-expansions').value, 10);
+      const expansions = parseInt(document.getElementById('expansions').value, 10) || 0;
+      const miniExpansions = parseInt(document.getElementById('mini-expansions').value, 10) || 0;
 
       const selectedExpansions = expansionList
         .sort(() => 0.5 - Math.random())
