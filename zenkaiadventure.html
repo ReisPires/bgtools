@@ -106,10 +106,10 @@
         };
 
         const habitatColors = {
-            "Glacial": "#14d1d1",       // light blue
+            "Glacial": "#19b1b1",       // light blue
             "Urbano": "#909090",         // gray
             "Aquático": "#1d09ea",       // blue
-            "Campina": "#09ea17",        // light green
+            "Campina": "#0ccb18",        // light green
             "Floresta": "#017e06",       // dark green
             "Montanha": "#cf510d"        // reddish brown
         };
@@ -137,7 +137,7 @@
             mapa.forEach(cel => {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
-                cell.style.backgroundColor = cel.cor === 'Roxo' ? '#6f3ac9' : '#f68d2e';
+                cell.style.backgroundColor = cel.cor === 'Roxo' ? '#9455fe' : '#f68d2e';
                 cell.innerHTML = `<strong>${cel.letra}</strong><br>${cel.tipo} ${cel.numero}`;
                 grid.appendChild(cell);
             });
@@ -166,7 +166,7 @@
                 const item = document.createElement('div');
                 item.className = 'zenkai-item';
                 item.style.backgroundColor = habitatColors[z.habitat];
-                item.innerHTML = `<strong>Jogador ${i + 1}:</strong> ${z.emoji} ${z.nome} (${z.habitat})`;
+                item.innerHTML = `P${i + 1}: ${z.emoji} <strong>${z.nome}</strong>`;
                 zenkaiGrid.appendChild(item);
             });
             
