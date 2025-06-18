@@ -60,12 +60,22 @@
             background-color: #5a4e6b;
             font-size: 18px;
         }
-        .zenkai-item {
-            margin: 5px 0;
-            padding: 5px 10px;
-            border-radius: 8px;
-            display: inline-block;
+        .zenkai-grid {
+            display: grid;
+            gap: 10px;
+            justify-content: center;
         }
+        .zenkai-item {
+            margin: 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+
     </style>
 </head>
 <body>
@@ -141,13 +151,26 @@
             zenkaiDiv.className = 'section';
             zenkaiDiv.innerHTML = `<h2>🐦‍🔥 Zenkais Iniciais</h2>`;
 
+            const zenkaiGrid = document.createElement('div');
+            zenkaiGrid.className = 'zenkai-grid';
+            
+            // Define grid layout
+            if (numJogadores === 1) zenkaiGrid.style.gridTemplateColumns = '1fr';
+            else if (numJogadores === 2) zenkaiGrid.style.gridTemplateColumns = '1fr 1fr';
+            else if (numJogadores === 3) zenkaiGrid.style.gridTemplateColumns = '1fr 1fr 1fr';
+            else if (numJogadores === 4) zenkaiGrid.style.gridTemplateColumns = '1fr 1fr';
+            else if (numJogadores === 5) zenkaiGrid.style.gridTemplateColumns = '1fr 1fr 1fr';
+            else if (numJogadores === 6) zenkaiGrid.style.gridTemplateColumns = '1fr 1fr 1fr';
+            
             zenkais.forEach((z, i) => {
                 const item = document.createElement('div');
                 item.className = 'zenkai-item';
                 item.style.backgroundColor = habitatColors[z.habitat];
                 item.innerHTML = `<strong>Jogador ${i + 1}:</strong> ${z.emoji} ${z.nome} (${z.habitat})`;
-                zenkaiDiv.appendChild(item);
+                zenkaiGrid.appendChild(item);
             });
+            
+            zenkaiDiv.appendChild(zenkaiGrid);
 
             resultadoDiv.appendChild(zenkaiDiv);
         }
