@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Oikos</title>
   <style>
     body {
@@ -10,54 +10,94 @@
       color: #fff;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px;
     }
 
     h1 {
-      color: #ffeb3b; /* Yellow */
+      color: #ffeb3b;
+      font-size: 36px;
+      margin-bottom: 10px;
     }
 
-    select, button {
+    label {
+      font-size: 18px;
+    }
+
+    select {
+      padding: 8px 14px;
       font-size: 16px;
-      padding: 10px;
-      margin-top: 10px;
-      margin-bottom: 20px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: none;
+      background-color: #033d1e;
+      color: #ffeb3b;
+    }
+
+    .buttons {
+      margin: 20px;
     }
 
     button {
-      background-color: #ffeb3b;
-      color: #014421;
+      padding: 10px 18px;
+      font-size: 16px;
       font-weight: bold;
       border: none;
+      border-radius: 8px;
       cursor: pointer;
+      margin: 5px;
     }
 
-    button:hover {
+    .generate {
+      background-color: #ffeb3b;
+      color: #014421;
+    }
+
+    .generate:hover {
       background-color: #fdd835;
+    }
+
+    .reset {
+      background-color: #555;
+      color: white;
+    }
+
+    .reset:hover {
+      background-color: #333;
     }
 
     .results {
       margin-top: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .player-block {
-      margin-bottom: 20px;
       background-color: rgba(255, 255, 255, 0.1);
-      padding: 10px;
-      border-radius: 10px;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .player-block strong {
+      font-size: 18px;
+      display: block;
+      margin-bottom: 8px;
     }
 
     .animal-name {
       font-size: 18px;
       font-weight: bold;
+      margin-top: 8px;
     }
 
     .animal-info {
-      margin-top: 5px;
       font-size: 14px;
+      margin-top: 3px;
     }
   </style>
 </head>
+
 <body>
   <h1>🐯 Oikos 🐯</h1>
 
@@ -70,8 +110,10 @@
     <option value="6">6 jogadores</option>
   </select>
 
-  <br>
-  <button onclick="generateMatch()">Monte uma partida!</button>
+  <div class="buttons">
+    <button class="generate" onclick="generateMatch()">Gerar Partida!</button>
+    <button class="reset" onclick="resetResults()">Resetar</button>
+  </div>
 
   <div class="results" id="results"></div>
 
@@ -108,10 +150,6 @@
       { num: 8, name: "Preguiça", type: "Meio" },
       { num: 9, name: "Sapo-Boi-Azul", type: "Base" }
     ];
-
-    function getRandomItem(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
 
     function shuffleArray(arr) {
       return arr.slice().sort(() => 0.5 - Math.random());
@@ -160,37 +198,31 @@
         const block = document.createElement("div");
         block.className = "player-block";
 
-        const playerLabel = document.createElement("div");
-        playerLabel.innerHTML = `<strong>Jogador ${i + 1}</strong>`;
-        block.appendChild(playerLabel);
+        block.innerHTML = `
+          <strong>Jogador ${i + 1}</strong>
+          <div class="animal-name">
+            ${playerCount <= 3 ? "Espécie principal: " : ""}${assignment.main.name}
+          </div>
+          <div class="animal-info">
+            Número: ${assignment.main.num} | Tipo: ${assignment.main.type}
+          </div>
+        `;
 
-        const main = assignment.main;
-        const support = assignment.support;
-
-        const mainDiv = document.createElement("div");
-        mainDiv.className = "animal-name";
-        mainDiv.innerText = playerCount <= 3 ? `Espécie principal: ${main.name}` : `${main.name}`;
-        block.appendChild(mainDiv);
-
-        const mainInfo = document.createElement("div");
-        mainInfo.className = "animal-info";
-        mainInfo.innerText = `Número: ${main.num} | Tipo: ${main.type}`;
-        block.appendChild(mainInfo);
-
-        if (support) {
-          const supportDiv = document.createElement("div");
-          supportDiv.className = "animal-name";
-          supportDiv.innerText = `Espécie suporte: ${support.name}`;
-          block.appendChild(supportDiv);
-
-          const supportInfo = document.createElement("div");
-          supportInfo.className = "animal-info";
-          supportInfo.innerText = `Número: ${support.num} | Tipo: ${support.type}`;
-          block.appendChild(supportInfo);
+        if (assignment.support) {
+          block.innerHTML += `
+            <div class="animal-name">Espécie suporte: ${assignment.support.name}</div>
+            <div class="animal-info">
+              Número: ${assignment.support.num} | Tipo: ${assignment.support.type}
+            </div>
+          `;
         }
 
         resultDiv.appendChild(block);
       });
+    }
+
+    function resetResults() {
+      document.getElementById("results").innerHTML = "";
     }
   </script>
 </body>
