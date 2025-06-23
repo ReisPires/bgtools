@@ -1,65 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Floresta</title>
+  <title>🌲 Floresta 🌲</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      background-color: #0e2c0e;
+      color: #e2ffe2;
+      font-family: 'Arial', sans-serif;
       text-align: center;
-      margin: 40px;
-      background-color: #002200;
-      color: #ccffcc;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #f4e07a;
+      font-size: 36px;
+      margin-bottom: 10px;
     }
 
     button {
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      background-color: #006400;
+      background-color: #bb3e03;
       color: white;
+      padding: 12px 24px;
+      font-size: 18px;
       border: none;
+      border-radius: 8px;
       cursor: pointer;
-      margin-top: 20px;
+      margin: 20px;
     }
 
     button:hover {
-      background-color: #004d00;
+      background-color: #992e00;
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 100px);
       grid-template-rows: repeat(3, 100px);
-      gap: 8px;
+      gap: 10px;
       justify-content: center;
-      margin-top: 30px;
+      margin-top: 20px;
     }
 
     .tile {
-      background-color: #228B22;
-      border: 4px solid #960018; /* Darker red, thicker */
+      background-color: #1d5021;
+      border: 3px solid #f4e07a;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-weight: bold;
-      font-size: 13px;
+      border-radius: 10px;
+      padding: 8px;
       color: white;
-      padding: 6px;
-      text-align: center;
+      font-size: 14px;
     }
 
     .emoji {
-      font-size: 20px;
+      font-size: 24px;
       margin-bottom: 4px;
+    }
+
+    .label {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <h1>🌲 Floresta 🌲</h1>
   <button onclick="generateGrid()">Gere uma Floresta!</button>
+
   <div class="grid" id="grid"></div>
 
   <script>
@@ -101,13 +111,13 @@
 
       const tiles = new Array(9);
 
-      // Assign Watchtowers with 🔭 emoji
+      // Assign Watchtowers with 🔭
       corners.forEach((pos, i) => {
         const name = randomSide(wtTiles[i]);
         tiles[pos] = { emoji: '🔭', label: name };
       });
 
-      // Assign Forests with specific emoji
+      // Assign Forests with emoji
       centerAndEdges.forEach((pos, i) => {
         const forest = fTiles[i];
         const name = randomSide(forest.names);
@@ -119,7 +129,7 @@
       tiles.forEach(tile => {
         const div = document.createElement('div');
         div.className = 'tile';
-        div.innerHTML = `<div class="emoji">${tile.emoji}</div><div>${tile.label}</div>`;
+        div.innerHTML = `<div class="emoji">${tile.emoji}</div><div class="label">${tile.label}</div>`;
         grid.appendChild(div);
       });
     }
