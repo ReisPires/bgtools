@@ -6,70 +6,112 @@
   <title>Istanbul</title>
   <style>
     body {
+      background-color: #fdf7f0;
+      color: #5a1a0a;
       font-family: Arial, sans-serif;
       text-align: center;
-      margin: 50px;
-      background-color: #fff8f8;
-      color: #333;
+      margin: 30px;
+    }
+
+    h1 {
+      color: #e63946;
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+      margin: 8px 0;
+    }
+
+    label {
+      font-size: 16px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .buttons {
+      margin: 20px;
+    }
+
+    button {
+      padding: 10px 18px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .generate {
+      background-color: #e63946;
+      color: white;
+    }
+
+    .generate:hover {
+      background-color: #b02a34;
+    }
+
+    .reset {
+      background-color: #457b9d;
+      color: white;
+    }
+
+    .reset:hover {
+      background-color: #32627a;
     }
 
     .grid {
       display: grid;
-      gap: 5px;
+      gap: 6px;
       justify-content: center;
       margin-top: 20px;
     }
 
     .cell {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: bold;
-      border: 2px solid #e30a17;
-      color: #e30a17;
-      background-color: #fff0f0;
+      border: 2px solid #e63946;
+      border-radius: 6px;
+      color: #e63946;
+      background-color: #fff4ec;
       line-height: 1.2;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      background-color: #e30a17;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    button:hover {
-      background-color: #b00812;
-    }
-
-    label {
-      font-size: 18px;
     }
   </style>
 </head>
 <body>
   <h1>☪️ Istanbul ☪️</h1>
+
   <p>Incluir expansões?</p>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+  <div class="checkbox-group">
     <label><input type="checkbox" id="mocha"> Mocha & Baksheesh</label>
     <label><input type="checkbox" id="letters"> Letters & Seals</label>
   </div>
-  <br>
+
   <p>Sortear mini expansões?</p>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+  <div class="checkbox-group">
     <label><input type="checkbox" id="pegasus"> Pegasus Depot</label>
     <label><input type="checkbox" id="kebab"> Kebab Shop</label>
   </div>
-  <br><br>
-  <button onclick="generateMap()">Gerar mapa!</button>
+
+  <div class="buttons">
+    <button class="generate" onclick="generateMap()">Gerar mapa!</button>
+    <button class="reset" onclick="resetMap()">Resetar</button>
+  </div>
+
   <div id="gridContainer"></div>
 
   <script>
@@ -85,6 +127,9 @@
     function generateMap() {
       const mocha = document.getElementById('mocha').checked;
       const letters = document.getElementById('letters').checked;
+      const pegasus = document.getElementById('pegasus').checked;
+      const kebab = document.getElementById('kebab').checked;
+
       let rows = 4, cols = 4, numbers;
 
       if (mocha && letters) {
@@ -108,7 +153,7 @@
         validGrid = validateGrid(grid, rows, cols);
       }
 
-      displayGrid(grid, rows, cols);
+      displayGrid(grid, rows, cols, pegasus, kebab);
     }
 
     function shuffleAndGenerateGrid(rows, cols, numbers) {
@@ -146,12 +191,10 @@
       return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
     }
 
-    function displayGrid(grid, rows, cols) {
-      const pegasus = document.getElementById('pegasus').checked;
-      const kebab = document.getElementById('kebab').checked;
+    function displayGrid(grid, rows, cols, pegasus, kebab) {
       const gridContainer = document.getElementById('gridContainer');
       gridContainer.innerHTML = '';
-      gridContainer.style.gridTemplateColumns = `repeat(${cols}, 50px)`;
+      gridContainer.style.gridTemplateColumns = `repeat(${cols}, 60px)`;
       gridContainer.className = 'grid';
 
       for (let r = 0; r < rows; r++) {
@@ -168,6 +211,10 @@
           gridContainer.appendChild(cell);
         }
       }
+    }
+
+    function resetMap() {
+      document.getElementById('gridContainer').innerHTML = '';
     }
   </script>
 </body>
