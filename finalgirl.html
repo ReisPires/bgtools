@@ -6,11 +6,16 @@
     <title>Final Girl</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            background-color: black;
+            background-color: #000;
             color: white;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            margin: 30px;
+        }
+        h1 {
+            color: #ff3c00;
+            font-size: 36px;
+            margin-bottom: 10px;
         }
         button {
             padding: 10px 20px;
@@ -19,23 +24,46 @@
             background-color: #8B0000;
             color: white;
             border: none;
+            border-radius: 8px;
             cursor: pointer;
-            margin-top: 10px;
+            margin: 10px;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #600000;
         }
-        .result {
+        .card {
+            border: 2px solid #8B0000;
+            border-radius: 12px;
+            background-color: #1a1a1a;
+            padding: 20px;
             margin-top: 20px;
-            font-size: 18px;
+            display: inline-block;
+            opacity: 0;
+            animation: fadeIn 0.8s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .item {
+            margin: 10px 0;
+            font-size: 20px;
+        }
+        .label {
+            color: #ff3c00;
             font-weight: bold;
+            font-size: 22px;
+            display: block;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
     <h1>🩸 Final Girl 🩸</h1>
+
     <button onclick="generateGame()">Monte uma partida!</button>
-    <div class="result" id="result"></div>
+
+    <div id="result"></div>
 
     <script>
         const killers = [
@@ -66,11 +94,23 @@
             const killer = killers[Math.floor(Math.random() * killers.length)];
             const location = locations[Math.floor(Math.random() * locations.length)];
             const finalGirl = finalGirls[Math.floor(Math.random() * finalGirls.length)];
-            
-            document.getElementById('result').innerHTML = 
-                `<p>Killer: ${killer}</p>
-                 <p>Location: ${location}</p>
-                 <p>Final Girl: ${finalGirl}</p>`;
+            const tearTracker = Math.random() < 0.5 ? 'A' : 'B';
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            card.innerHTML = `
+                <div class="item"><span class="label">☠️ Killer</span> ${killer}</div>
+                <div class="item"><span class="label">📍 Location</span> ${location}</div>
+                <div class="item"><span class="label">🧍‍♀️ Final Girl</span> ${finalGirl}</div>
+                <div class="item"><span class="label">💧 Tear Tracker</span> Side ${tearTracker}</div>
+                <button onclick="generateGame()">Gerar novamente</button>
+            `;
+
+            resultDiv.appendChild(card);
         }
     </script>
 </body>
