@@ -179,7 +179,29 @@
 
             // 3. VILÕES
             const viloes = sortearViloes();
-            renderizarViloes(viloes);
+            const viloesDiv = document.createElement('div');
+            viloesDiv.className = 'section';
+            viloesDiv.innerHTML = `<h2>😈 Vilões</h2>`;
+            
+            const container = document.createElement('div');
+            container.className = 'zenkai-grid';
+            container.id = 'viloes';
+            
+            viloes.forEach((v, i) => {
+                const div = document.createElement('div');
+                div.className = 'zenkai-item';
+                div.style.backgroundColor = v.cor === 'Azul' ? '#007bff'
+                    : v.cor === 'Vermelho' ? '#dc3545'
+                    : v.cor === 'Amarelo' ? '#ffc107'
+                    : '#28a745';
+                div.style.color = (v.cor === 'Amarelo') ? '#000' : '#fff';
+                div.innerHTML = `Vilão ${i + 1}: ${v.genero} ${v.cor} - Mapa ${v.letra}, Pos. ${v.numero}, ${v.direcao}`;
+                container.appendChild(div);
+            });
+            
+            viloesDiv.appendChild(container);
+            resultadoDiv.appendChild(viloesDiv);
+
 
             // 4. ZENKAIS
             const zenkais = sortearZenkai(numJogadores);
