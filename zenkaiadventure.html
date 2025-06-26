@@ -60,6 +60,13 @@
             background-color: #5a4e6b;
             font-size: 18px;
         }
+        .vilao-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
         .zenkai-grid {
             display: grid;
             gap: 10px;
@@ -96,21 +103,31 @@
     <div id="resultado"></div>
 
     <script>
-        const coresViloes = ['Azul', 'Vermelho', 'Amarelo', 'Verde'];
-        const generos = ['👩🏼 Mulher', '👨🏽 Homem'];
         const direcoes = ['⬆️ Norte', '⬅️ Oeste', '⬇️ Sul', '➡️ Leste'];
     
         function sortearViloes() {
-            const coresDisponiveis = shuffle(coresViloes).slice(0, 2);
-            const viloes = coresDisponiveis.map(cor => {
-                const genero = generos[Math.floor(Math.random() * generos.length)];
+            const combinacoes = [
+                { homem: 'Azul', mulher: 'Amarelo' },
+                { homem: 'Vermelho', mulher: 'Roxo' },
+                { homem: 'Laranja', mulher: 'Marrom' },
+                { homem: 'Oliva', mulher: 'Verde' }
+            ];
+        
+            const sorteadas = shuffle(combinacoes).slice(0, 2); // escolhe 2 pares sem repetir
+        
+            const viloes = sorteadas.map(par => {
+                const usarHomem = Math.random() < 0.5;
+                const genero = usarHomem ? '👨🏽 Homem' : '👩🏼 Mulher';
+                const cor = usarHomem ? par.homem : par.mulher;
                 const letra = ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)];
                 const numero = Math.floor(Math.random() * 8) + 1;
                 const direcao = direcoes[Math.floor(Math.random() * 4)];
-                return { cor, genero, letra, numero, direcao };
+                return { genero, cor, letra, numero, direcao };
             });
+        
             return viloes;
         }
+
         
         const habitats = {
             "Glacial": ["Kimeow", "Digarp", "Haati"],
@@ -168,16 +185,21 @@
             viloesDiv.innerHTML = `<h2>🦹 Vilões</h2>`;
             
             const container = document.createElement('div');
-            container.className = 'zenkai-grid';
-            container.id = 'viloes';
+            container.className = 'vilao-grid';
             
             viloes.forEach((v, i) => {
                 const div = document.createElement('div');
                 div.className = 'zenkai-item';
-                div.style.backgroundColor = v.cor === 'Azul' ? '#007bff'
-                    : v.cor === 'Vermelho' ? '#dc3545'
-                    : v.cor === 'Amarelo' ? '#ffc107'
-                    : '#28a745';
+                div.style.backgroundColor =
+                    v.cor === 'Azul' ? '#1db6aa' :
+                    v.cor === 'Vermelho' ? '#cb303f' :
+                    v.cor === 'Amarelo' ? '#cfa117' :
+                    v.cor === 'Roxo' ? '#9b59b6' :
+                    v.cor === 'Laranja' ? '#dc7712' :
+                    v.cor === 'Marrom' ? '#765238' :
+                    v.cor === 'Oliva' ? '#5fc12b' :
+                    v.cor === 'Verde' ? '#18863d' :
+                    '#333';
                 div.style.color = (v.cor === 'Amarelo') ? '#000' : '#fff';
                 div.innerHTML = `${v.genero} - ${v.cor} - ${v.letra} ${v.numero} ${v.direcao}`;
                 container.appendChild(div);
