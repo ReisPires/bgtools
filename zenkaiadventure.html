@@ -190,18 +190,7 @@
             viloes.forEach((v, i) => {
                 const div = document.createElement('div');
                 div.className = 'zenkai-item';
-                div.style.backgroundColor =
-                    v.cor === 'Azul' ? '#1db6aa' :
-                    v.cor === 'Vermelho' ? '#cb303f' :
-                    v.cor === 'Amarelo' ? '#cfa117' :
-                    v.cor === 'Roxo' ? '#9b59b6' :
-                    v.cor === 'Laranja' ? '#dc7712' :
-                    v.cor === 'Marrom' ? '#765238' :
-                    v.cor === 'Oliva' ? '#5fc12b' :
-                    v.cor === 'Verde' ? '#18863d' :
-                    '#333';
-                div.style.color = (v.cor === 'Amarelo') ? '#000' : '#fff';
-                div.innerHTML = `${v.genero}<br>${v.cor}<br>📍 ${v.letra}${v.numero} ${v.direcao}`;
+                div.innerHTML = `${v.genero}<br>${v.cor}<br>📍${v.letra}${v.numero}  ${v.direcao}`;
                 container.appendChild(div);
             });
             
@@ -230,7 +219,7 @@
                 const item = document.createElement('div');
                 item.className = 'zenkai-item';
                 item.style.backgroundColor = habitatColors[z.habitat];
-                item.innerHTML = `P${i + 1}: ${z.emoji} <strong>${z.nome}</strong>`;
+                item.innerHTML = `P${i + 1}:<br>${z.emoji}  <strong>${z.nome}</strong>`;
                 zenkaiGrid.appendChild(item);
             });
             
