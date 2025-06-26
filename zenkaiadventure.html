@@ -130,12 +130,12 @@
 
         
         const habitats = {
-            "Glacial": ["Kimeow", "Digarp", "Haati"],
-            "Urbano": ["Lunna", "Pitixa", "Marleon"],
-            "Aquático": ["Luppy", "Allipop", "Flashin", "Zigafe"],
-            "Campina": ["Pankidy", "Mohra", "Ironpup", "Pigroot", "Burrny"],
-            "Floresta": ["Oikid", "Piri-piri", "Gamboop", "Guatatá", "Oranboo", "Plumixie"],
-            "Montanha": ["Coldeep", "Roclimb", "Rokkar", "Rabblaze", "Fluffy"]
+            "Glacial": ["❄️ Kimeow", "❄️ Digarp", "❄️ Haati"],
+            "Urbano": ["🏢 Lunna", "🏢 Pitixa", "🏢 Marleon"],
+            "Aquático": ["🌊 Luppy", "🌊 Allipop", "🌊 Flashin", "🌊 Zigafe"],
+            "Campina": ["🌱 Pankidy", "🌱 Mohra", "🌱 Ironpup", "🌱 Pigroot", "🌱 Burrny"],
+            "Floresta": ["🌲 Oikid", "🌲 Piri-piri", "🌲 Gamboop", "🌲 Guatatá", "🌲 Oranboo", "🌲 Plumixie"],
+            "Montanha": ["🏔️ Coldeep", "🏔️ Roclimb", "🏔️ Rokkar", "🏔️ Rabblaze", "🏔️ Fluffy"]
         };
 
         const habitatColors = {
@@ -190,6 +190,7 @@
             viloes.forEach((v, i) => {
                 const div = document.createElement('div');
                 div.className = 'zenkai-item';
+                div.style.backgroundColor = '#333';
                 div.innerHTML = `${v.genero}<br>${v.cor}<br>📍${v.letra}${v.numero}  ${v.direcao}`;
                 container.appendChild(div);
             });
@@ -219,7 +220,7 @@
                 const item = document.createElement('div');
                 item.className = 'zenkai-item';
                 item.style.backgroundColor = habitatColors[z.habitat];
-                item.innerHTML = `P${i + 1}:<br>${z.emoji}  <strong>${z.nome}</strong>`;
+                item.innerHTML = `P${i + 1}:<br>${z.nome}`;
                 zenkaiGrid.appendChild(item);
             });
             
