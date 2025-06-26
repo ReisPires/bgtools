@@ -65,21 +65,19 @@
       background-color: #333;
     }
 
-    .result {
-      margin-top: 30px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+    .section {
       background-color: #222;
       padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
       border-radius: 12px;
+      text-align: left;
     }
 
-    .result h2 {
+    .section h2 {
       color: #FF8C00;
       font-size: 20px;
       margin-bottom: 8px;
-      margin-top: 18px;
     }
 
     ul {
@@ -111,7 +109,7 @@
     <button class="reset" onclick="resetResult()">Resetar</button>
   </div>
 
-  <div id="result" class="result"></div>
+  <div id="result"></div>
 
   <script>
     const maps = [
@@ -148,7 +146,6 @@
 
     function generateMatch() {
       const playerCount = parseInt(document.getElementById("playerCount").value);
-
       const selectedMap = maps[Math.floor(Math.random() * maps.length)];
 
       const milestonePool = (selectedMap === "Hellas" || selectedMap === "Utopia Planitia")
@@ -157,23 +154,38 @@
 
       const colonyCount = playerCount === 2 ? 5 : playerCount + 2;
       const selectedColonies = shuffle([...colonies]).slice(0, colonyCount).sort();
-
       const selectedMilestones = shuffle([...milestonePool]).slice(0, 5).sort();
       const selectedAwards = shuffle([...awards]).slice(0, 5).sort();
 
       const resultDiv = document.getElementById("result");
-      resultDiv.innerHTML = `
-        <h2>Mapa</h2>
-        <p>${selectedMap}</p>
+      resultDiv.innerHTML = '';
 
-        <h2>Colônias (${colonyCount})</h2>
-        <ul>${selectedColonies.map(c => `<li>${c}</li>`).join('')}</ul>
+      resultDiv.innerHTML += `
+        <div class="section">
+          <h2>🗺️ Mapa</h2>
+          <p>${selectedMap}</p>
+        </div>
+      `;
 
-        <h2>Marcos</h2>
-        <ul>${selectedMilestones.map(m => `<li>${m}</li>`).join('')}</ul>
+      resultDiv.innerHTML += `
+        <div class="section">
+          <h2>🪐 Colônias (${colonyCount})</h2>
+          <ul>${selectedColonies.map(c => `<li>${c}</li>`).join('')}</ul>
+        </div>
+      `;
 
-        <h2>Prêmios</h2>
-        <ul>${selectedAwards.map(a => `<li>${a}</li>`).join('')}</ul>
+      resultDiv.innerHTML += `
+        <div class="section">
+          <h2>🏆 Marcos</h2>
+          <ul>${selectedMilestones.map(m => `<li>${m}</li>`).join('')}</ul>
+        </div>
+      `;
+
+      resultDiv.innerHTML += `
+        <div class="section">
+          <h2>🎖️ Prêmios</h2>
+          <ul>${selectedAwards.map(a => `<li>${a}</li>`).join('')}</ul>
+        </div>
       `;
     }
 
