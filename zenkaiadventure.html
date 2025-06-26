@@ -107,10 +107,10 @@
     
         function sortearViloes() {
             const combinacoes = [
-                { homem: 'Azul', mulher: 'Amarelo' },
-                { homem: 'Vermelho', mulher: 'Roxo' },
-                { homem: 'Laranja', mulher: 'Marrom' },
-                { homem: 'Oliva', mulher: 'Verde' }
+                { homem: '🔵 Azul', mulher: '🟡 Amarelo' },
+                { homem: '🔴 Vermelho', mulher: '🟣 Roxo' },
+                { homem: '🟠 Laranja', mulher: '🟤 Marrom' },
+                { homem: '🟢 Oliva', mulher: '🟢 Verde' }
             ];
         
             const sorteadas = shuffle(combinacoes).slice(0, 2); // escolhe 2 pares sem repetir
@@ -201,7 +201,7 @@
                     v.cor === 'Verde' ? '#18863d' :
                     '#333';
                 div.style.color = (v.cor === 'Amarelo') ? '#000' : '#fff';
-                div.innerHTML = `${v.genero} - ${v.cor} - ${v.letra} ${v.numero} ${v.direcao}`;
+                div.innerHTML = `${v.genero}<br>${v.cor}<br>📍 ${v.letra}${v.numero} ${v.direcao}`;
                 container.appendChild(div);
             });
             
