@@ -96,6 +96,10 @@
     <div id="resultado"></div>
 
     <script>
+        const coresViloes = ['Azul', 'Vermelho', 'Amarelo', 'Verde'];
+        const generos = ['Mulher', 'Homem'];
+        const direcoes = ['Norte', 'Oeste', 'Sul', 'Leste'];
+        
         const habitats = {
             "Glacial": ["Kimeow", "Digarp", "Haati"],
             "Urbano": ["Lunna", "Pitixa", "Marleon"],
@@ -145,7 +149,35 @@
             mapaDiv.appendChild(grid);
             resultadoDiv.appendChild(mapaDiv);
 
-            // 3. ZENKAIS
+            // 3. VILÕES
+            function sortearViloes() {
+                const coresDisponiveis = shuffle(coresViloes).slice(0, 2);
+                const viloes = coresDisponiveis.map(cor => {
+                    const genero = generos[Math.floor(Math.random() * generos.length)];
+                    const letra = ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)];
+                    const numero = Math.floor(Math.random() * 8) + 1;
+                    const direcao = direcoes[Math.floor(Math.random() * 4)];
+                    return { cor, genero, letra, numero, direcao };
+                });
+                return viloes;
+            }
+            const viloes = sortearViloes();
+            const container = document.getElementById('viloes');
+            container.innerHTML = '';
+            viloes.forEach((v, i) => {
+                const div = document.createElement('div');
+                div.className = 'zenkai-item';
+                div.style.backgroundColor = v.cor === 'Azul' ? '#007bff'
+                    : v.cor === 'Vermelho' ? '#dc3545'
+                    : v.cor === 'Amarelo' ? '#ffc107'
+                    : '#28a745';
+                div.style.color = (v.cor === 'Amarelo') ? '#000' : '#fff';
+                div.innerHTML = `Vilão ${i + 1}: ${v.genero} ${v.cor} - Mapa ${v.letra}, Pos. ${v.numero}, ${v.direcao}`;
+                container.appendChild(div);
+            });
+
+
+            // 4. ZENKAIS
             const zenkais = sortearZenkai(numJogadores);
             const zenkaiDiv = document.createElement('div');
             zenkaiDiv.className = 'section';
