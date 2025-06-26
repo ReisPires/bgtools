@@ -181,7 +181,7 @@
             const viloes = sortearViloes();
             const viloesDiv = document.createElement('div');
             viloesDiv.className = 'section';
-            viloesDiv.innerHTML = `<h2>😈 Vilões</h2>`;
+            viloesDiv.innerHTML = `<h2>🦹 Vilões</h2>`;
             
             const container = document.createElement('div');
             container.className = 'zenkai-grid';
@@ -195,7 +195,7 @@
                     : v.cor === 'Amarelo' ? '#ffc107'
                     : '#28a745';
                 div.style.color = (v.cor === 'Amarelo') ? '#000' : '#fff';
-                div.innerHTML = `Vilão ${i + 1}: ${v.genero} ${v.cor} - Mapa ${v.letra}, Pos. ${v.numero}, ${v.direcao}`;
+                div.innerHTML = `${v.genero} - ${v.cor} - ${v.letra} ${v.numero} ${v.direcao}`;
                 container.appendChild(div);
             });
             
