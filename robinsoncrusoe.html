@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robinson Crusoe</title>
+  <style>
+    body {
+      background-color: #223322;
+      color: #f5f5dc;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      margin: 30px;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #e0c067;
+    }
+
+    select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    select {
+      background-color: #335533;
+      color: #fff;
+    }
+
+    button {
+      background-color: #e0c067;
+      color: #000;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #c0a040;
+    }
+
+    .section {
+      margin-top: 30px;
+      border: 2px solid #e0c067;
+      border-radius: 12px;
+      padding: 20px;
+      background-color: #2d442d;
+    }
+
+    .item {
+      font-size: 18px;
+      margin: 6px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏝️ Robinson Crusoe 🏝️</h1>
+
+  <label for="players">Número de Jogadores:</label>
+  <select id="players">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+  <br>
+  <button onclick="gerarSetup()">Gerar Partida</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    const personagens = ["Personagem A", "Personagem B", "Personagem C", "Personagem D"];
+    const cenarios = [
+      { nome: "Cenário 1", nivel: "Fácil", duracao: "8 Rodadas", tema: "Naufrágio" },
+      { nome: "Cenário 2", nivel: "Médio", duracao: "10 Rodadas", tema: "Ilha Vulcânica" },
+      { nome: "Cenário 3", nivel: "Difícil", duracao: "12 Rodadas", tema: "Ameaça Canibal" }
+    ];
+    const itens = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
+    const cartasAventura = ["Carta de Aventura 1", "Carta de Aventura 2", "Carta de Aventura 3"];
+    const tripulantes = ["Tripulante A", "Tripulante B", "Tripulante C"];
+    const tetosAvancados = ["Tipo de Teto A", "Tipo de Teto B", "Tipo de Teto C", "Tipo de Teto D"];
+
+    function embaralhar(array) {
+      return array.sort(() => 0.5 - Math.random());
+    }
+
+    function gerarSetup() {
+      const numJogadores = parseInt(document.getElementById("players").value);
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = "";
+
+      // Personagens
+      const personagemDiv = document.createElement('div');
+      personagemDiv.className = 'section';
+      personagemDiv.innerHTML = `<h2>🧭 Personagens</h2>`;
+      const selecionados = embaralhar([...personagens]).slice(0, numJogadores);
+      selecionados.forEach((c, i) => {
+        personagemDiv.innerHTML += `<div class="item">Jogador ${i + 1}: ${c}</div>`;
+      });
+      resultadoDiv.appendChild(personagemDiv);
+
+      // Cenário
+      const cenarioDiv = document.createElement('div');
+      cenarioDiv.className = 'section';
+      const cenario = cenarios[Math.floor(Math.random() * cenarios.length)];
+      cenarioDiv.innerHTML = `
+        <h2>📜 Cenário</h2>
+        <div class="item"><strong>${cenario.nome}</strong></div>
+        <div class="item">Nível: ${cenario.nivel}</div>
+        <div class="item">Duração: ${cenario.duracao}</div>
+        <div class="item">Tema: ${cenario.tema}</div>
+      `;
+      resultadoDiv.appendChild(cenarioDiv);
+
+      // Itens Iniciais
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'section';
+      const iniciais = embaralhar([...itens]).slice(0, 2);
+      itemDiv.innerHTML = `<h2>🧰 Itens Iniciais</h2>` +
+        iniciais.map(item => `<div class="item">${item}</div>`).join('');
+      resultadoDiv.appendChild(itemDiv);
+
+      // Carta de Aventura
+      const aventuraDiv = document.createElement('div');
+      aventuraDiv.className = 'section';
+      const aventura = cartasAventura[Math.floor(Math.random() * cartasAventura.length)];
+      aventuraDiv.innerHTML = `<h2>🃏 Carta de Aventura Inicial</h2><div class="item">${aventura}</div>`;
+      resultadoDiv.appendChild(aventuraDiv);
+
+      // Tripulante
+      const tripDiv = document.createElement('div');
+      tripDiv.className = 'section';
+      const trip = tripulantes[Math.floor(Math.random() * tripulantes.length)];
+      tripDiv.innerHTML = `<h2>🧑‍🚒 Tripulante</h2><div class="item">${trip}</div>`;
+      resultadoDiv.appendChild(tripDiv);
+
+      // Teto Avançado
+      const tetoDiv = document.createElement('div');
+      tetoDiv.className = 'section';
+      const teto = tetosAvancados[Math.floor(Math.random() * tetosAvancados.length)];
+      tetoDiv.innerHTML = `<h2>🏠 Tipo de Teto Avançado</h2><div class="item">${teto}</div>`;
+      resultadoDiv.appendChild(tetoDiv);
+    }
+  </script>
+</body>
+</html>
