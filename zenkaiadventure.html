@@ -1,291 +1,298 @@
-<!-- CÓDIGO COMPLETO - ZENKAI ADVENTURE -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zenkai Adventure</title>
-  <style>
-    body {
-      background-color: #2e2638;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 30px;
-    }
-    h1 {
-      color: #ffbb00;
-      font-size: 36px;
-    }
-    select, button {
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-    }
-    select {
-      background-color: #4a3f5f;
-      color: white;
-    }
-    button {
-      background-color: #ff6600;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #cc5200;
-    }
-    .section {
-      margin-top: 30px;
-      border: 2px solid #ffbb00;
-      border-radius: 12px;
-      padding: 20px;
-      background-color: #3a3149;
-    }
-    .grid {
-      display: grid;
-      gap: 10px;
-      justify-content: center;
-      margin: 10px 0;
-    }
-    .grid.classico {
-      grid-template-columns: repeat(2, 100px);
-    }
-    .grid.liga {
-      grid-template-columns: repeat(4, 100px);
-    }
-    .cell {
-      border: 2px solid #ffbb00;
-      border-radius: 8px;
-      height: 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background-color: #5a4e6b;
-      font-size: 18px;
-    }
-    .vilao-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 10px;
-    }
-    .zenkai-grid {
-      display: grid;
-      gap: 10px;
-      justify-content: center;
-    }
-    .zenkai-item {
-      margin: 0;
-      padding: 8px 12px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenkai Adventure</title>
+    <style>
+        body {
+            background-color: #2e2638;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 30px;
+        }
+        h1 {
+            color: #ffbb00;
+            font-size: 36px;
+        }
+        select, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+        }
+        select {
+            background-color: #4a3f5f;
+            color: white;
+        }
+        button {
+            background-color: #ff6600;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #cc5200;
+        }
+        .section {
+            margin-top: 30px;
+            border: 2px solid #ffbb00;
+            border-radius: 12px;
+            padding: 20px;
+            background-color: #3a3149;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 100px);
+            gap: 10px;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .grid.liga {
+            grid-template-columns: 1fr;
+            align-items: center;
+        }
+        .emoji {
+            text-shadow: 0 0 3px black;
+            font-size: 22px;
+        }
+        .cell {
+            border: 2px solid #ffbb00;
+            border-radius: 8px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin: 0 auto;
+        }
+        .vilao-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .zenkai-grid {
+            display: grid;
+            gap: 10px;
+            justify-content: center;
+        }
+        .zenkai-item {
+            margin: 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: block;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <h1>⚡ Zenkai Adventure ⚡</h1>
+    <h1>⚡ Zenkai Adventure ⚡</h1>
 
-  <label for="modo">Modo de jogo:</label>
-  <select id="modo" onchange="atualizarInterface()">
-    <option value="classico">Clássico</option>
-    <option value="liga">Liga Zenkai</option>
-  </select>
+    <label for="mode">Modo de jogo:</label>
+    <select id="mode" onchange="atualizarJogadores()">
+        <option value="classico">Clássico</option>
+        <option value="liga">Liga Zenkai</option>
+    </select>
+    <br>
 
-  <div id="selecao-jogadores"></div>
-  <div id="resultado"></div>
+    <label for="players">Número de jogadores:</label>
+    <select id="players"></select>
+    <br>
+    <button onclick="gerarPartida()">Monte uma partida!</button>
 
-  <script>
-    const direcoes = ['⬆️ Norte', '⬅️ Oeste', '⬇️ Sul', '➡️ Leste'];
-    const habitats = {
-      "Glacial": ["Kimeow", "Digarp", "Haati"],
-      "Urbano": ["Lunna", "Pitixa", "Marleon"],
-      "Aquático": ["Luppy", "Allipop", "Flashin", "Zigafe"],
-      "Campina": ["Pankidy", "Mohra", "Ironpup", "Pigroot", "Burrny"],
-      "Floresta": ["Oikid", "Piri-piri", "Gamboop", "Guatatá", "Oranboo", "Plumixie"],
-      "Montanha": ["Coldeep", "Roclimb", "Rokkar", "Rabblaze", "Fluffy"]
-    };
-    const habitatColors = {
-      "Glacial": "#19b1b1", "Urbano": "#909090", "Aquático": "#1d09ea",
-      "Campina": "#0fa619", "Floresta": "#016805", "Montanha": "#cf510d"
-    };
+    <div id="resultado"></div>
 
-    function atualizarInterface() {
-      const modo = document.getElementById('modo').value;
-      const container = document.getElementById('selecao-jogadores');
-      container.innerHTML = '';
-
-      const label = document.createElement('label');
-      label.textContent = 'Número de jogadores:';
-      const select = document.createElement('select');
-      select.id = 'players';
-
-      const opcoes = modo === 'liga' ? ['4', '8'] : ['1','2','3','4','5','6'];
-      opcoes.forEach(n => {
-        const option = document.createElement('option');
-        option.value = n;
-        option.textContent = n;
-        select.appendChild(option);
-      });
-
-      const button = document.createElement('button');
-      button.textContent = 'Monte uma partida!';
-      button.onclick = gerarPartida;
-
-      container.appendChild(label);
-      container.appendChild(select);
-      container.appendChild(document.createElement('br'));
-      container.appendChild(button);
-    }
-
-    function gerarPartida() {
-      const modo = document.getElementById('modo').value;
-      const numJogadores = parseInt(document.getElementById('players').value);
-      const resultadoDiv = document.getElementById('resultado');
-      resultadoDiv.innerHTML = '';
-
-      if (modo === 'classico') {
-        const objetivos = sortearObjetivos(numJogadores);
-        const objetivosDiv = document.createElement('div');
-        objetivosDiv.className = 'section';
-        objetivosDiv.innerHTML = `<h2>🎯 Objetivos</h2><p>${formatarObjetivos(objetivos)}</p>`;
-        resultadoDiv.appendChild(objetivosDiv);
-      }
-
-      const mapa = gerarMapa(modo);
-      const mapaDiv = document.createElement('div');
-      mapaDiv.className = 'section';
-      mapaDiv.innerHTML = `<h2>🗺️ Mapa</h2>`;
-      const grid = document.createElement('div');
-      grid.className = `grid ${modo}`;
-
-      mapa.forEach(cel => {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.style.backgroundColor = cel.cor === 'Roxo' ? '#9455fe' : '#f68d2e';
-        cell.innerHTML = `<strong>${cel.letra}</strong><br>${cel.tipo} ${cel.numero}`;
-        grid.appendChild(cell);
-      });
-
-      mapaDiv.appendChild(grid);
-      resultadoDiv.appendChild(mapaDiv);
-
-      const viloes = sortearViloes();
-      const viloesDiv = document.createElement('div');
-      viloesDiv.className = 'section';
-      viloesDiv.innerHTML = `<h2>🦹 Vilões</h2>`;
-      const container = document.createElement('div');
-      container.className = 'vilao-grid';
-      viloes.forEach(v => {
-        const div = document.createElement('div');
-        div.className = 'zenkai-item';
-        div.style.backgroundColor = '#333';
-        div.innerHTML = `${v.genero}<br>${v.cor}<br>📍${v.letra}${v.numero} ${v.direcao}`;
-        container.appendChild(div);
-      });
-      viloesDiv.appendChild(container);
-      resultadoDiv.appendChild(viloesDiv);
-
-      const zenkais = sortearZenkai(numJogadores);
-      const zenkaiDiv = document.createElement('div');
-      zenkaiDiv.className = 'section';
-      zenkaiDiv.innerHTML = `<h2>🐦‍🔥 Zenkais Iniciais</h2>`;
-      const zenkaiGrid = document.createElement('div');
-      zenkaiGrid.className = 'zenkai-grid';
-      zenkaiGrid.style.gridTemplateColumns = `repeat(${Math.min(numJogadores, 3)}, 1fr)`;
-      zenkais.forEach((z, i) => {
-        const item = document.createElement('div');
-        item.className = 'zenkai-item';
-        item.style.backgroundColor = habitatColors[z.habitat];
-        item.innerHTML = `P${i + 1}:<br>${z.emoji}<br>${z.nome}`;
-        zenkaiGrid.appendChild(item);
-      });
-      zenkaiDiv.appendChild(zenkaiGrid);
-      resultadoDiv.appendChild(zenkaiDiv);
-    }
-
-    function sortearObjetivos(n) {
-      const total = n === 1 ? 3 : n + 1;
-      let v = 1, a = 1, r = 1;
-      while (v + a + r < total) {
-        const s = Math.floor(Math.random() * 3);
-        if (s === 0) v++;
-        if (s === 1) a++;
-        if (s === 2) r++;
-      }
-      return { vermelho: v, azul: a, roxo: r };
-    }
-
-    function formatarObjetivos(obj) {
-      return `${obj.vermelho} 🔴, ${obj.azul} 🔵, ${obj.roxo} 🟣`;
-    }
-
-    function gerarMapa(modo) {
-      const letras = shuffle(['A', 'B', 'C', 'D']);
-      const cores = Math.random() < 0.5 ? ['Roxo', 'Laranja'] : ['Laranja', 'Roxo'];
-      const mapa = letras.map((letra, i) => {
-        const tipo = (modo === 'liga' && (i === 1 || i === 2)) ? '❄️' : '🐾';
-        return {
-          letra,
-          cor: cores[i % 2],
-          tipo,
-          numero: Math.floor(Math.random() * 8) + 1
+    <script>
+        const habitatColors = {
+            "Glacial": "#138888",
+            "Urbano": "#636363",
+            "Aquático": "#1709a6",
+            "Campina": "#0b7d13",
+            "Floresta": "#023f04",
+            "Montanha": "#af450c"
         };
-      });
-      return mapa;
-    }
 
-    function sortearViloes() {
-      const combinacoes = [
-        { homem: '🔵 Azul', mulher: '🟡 Amarelo' },
-        { homem: '🔴 Vermelho', mulher: '🟣 Roxo' },
-        { homem: '🟠 Laranja', mulher: '🟤 Marrom' },
-        { homem: '🟢 Oliva', mulher: '🟢 Verde' }
-      ];
-      const sorteadas = shuffle(combinacoes).slice(0, 2);
-      return sorteadas.map(par => {
-        const usarHomem = Math.random() < 0.5;
-        return {
-          genero: usarHomem ? '👨🏽 Homem' : '👩🏼 Mulher',
-          cor: usarHomem ? par.homem : par.mulher,
-          letra: ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)],
-          numero: Math.floor(Math.random() * 8) + 1,
-          direcao: direcoes[Math.floor(Math.random() * 4)]
-        };
-      });
-    }
+        function atualizarJogadores() {
+            const mode = document.getElementById("mode").value;
+            const playersSelect = document.getElementById("players");
+            playersSelect.innerHTML = "";
+            let options = [];
+            if (mode === "liga") {
+                options = [4, 8];
+            } else {
+                options = [1, 2, 3, 4, 5, 6];
+            }
+            options.forEach(n => {
+                const opt = document.createElement("option");
+                opt.value = n;
+                opt.textContent = n;
+                playersSelect.appendChild(opt);
+            });
+        }
 
-    function sortearZenkai(n) {
-      const todos = [];
-      for (const [habitat, criaturas] of Object.entries(habitats)) {
-        criaturas.forEach(c => todos.push({ nome: c, habitat, emoji: getEmojiHabitat(habitat) }));
-      }
-      return shuffle(todos).slice(0, n);
-    }
+        atualizarJogadores();
 
-    function getEmojiHabitat(h) {
-      return {
-        'Glacial': '❄️', 'Urbano': '🏢', 'Aquático': '🌊',
-        'Campina': '🌱', 'Floresta': '🌲', 'Montanha': '🏔️'
-      }[h] || '';
-    }
+        function shuffle(array) {
+            let a = array.slice();
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
 
-    function shuffle(array) {
-      const a = array.slice();
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
+        function gerarMapa(modo) {
+            const letrasSorteadas = shuffle(['A', 'B', 'C', 'D']);
+            const mapa = [];
 
-    atualizarInterface();
-  </script>
+            let cores;
+            if (modo === 'classico') {
+                const cor1 = Math.random() < 0.5 ? 'Roxo' : 'Laranja';
+                const cor2 = cor1 === 'Roxo' ? 'Laranja' : 'Roxo';
+                cores = [cor1, cor2, cor2, cor1];
+            } else {
+                const cor1 = Math.random() < 0.5 ? 'Roxo' : 'Laranja';
+                const cor2 = cor1 === 'Roxo' ? 'Laranja' : 'Roxo';
+                cores = [cor1, cor2, cor1, cor2];
+            }
+
+            for (let i = 0; i < 4; i++) {
+                mapa.push({ letra: letrasSorteadas[i], cor: cores[i] });
+            }
+
+            const cavernas = shuffle(['❄️🏔️', '❄️🌊']);
+            const safaris = shuffle(['🐾🌱', '🐾🌲']);
+
+            if (modo === 'liga') {
+                mapa[0].tipo = safaris[0];
+                mapa[1].tipo = cavernas[0];
+                mapa[2].tipo = cavernas[1];
+                mapa[3].tipo = safaris[1];
+            } else {
+                const cavernasPosicoes = Math.random() < 0.5 ? [0, 3] : [1, 2];
+                mapa[cavernasPosicoes[0]].tipo = cavernas[0];
+                mapa[cavernasPosicoes[1]].tipo = cavernas[1];
+                const restantes = [0, 1, 2, 3].filter(i => !cavernasPosicoes.includes(i));
+                mapa[restantes[0]].tipo = safaris[0];
+                mapa[restantes[1]].tipo = safaris[1];
+            }
+
+            mapa.forEach(m => {
+                m.numero = Math.floor(Math.random() * 2) + 1;
+            });
+
+            return mapa;
+        }
+
+        function gerarPartida() {
+            const modo = document.getElementById('mode').value;
+            const numJogadores = parseInt(document.getElementById('players').value);
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = '';
+
+            const mapa = gerarMapa(modo);
+            const mapaDiv = document.createElement('div');
+            mapaDiv.className = 'section';
+            mapaDiv.innerHTML = `<h2>🗺️ Mapa</h2>`;
+
+            const grid = document.createElement('div');
+            grid.className = 'grid';
+            if (modo === 'liga') grid.classList.add('liga');
+
+            mapa.forEach(cel => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.style.backgroundColor = cel.cor === 'Roxo' ? '#b166fd' : '#f68d2e';
+                cell.innerHTML = `<strong>${cel.letra}</strong><br><span class="emoji">${cel.tipo} ${cel.numero}</span>`;
+                grid.appendChild(cell);
+            });
+
+            mapaDiv.appendChild(grid);
+            resultadoDiv.appendChild(mapaDiv);
+
+            const viloesDiv = document.createElement('div');
+            viloesDiv.className = 'section';
+            viloesDiv.innerHTML = `<h2>🦹 Vilões</h2>`;
+            const vilaoGrid = document.createElement('div');
+            vilaoGrid.className = 'vilao-grid';
+            const combinacoes = [
+                { homem: '🔵 Azul', mulher: '🟡 Amarelo' },
+                { homem: '🔴 Vermelho', mulher: '🟣 Roxo' },
+                { homem: '🟠 Laranja', mulher: '🟤 Marrom' },
+                { homem: '🟢 Oliva', mulher: '🟢 Verde' }
+            ];
+            const sorteadas = shuffle(combinacoes).slice(0, 2);
+            const direcoes = ['⬆️ Norte', '⬅️ Oeste', '⬇️ Sul', '➡️ Leste'];
+            const viloes = sorteadas.map(par => {
+                const usarHomem = Math.random() < 0.5;
+                const genero = usarHomem ? '👨🏽 Vilão' : '👩🏼 Vilã';
+                const cor = usarHomem ? par.homem : par.mulher;
+                const letra = ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)];
+                const numero = Math.floor(Math.random() * 8) + 1;
+                const direcao = direcoes[Math.floor(Math.random() * 4)];
+                return { genero, cor, letra, numero, direcao };
+            });
+            viloes.forEach(v => {
+                const div = document.createElement('div');
+                div.className = 'zenkai-item';
+                div.style.backgroundColor = '#333';
+                div.innerHTML = `${v.genero}<br>${v.cor}<br>📍${v.letra}${v.numero}  ${v.direcao}`;
+                vilaoGrid.appendChild(div);
+            });
+            viloesDiv.appendChild(vilaoGrid);
+            resultadoDiv.appendChild(viloesDiv);
+
+            const habitats = {
+                "Glacial": ["Kimeow", "Digarp", "Haati"],
+                "Urbano": ["Lunna", "Pitixa", "Marleon"],
+                "Aquático": ["Luppy", "Allipop", "Flashin", "Zigafe"],
+                "Campina": ["Pankidy", "Mohra", "Ironpup", "Pigroot", "Burrny"],
+                "Floresta": ["Oikid", "Piri-piri", "Gamboop", "Guatatá", "Oranboo", "Plumixie"],
+                "Montanha": ["Coldeep", "Roclimb", "Rokkar", "Rabblaze", "Fluffy"]
+            };
+            const todos = [];
+            for (const [habitat, criaturas] of Object.entries(habitats)) {
+                criaturas.forEach(c => {
+                    const emoji = getEmojiHabitat(habitat);
+                    todos.push({ nome: c, habitat, emoji });
+                });
+            }
+            const zenkais = shuffle(todos).slice(0, numJogadores);
+            const zenkaiDiv = document.createElement('div');
+            zenkaiDiv.className = 'section';
+            zenkaiDiv.innerHTML = `<h2>🐦‍🔥 Zenkais Iniciais</h2>`;
+            const zenkaiGrid = document.createElement('div');
+            zenkaiGrid.className = 'zenkai-grid';
+            if (numJogadores === 1) zenkaiGrid.style.gridTemplateColumns = '1fr';
+            else if (numJogadores === 3) zenkaiGrid.style.gridTemplateColumns = '1fr 1fr 1fr';
+            else zenkaiGrid.style.gridTemplateColumns = '1fr 1fr';
+            zenkais.forEach((z, i) => {
+                const item = document.createElement('div');
+                item.className = 'zenkai-item';
+                item.style.backgroundColor = habitatColors[z.habitat];
+                item.innerHTML = `P${i + 1}:<br><span class="emoji">${z.emoji}</span><br>${z.nome}`
+                zenkaiGrid.appendChild(item);
+            });
+            zenkaiDiv.appendChild(zenkaiGrid);
+            resultadoDiv.appendChild(zenkaiDiv);
+        }
+
+        function getEmojiHabitat(h) {
+            if (h === 'Glacial') return '❄️';
+            if (h === 'Urbano') return '🏢';
+            if (h === 'Aquático') return '🌊';
+            if (h === 'Campina') return '🌱';
+            if (h === 'Floresta') return '🌲';
+            if (h === 'Montanha') return '🏔️';
+            return '';
+        }
+    </script>
 </body>
 </html>
