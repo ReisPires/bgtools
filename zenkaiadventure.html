@@ -197,6 +197,14 @@
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '';
 
+            if (modo === 'classico') {
+                const objetivos = sortearObjetivos(numJogadores);
+                const objetivosDiv = document.createElement('div');
+                objetivosDiv.className = 'section';
+                objetivosDiv.innerHTML = `<h2>🎯 Objetivos</h2><p>${formatarObjetivos(objetivos)}</p>`;
+                resultadoDiv.appendChild(objetivosDiv);
+            }
+
             const mapa = gerarMapa(modo);
             const mapaDiv = document.createElement('div');
             mapaDiv.className = 'section';
@@ -230,11 +238,12 @@
             ];
             const sorteadas = shuffle(combinacoes).slice(0, 2);
             const direcoes = ['⬆️ Norte', '⬅️ Oeste', '⬇️ Sul', '➡️ Leste'];
-            const viloes = sorteadas.map(par => {
+            const letrasDisponiveis = shuffle(['A', 'B', 'C', 'D']);
+            const viloes = sorteadas.map((par, idx) => {
                 const usarHomem = Math.random() < 0.5;
                 const genero = usarHomem ? '👨🏽 Vilão' : '👩🏼 Vilã';
                 const cor = usarHomem ? par.homem : par.mulher;
-                const letra = ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)];
+                const letra = letrasDisponiveis[idx]; // garante letras diferentes
                 const numero = Math.floor(Math.random() * 8) + 1;
                 const direcao = direcoes[Math.floor(Math.random() * 4)];
                 return { genero, cor, letra, numero, direcao };
@@ -293,6 +302,23 @@
             if (h === 'Montanha') return '🏔️';
             return '';
         }
+
+        function sortearObjetivos(numJogadores) {
+            const total = numJogadores === 1 ? 3 : numJogadores + 1;
+            let vermelho = 1, azul = 1, roxo = 1;
+            while (vermelho + azul + roxo < total) {
+                const sorteio = Math.floor(Math.random() * 3);
+                if (sorteio === 0) vermelho++;
+                if (sorteio === 1) azul++;
+                if (sorteio === 2) roxo++;
+            }
+            return { vermelho, azul, roxo };
+        }
+
+        function formatarObjetivos(obj) {
+            return `${obj.vermelho} 🔴, ${obj.azul} 🔵, ${obj.roxo} 🟣`;
+        }
+
     </script>
 </body>
 </html>
