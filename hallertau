@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hallertau</title>
+  <style>
+    body {
+      background-color: #002e46;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+      color: #3e3e3e;
+    }
+    h1 {
+      color: #cfd080;
+    }
+    button {
+      background-color: #cfd080;
+      color: #000b2b;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #fdfac4;
+    }
+    .deck-display {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+    .deck {
+      background-color: #fdfac4;
+      border: 2px solid #6fb2dd;
+      border-radius: 12px;
+      padding: 20px;
+      width: 150px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .emoji {
+      font-size: 40px;
+    }
+    .label {
+      font-weight: bold;
+      margin-top: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🍺 Hallertau 🍺</h1>
+  <button onclick="sortearBaralhos()"><strong>Sortear baralhos!</strong></button>
+
+  <div class="deck-display" id="resultado">
+    <!-- resultado será inserido aqui -->
+  </div>
+
+  <script>
+    const baralhosPortao = [
+      { numero: 1, emoji: '🐑' },
+      { numero: 2, emoji: '🌳' },
+      { numero: 3, emoji: '🏠' },
+      { numero: 4, emoji: '🛖' }
+    ];
+
+    const baralhosAgricultura = [
+      { numero: 1, emoji: '🌾' },
+      { numero: 2, emoji: '🌻' },
+      { numero: 3, emoji: '🍇' },
+      { numero: 4, emoji: '🥔' }
+    ];
+
+    function sortearBaralhos() {
+      const portao = baralhosPortao[Math.floor(Math.random() * baralhosPortao.length)];
+      const agricultura = baralhosAgricultura[Math.floor(Math.random() * baralhosAgricultura.length)];
+
+      const resultadoDiv = document.getElementById('resultado');
+      resultadoDiv.innerHTML = `
+        <div class="deck">
+          <div class="emoji">${portao.emoji}</div>
+          <div class="label">Portão ${portao.numero}</div>
+        </div>
+        <div class="deck">
+          <div class="emoji">${agricultura.emoji}</div>
+          <div class="label">Agricultura ${agricultura.numero}</div>
+        </div>
+      `;
+    }
+  </script>
+
+</body>
+</html>
