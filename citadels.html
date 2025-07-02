@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Citadels</title>
+  <style>
+    body {
+      background-color: #7cc4dd;
+      font-family: 'Segoe UI', sans-serif;
+      color: #3f4049;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #3f4049;
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #e7e8e3;
+      color: #2c3e50;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #c5c5c5;
+    }
+
+    .results {
+      margin-top: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card {
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      text-align: left;
+      color: white;
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .card p {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .emoji {
+      text-shadow: 0 0 3px black;
+      font-size: 22px;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏰 Citadels 🏰</h1>
+  <button onclick="gerarPersonagens()">Monte uma partida!</button>
+
+  <div class="results" id="resultado"></div>
+
+  <script>
+    const personagensPorNumero = {
+      1: ["Assassina", "Bruxa", "Magistrado"],
+      2: ["Ladrão", "Espião", "Chantagista"],
+      3: ["Mago", "Ilusionista", "Vidente"],
+      4: ["Rei", "Imperador", "Patrício"],
+      5: ["Bispo", "Abade", "Cardeal"],
+      6: ["Mercador", "Comerciante", "Alquimista"],
+      7: ["Arquiteta", "Navegadora", "Estudiosa"],
+      8: ["Senhor da Guerra", "Diplomata", "Marechal"],
+      9: ["Rainha", "Artista", "Coletor de Impostos"]
+    };
+
+    const coresPorNumero = {
+      1: "#2c2c2c",      // Black
+      2: "#777777",      // Gray
+      3: "#8B5A2B",      // Brown
+      4: "#b8a02c",      // Yellow
+      5: "#4285f4",      // Blue
+      6: "#2e7d32",      // Green
+      7: "#6a5a89",      // Gray-ish Purple
+      8: "#d32f2f",      // Red
+      9: "#d06b03"       // Orange
+    };
+
+    const emojiPorPersonagem = {
+      "Assassina": "🗡️",
+      "Bruxa": "🧹",
+      "Magistrado": "⚖️",
+      "Ladrão": "🥷🏼",
+      "Espião": "🕵🏽",
+      "Chantagista": "🌹",
+      "Mago": "🧙🏻‍♂️",
+      "Ilusionista": "🔮",
+      "Vidente": "🃏",
+      "Rei": "👑",
+      "Imperador": "🤴🏿",
+      "Patrício": "🏛️",
+      "Bispo": "⛪",
+      "Abade": "📖",
+      "Cardeal": "🕯️",
+      "Mercador": "🪙",
+      "Comerciante": "💰",
+      "Alquimista": "⚗️",
+      "Arquiteta": "📐",
+      "Navegadora": "🧭",
+      "Estudiosa": "📚",
+      "Senhor da Guerra": "⚔️",
+      "Diplomata": "🫱🏻‍🫲🏼",
+      "Marechal": "💀",
+      "Rainha": "👸🏻",
+      "Artista": "🎨",
+      "Coletor de Impostos": "💸"
+    };
+
+    function gerarPersonagens() {
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = "";
+
+      for (let numero = 1; numero <= 9; numero++) {
+        const lista = personagensPorNumero[numero];
+        const sorteado = lista[Math.floor(Math.random() * lista.length)];
+        const cor = coresPorNumero[numero];
+        const emoji = emojiPorPersonagem[sorteado] || "";
+
+        const div = document.createElement("div");
+        div.className = "card";
+        div.style.backgroundColor = cor;
+
+        div.innerHTML = `
+          <p>Personagem ${numero}</p>
+          <h2><span class="emoji">${emoji}</span>${sorteado}</h2>
+        `;
+        resultadoDiv.appendChild(div);
+      }
+    }
+  </script>
+</body>
+</html>

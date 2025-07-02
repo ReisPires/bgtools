@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Long Shot</title>
+  <style>
+    body {
+      background-color: #004f2c;
+      font-family: 'Segoe UI', sans-serif;
+      color: #ffffff;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #c67e2e;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #c6b089;
+    }
+
+    .results {
+      margin-top: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card {
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .card p {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .emoji {
+      font-size: 22px;
+      text-shadow: 0 0 2px black;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏇 Long Shot 🏇</h1>
+  <button onclick="gerarCavalos()">Monte uma corrida!</button>
+  <div class="results" id="resultado"></div>
+
+  <script>
+    const cavalosPorNumero = {
+      1: ["Rayo", "Fumaça", "Trovão"],
+      2: ["Vento", "Relâmpago", "Marfim"],
+      3: ["Aço", "Espeto", "Fantasma"],
+      4: ["Coral", "Sereia", "Bailarina"],
+      5: ["Floresta", "Trevo", "Verdejante"],
+      6: ["Onda", "Gelado", "Estrela-do-mar"],
+      7: ["Fogo", "Sol", "Dourado"],
+      8: ["Crepúsculo", "Violeta", "Névoa"]
+    };
+
+    const coresPorNumero = {
+      1: "#da2a34",  // Red
+      2: "#eadd51",  // Yellow
+      3: "#085f9b",  // Dark Blue
+      4: "#de5f8f",  // Pink
+      5: "#12814c",  // Green
+      6: "#0cb1e3",  // Light Blue
+      7: "#e49028",  // Orange
+      8: "#5b3f79"   // Purple
+    };
+
+    const emojiPorIndice = ["🍎", "🚪", "💵"];
+
+    function gerarCavalos() {
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = "";
+
+      for (let numero = 1; numero <= 8; numero++) {
+        const lista = cavalosPorNumero[numero];
+        const indiceSorteado = Math.floor(Math.random() * lista.length);
+        const cavalo = lista[indiceSorteado];
+        const emoji = emojiPorIndice[indiceSorteado];
+        const cor = coresPorNumero[numero];
+
+        const div = document.createElement("div");
+        div.className = "card";
+        div.style.backgroundColor = cor;
+
+        // Set font color to black for horses 2, 4, 6, 7
+        if ([2, 4, 6, 7].includes(numero)) {
+          div.style.color = "black";
+        } else {
+          div.style.color = "white";
+        }
+
+        div.innerHTML = `
+          <p>Cavalo ${numero}</p>
+          <h2><span class="emoji">${emoji}</span>${cavalo}</h2>
+        `;
+
+        resultadoDiv.appendChild(div);
+      }
+    }
+  </script>
+</body>
+</html>

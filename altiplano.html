@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Altiplano</title>
+  <style>
+    body {
+      background-color: #1b4f2b;
+      color: #b8a445; 
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    label, select {
+      font-size: 18px;
+      margin: 10px;
+    }
+
+    select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background-color: #33691e;
+      color: #d3bc50;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #d3bc50;
+      color: #1b5e20;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #fbe061;
+    }
+
+    .section-title {
+      margin-top: 30px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #fffde7;
+    }
+
+    .tiles, .players {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .tile {
+      background-color: #e0e0e0;
+      color: #225431;
+      border-radius: 10px;
+      padding: 10px 18px;
+      width: 280px;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .player {
+      border-radius: 10px;
+      padding: 10px 18px;
+      width: 280px;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+      color: white;
+    }
+
+    .emoji {
+        text-shadow: 0 0 3px black;
+        font-size: 22px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🦙 Altiplano 🦙</h1>
+
+  <label for="players">Número de jogadores:</label>
+  <select id="players">
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+  <br />
+  <button onclick="gerarPartida()">Monte uma partida!</button>
+
+  <div class="results" id="resultado"></div>
+
+  <script>
+    const locais = [
+      { nome: "Vila", emoji: "🏠" },
+      { nome: "Mercado", emoji: "💰" },
+      { nome: "Estrada", emoji: "🚧" },
+      { nome: "Porto", emoji: "⚓" },
+      { nome: "Fazenda", emoji: "🦙" },
+      { nome: "Mina", emoji: "⛰️" },
+      { nome: "Floresta", emoji: "🌳" }
+    ];
+
+    const profissoes = [
+      { nome: "Lenhador", emoji: "🪵", cor: "#8B4513" },
+      { nome: "Pescador", emoji: "🐟", cor: "#1E88E5" },
+      { nome: "Pastor", emoji: "🧣", cor: "#D2691E" },
+      { nome: "Minerador", emoji: "⛏️", cor: "#757575" },
+      { nome: "Fazendeiro", emoji: "🦙", cor: "#FFB74D" },
+      { nome: "Negociante", emoji: "🪙", cor: "#FDD835" },
+      { nome: "Pedreiro", emoji: "🪨", cor: "#212121" },
+      { nome: "Alpaca Rider", emoji: "🚶🏻", cor: "#ffffff" }
+    ];
+
+    function shuffle(array) {
+      return array.slice().sort(() => Math.random() - 0.5);
+    }
+
+    function gerarPartida() {
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = "";
+
+      const locaisShuffled = shuffle(locais);
+      const locaisDiv = document.createElement("div");
+      locaisDiv.className = "tiles";
+
+      const locaisTitle = document.createElement("div");
+      locaisTitle.className = "section-title";
+      locaisTitle.textContent = "Locais:";
+      resultado.appendChild(locaisTitle);
+
+      locaisShuffled.forEach((lugar, i) => {
+        const el = document.createElement("div");
+        el.className = "tile";
+        el.innerHTML = `${i + 1}. <span class="emoji">${lugar.emoji}</span> ${lugar.nome}`;
+        locaisDiv.appendChild(el);
+      });
+
+      resultado.appendChild(locaisDiv);
+
+      const numJogadores = parseInt(document.getElementById("players").value);
+      const profissoesShuffled = shuffle(profissoes).slice(0, numJogadores);
+      const playersDiv = document.createElement("div");
+      playersDiv.className = "players";
+
+      const profissoesTitle = document.createElement("div");
+      profissoesTitle.className = "section-title";
+      profissoesTitle.textContent = "Profissões:";
+      resultado.appendChild(profissoesTitle);
+
+      profissoesShuffled.forEach((prof, i) => {
+        const el = document.createElement("div");
+        el.className = "player";
+        el.style.backgroundColor = prof.cor;
+        el.style.color = (prof.cor === '#ffffff' || prof.cor === '#FFB74D' || prof.cor === '#FDD835') ? '#000' : '#fff';
+        el.innerHTML = `Jogador ${i + 1}: <span class="emoji">${prof.emoji}</span> ${prof.nome}`;
+        playersDiv.appendChild(el);
+      });
+
+      resultado.appendChild(playersDiv);
+    }
+  </script>
+</body>
+</html>

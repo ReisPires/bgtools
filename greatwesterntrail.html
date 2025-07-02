@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Great Western Trail</title>
+  <style>
+    body {
+      background-color: #0f2b40; /* fundo escuro da capa */
+      color: #fbeec1; /* texto claro/bege */
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #fbeec1;
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      background-color: #c1440e;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #a3330c;
+    }
+
+    .results {
+      margin-top: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tiles, .gray-tiles {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .tile {
+      border-radius: 8px;
+      width: 60px;
+      height: 60px;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .tile-A {
+      background-color: #fbeec1;
+      color: #4b3621;
+      border: 2px solid #c1440e;
+    }
+
+    .tile-B {
+      background-color: #5d6d7e;
+      color: #ffffff;
+      border: 2px solid #c1440e;
+    }
+
+    .tile-gray {
+      background-color: #6d6d6d;
+      color: white;
+      border: 2px solid #888;
+    }
+
+    .emoji {
+        text-shadow: 0 0 3px black;
+        font-size: 22px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      margin-top: 20px;
+      color: #fbeec1;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐂 Great Western Trail 🐂</h1>
+  <button onclick="gerarPartida()">Monte uma partida!</button>
+
+  <div class="results" id="resultado">
+    <!-- Os resultados aparecerão aqui -->
+  </div>
+
+  <script>
+    const emojiCinzas = {
+      A: "👷🏻‍♀️", B: "🛠️", C: "🚂", D: "🤠", E: "🐄", F: "🏜️", G: "⚙️"
+    };
+
+    function gerarPartida() {
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = "";
+
+      // Peças numeradas de 1 a 13 com lado A ou B
+      const tilesDiv = document.createElement("div");
+      tilesDiv.className = "tiles";
+
+      const tileTitle = document.createElement("div");
+      tileTitle.className = "section-title";
+      tileTitle.textContent = "Construções Particulares:";
+      resultado.appendChild(tileTitle);
+
+      for (let i = 1; i <= 13; i++) {
+        const lado = Math.random() < 0.5 ? 'A' : 'B';
+        const box = document.createElement("div");
+        box.className = `tile tile-${lado}`;
+        box.textContent = `${i} ${lado}`;
+        tilesDiv.appendChild(box);
+      }
+
+      resultado.appendChild(tilesDiv);
+
+      // Embaralhar letras de A a G para as peças cinzas
+      const letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+      const embaralhadas = letras.sort(() => 0.5 - Math.random());
+
+      const grayDiv = document.createElement("div");
+      grayDiv.className = "gray-tiles";
+
+      const grayTitle = document.createElement("div");
+      grayTitle.className = "section-title";
+      grayTitle.textContent = "Ordem das Construções Neutras:";
+      resultado.appendChild(grayTitle);
+
+      embaralhadas.forEach(letra => {
+        const tile = document.createElement("div");
+        tile.className = "tile tile-gray";
+        tile.innerHTML = `<span class="emoji">${emojiCinzas[letra] || "⬜"}</span> ${letra}`;
+        grayDiv.appendChild(tile);
+      });
+
+      resultado.appendChild(grayDiv);
+    }
+  </script>
+</body>
+</html>

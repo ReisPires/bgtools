@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Brazil: Imperial</title>
+  <style>
+    body {
+      background-color: #fff8dc;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+      color: #333;
+    }
+
+    h1 {
+      color: #2e7d32;
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    label, select {
+      font-size: 18px;
+    }
+
+    select {
+      padding: 8px 14px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 2px solid #fdd835;
+      background-color: #fff59d;
+      color: #333;
+    }
+
+    button {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 18px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #fdd835;
+      color: #2e7d32;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ffee58;
+    }
+
+    .result {
+      margin-top: 30px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card {
+      background-color: #fffde7;
+      border: 2px solid #fbc02d;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      margin: 0 0 10px 0;
+      font-size: 20px;
+      color: #5f5f5f;
+    }
+
+    .map-name {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #2e7d32;
+    }
+
+    .empire-name {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .empire-card {
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 22px;
+    }
+
+    .empire-card h2 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      color: white;
+    }
+
+    .empire-card.light-text {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>👑 Brazil: Imperial 👑</h1>
+
+  <label for="players">Número de jogadores:</label><br>
+  <select id="players">
+    <option value="1">1 jogador</option>
+    <option value="2">2 jogadores</option>
+    <option value="3">3 jogadores</option>
+    <option value="4">4 jogadores</option>
+  </select>
+
+  <button onclick="gerarPartida()">Monte uma partida!</button>
+
+  <div class="result" id="resultado"></div>
+
+  <script>
+    const mapas = {
+      1: [
+        { nome: "1.1 Batalha dos Guararapes", espadas: 3 },
+        { nome: "1.2 França Antártica", espadas: 3 }
+      ],
+      2: [
+        { nome: "2.1 Rio 1567", espadas: 3 }, 
+        { nome: "2.2 Cisplatina", espadas: 3 },
+        { nome: "2.3 Tratado de Utrecht", espadas: 3 }, 
+        { nome: "2.4 Paranapuã", espadas: 1 },
+        { nome: "2.5 Baía de Ilha Grande", espadas: 1 }, 
+        { nome: "2.6 Rio Madeira", espadas: 1 },
+        { nome: "2.7 Brazil", espadas: 3 }, 
+        { nome: "2.8 Conflito na Divisa", espadas: 3 },
+        { nome: "2.9 Ilha Upaon-Açu", espadas: 2 }, 
+        { nome: "2.10 Ilha do Marajó", espadas: 2 },
+        { nome: "2.11 Natal", espadas: 3 }, 
+        { nome: "2.12 Sedição de 1830", espadas: 3 }
+      ],
+      3: [
+        { nome: "3.1 Amazônia", espadas: 1 }, 
+        { nome: "3.2 Tordesilhas", espadas: 2 },
+        { nome: "3.3 Guerra do Prata", espadas: 2 }, 
+        { nome: "3.4 Guerra dos Emboabas", espadas: 1 }
+      ],
+      4: [
+        { nome: "4.1 Rio São Francisco", espadas: 1 }, 
+        { nome: "4.2 Império do Brazil", espadas: 2 },
+        { nome: "4.3 Atlântico", espadas: 1 }, 
+        { nome: "4.4 Potências Europeias", espadas: 2 }
+      ]
+    };
+
+    const cores = ["Verde", "Azul Claro", "Roxo", "Laranja"];
+    const nomesImpério = {
+      "Verde": ["Tibiriçá <br> Dom Pedro I", "Dom Pedro II <br> Dom Obá II"],
+      "Azul Claro": ["Dom Afonso Henriques <br> Dona Isabel I de Castela"],
+      "Roxo": ["Napoleão <br> Rainha Victória"],
+      "Laranja": ["Dom Manuel I <br> Maurício de Nassau"]
+    };
+
+    const coresCSS = {
+      "Verde": "#4eb952",
+      "Azul Claro": "#25c2f2",
+      "Roxo": "#7d73b5",
+      "Laranja": "#f47621"
+    };
+
+    const textoClaro = ["Verde", "Roxo", "Azul Claro", "Laranja"];
+
+    function gerarPartida() {
+      const num = parseInt(document.getElementById("players").value);
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = "";
+
+      // Mapa
+      const mapaEscolhido = mapas[num][Math.floor(Math.random() * mapas[num].length)];
+      const emojiEspadas = "⚔️".repeat(mapaEscolhido.espadas);
+      const mapaCard = document.createElement("div");
+      mapaCard.className = "card";
+      mapaCard.innerHTML = `
+        <h2>🗺️ Mapa</h2>
+        <div class="map-name">${mapaEscolhido.nome} ${emojiEspadas}</div>
+      `;
+      resultadoDiv.appendChild(mapaCard);
+
+      // Impérios
+      const coresUsadas = shuffleArray(cores).slice(0, num);
+      coresUsadas.forEach((cor, i) => {
+        let nome;
+        if (cor === "Verde") {
+          nome = shuffleArray(nomesImpério["Verde"])[0];
+        } else {
+          nome = nomesImpério[cor][0];
+        }
+
+        const card = document.createElement("div");
+        card.className = "empire-card";
+        card.style.backgroundColor = coresCSS[cor];
+
+        if (textoClaro.includes(cor)) {
+          card.classList.add("light-text");
+        }
+
+        card.innerHTML = `
+          <h2>Jogador ${i + 1}:</h2> <div class="empire-name">${nome}</div>
+        `;
+        resultadoDiv.appendChild(card);
+      });
+    }
+
+    function shuffleArray(arr) {
+      return arr.slice().sort(() => 0.5 - Math.random());
+    }
+  </script>
+</body>
+</html>
