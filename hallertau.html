@@ -63,22 +63,23 @@
 
   <script>
     const baralhosPortao = [
-      { numero: 1, emoji: '🐑' },
-      { numero: 2, emoji: '🌳' },
-      { numero: 3, emoji: '🏠' },
-      { numero: 4, emoji: '🛖' }
+      { numero: "0", emoji: '👶🏻' },
+      { numero: "1", emoji: '👦🏻' },
+      { numero: "2", emoji: '👨🏻' },
+      { numero: "3", emoji: '👴🏻' },
+      { numero: "P", emoji: '⭐' }
     ];
 
-    const baralhosAgricultura = [
-      { numero: 1, emoji: '🌾' },
-      { numero: 2, emoji: '🌻' },
-      { numero: 3, emoji: '🍇' },
-      { numero: 4, emoji: '🥔' }
+    const baralhosPasto = [
+      { numero: "4", emoji: '🍺' },
+      { numero: "5", emoji: '🐑' },
+      { numero: "6", emoji: '🌱' },
+      { numero: "7", emoji: '💎' }
     ];
 
     function sortearBaralhos() {
       const portao = baralhosPortao[Math.floor(Math.random() * baralhosPortao.length)];
-      const agricultura = baralhosAgricultura[Math.floor(Math.random() * baralhosAgricultura.length)];
+      const pasto = baralhosPasto[Math.floor(Math.random() * baralhosPasto.length)];
 
       const resultadoDiv = document.getElementById('resultado');
       resultadoDiv.innerHTML = `
@@ -87,8 +88,8 @@
           <div class="label">Portão ${portao.numero}</div>
         </div>
         <div class="deck">
-          <div class="emoji">${agricultura.emoji}</div>
-          <div class="label">Agricultura ${agricultura.numero}</div>
+          <div class="emoji">${pasto.emoji}</div>
+          <div class="label">Pasto ${pasto.numero}</div>
         </div>
       `;
     }

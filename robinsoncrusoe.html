@@ -18,6 +18,10 @@
       color: #e0c067;
     }
 
+    h2 {
+      font-size: 16px;
+    }
+
     select, button {
       padding: 10px;
       margin: 10px;
@@ -50,8 +54,13 @@
     }
 
     .item {
-      font-size: 18px;
+      font-size: 20px;
       margin: 6px 0;
+    }
+
+    .emoji {
+      text-shadow: 0 0 3px black;
+      font-size: 22px;
     }
   </style>
 </head>
@@ -66,21 +75,62 @@
     <option value="4">4</option>
   </select>
   <br>
-  <button onclick="gerarSetup()">Monte uma partida!</button>
+  <button onclick="gerarSetup()"><strong>Monte uma partida!</strong></button>
 
   <div id="resultado"></div>
 
   <script>
-    const personagens = ["Personagem A", "Personagem B", "Personagem C", "Personagem D"];
-    const cenarios = [
-      { nome: "Cenário 1", nivel: "Fácil", duracao: "8 Rodadas", tema: "Naufrágio" },
-      { nome: "Cenário 2", nivel: "Médio", duracao: "10 Rodadas", tema: "Ilha Vulcânica" },
-      { nome: "Cenário 3", nivel: "Difícil", duracao: "12 Rodadas", tema: "Ameaça Canibal" }
+    const personagens = [
+      {emoji: "🛠️", nome: "Carpinteiro"},
+      {emoji: "🗺️", nome: "Explorador"},
+      {emoji: "🍳", nome: "Cozinheiro"},
+      {emoji: "🪖", nome: "Soldado"},
+      {emoji: "⚓", nome: "Marujo"},
+      {emoji: "🎲", nome: "Jogador"},
+      {emoji: "✝️", nome: "Missionário"},
     ];
-    const itens = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
-    const cartasAventura = ["Carta de Aventura 1", "Carta de Aventura 2", "Carta de Aventura 3"];
-    const tripulantes = ["Tripulante A", "Tripulante B", "Tripulante C"];
-    const tetosAvancados = ["Tipo de Teto A", "Tipo de Teto B", "Tipo de Teto C", "Tipo de Teto D"];
+
+    const cenarios = [
+      { emoji: "⚓", nome: "Cenário 1", nivel: "Fácil", duracao: "8 Rodadas", tema: "Naufrágio" },
+      { emoji: "⚓", nome: "Cenário 2", nivel: "Médio", duracao: "10 Rodadas", tema: "Ilha Vulcânica" },
+      { emoji: "⚓", nome: "Cenário 3", nivel: "Difícil", duracao: "12 Rodadas", tema: "Ameaça Canibal" }
+    ];
+
+    const itens = [
+      {emoji: "📕", nome: "Bíblia"},
+      {emoji: "🍪", nome: "Biscoitos"},
+      {emoji: "🚬", nome: "Cachimbo e Tabaco"},
+      {emoji: "🔫", nome: "Pistola"},
+      {emoji: "🔨", nome: "Martelo e Pregos"},
+    ];
+
+    const destrocos = [
+      {emoji: "🥫", nome: "Engradados de Comida"},
+      {emoji: "🛟", nome: "Bote Salva-Vidas Destruído"},
+      {emoji: "🗝️", nome: "Baú do Capitão"},
+    ];
+
+    const tripulantes = [
+      {emoji: "🛞", nome: "Contramestre"},
+      {emoji: "🍲", nome: "Velho Cozinheiro"},
+      {emoji: "🪚", nome: "Operador"},
+      {emoji: "🎨", nome: "Artista"},
+      {emoji: "🛖", nome: "Membro da Tribo"},
+      {emoji: "🥾", nome: "Peregrino"},
+      {emoji: "👦🏻", nome: "Garoto"},
+      {emoji: "🦜", nome: "Papagaio"},
+      {emoji: "🔭", nome: "Vigia"},
+      {emoji: "🐎", nome: "Cavalo"},
+      {emoji: "💉", nome: "Cirurgião"},
+    ];
+
+    const tetosAvancados = [
+      {emoji: "🟥", nome: "Telha"},
+      {emoji: "⬛", nome: "Cipó"},
+      {emoji: "🟩", nome: "Palha"},
+      {emoji: "🟫", nome: "Folhagem"},
+    ];
+
 
     function embaralhar(array) {
       return array.sort(() => 0.5 - Math.random());
@@ -94,10 +144,10 @@
       // Personagens
       const personagemDiv = document.createElement('div');
       personagemDiv.className = 'section';
-      personagemDiv.innerHTML = `<h2>🧭 Personagens</h2>`;
+      personagemDiv.innerHTML = `<h2>Personagens</h2>`;
       const selecionados = embaralhar([...personagens]).slice(0, numJogadores);
       selecionados.forEach((c, i) => {
-        personagemDiv.innerHTML += `<div class="item">Jogador ${i + 1}: ${c}</div>`;
+        personagemDiv.innerHTML += `<div class="item"><span class="emoji">${c.emoji}</span> ${c.nome}</div>`;
       });
       resultadoDiv.appendChild(personagemDiv);
 
@@ -106,8 +156,8 @@
       cenarioDiv.className = 'section';
       const cenario = cenarios[Math.floor(Math.random() * cenarios.length)];
       cenarioDiv.innerHTML = `
-        <h2>📜 Cenário</h2>
-        <div class="item"><strong>${cenario.nome}</strong></div>
+        <h2>Cenário</h2>
+        <div class="item"><span class="emoji">${cenario.emoji}</span> <strong>${cenario.nome}</strong></div>
         <div class="item">Nível: ${cenario.nivel}</div>
         <div class="item">Duração: ${cenario.duracao}</div>
         <div class="item">Tema: ${cenario.tema}</div>
@@ -118,29 +168,38 @@
       const itemDiv = document.createElement('div');
       itemDiv.className = 'section';
       const iniciais = embaralhar([...itens]).slice(0, 2);
-      itemDiv.innerHTML = `<h2>🧰 Itens Iniciais</h2>` +
-        iniciais.map(item => `<div class="item">${item}</div>`).join('');
+      itemDiv.innerHTML = `<h2>Itens Iniciais</h2>` +
+        iniciais.map(item => `<div class="item"><span class="emoji">${item.emoji}</span> ${item.nome}</div>`).join('');
       resultadoDiv.appendChild(itemDiv);
 
-      // Carta de Aventura
-      const aventuraDiv = document.createElement('div');
-      aventuraDiv.className = 'section';
-      const aventura = cartasAventura[Math.floor(Math.random() * cartasAventura.length)];
-      aventuraDiv.innerHTML = `<h2>🃏 Carta de Aventura Inicial</h2><div class="item">${aventura}</div>`;
-      resultadoDiv.appendChild(aventuraDiv);
+      // Destroços
+      const destrocoDiv = document.createElement('div');
+      destrocoDiv.className = 'section';
+      const destroco = destrocos[Math.floor(Math.random() * destrocos.length)];
+      destrocoDiv.innerHTML = `<h2>Destroços</h2><div class="item"><span class="emoji">${destroco.emoji}</span> ${destroco.nome}</div>`;
+      resultadoDiv.appendChild(destrocoDiv);
 
       // Tripulante
       const tripDiv = document.createElement('div');
       tripDiv.className = 'section';
       const trip = tripulantes[Math.floor(Math.random() * tripulantes.length)];
-      tripDiv.innerHTML = `<h2>🧑‍🚒 Tripulante</h2><div class="item">${trip}</div>`;
+      if (numJogadores == 1) {
+        const dog = 0.5<Math.random() ? `<span class="emoji">🐶</span> Cão` : `<span class="emoji">🐕</span> Cão de Caça`;
+        tripDiv.innerHTML = `<h2>Tripulação</h2><div class="item">${dog}</div><div class="item"><span class="emoji">🪶</span> Sexta-Feira</div><div class="item"><span class="emoji">${trip.emoji}</span> ${trip.nome}</div>`;
+        
+      } else if (numJogadores == 2) {
+        tripDiv.innerHTML = `<h2>Tripulação</h2><div class="item"><span class="emoji">🪶</span> Sexta-Feira</div><div class="item"><span class="emoji">${trip.emoji}</span> ${trip.nome}</div>`;
+      } else {
+        tripDiv.innerHTML = `<h2>Tripulação</h2><div class="item"><span class="emoji">${trip.emoji}</span> ${trip.nome}</div>`;
+      }
+      
       resultadoDiv.appendChild(tripDiv);
 
       // Teto Avançado
       const tetoDiv = document.createElement('div');
       tetoDiv.className = 'section';
       const teto = tetosAvancados[Math.floor(Math.random() * tetosAvancados.length)];
-      tetoDiv.innerHTML = `<h2>🏠 Tipo de Teto Avançado</h2><div class="item">${teto}</div>`;
+      tetoDiv.innerHTML = `<h2>Telhado Especial</h2><div class="item"><span class="emoji">${teto.emoji}</span> ${teto.nome}</div>`;
       resultadoDiv.appendChild(tetoDiv);
     }
   </script>

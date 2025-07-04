@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Twilight Inscription</title>
+  <style>
+    body {
+      background-color: #1a1a2e;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    select, button {
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      background-color: #ffd700;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #feed91;
+    }
+
+    .objectives, .players {
+      margin-top: 30px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .objective-card {
+      font-size: 18px;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .player-card {
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .player-card {
+      background-color: #292946;
+      color: white;
+    }
+
+    .board-tiles {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .board-tile {
+        min-width: 80px;
+        height: 40px;
+        padding: 5px 10px;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        color: white;
+    }
+
+    .emoji {
+        font-size: 22px;
+        text-shadow: 0 0 3px black;
+    }
+
+    .blue { background-color: #246592; }
+    .green { background-color: #229453; }
+    .red { background-color: #b63c30; }
+    .yellow { background-color: #ac8c0e; }
+  </style>
+</head>
+<body>
+  <h1>🌌 Twilight Inscription 🌌</h1>
+  <label for="numPlayers">Número de jogadores:</label>
+  <select id="numPlayers">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+  </select>
+  <button onclick="gerarPartida()">Monte uma partida!</button>
+
+  <div class="objectives" id="objetivos"></div>
+  <div class="players" id="jogadores"></div>
+
+  <script>
+    const tabuleiros = ["Navegação", "Expansão", "Guerra", "Indústria"];
+    const cores = ["blue", "green", "red", "yellow"];
+    const coreshtml = ["#246592", "#229453", "#b63c30", "#ac8c0e"];
+    const emojis = ["🚀", "🪐", "⚔️", "⚙️"];
+
+    function getRandomCard() {
+      return "Carta " + (Math.floor(Math.random() * 3) + 1);
+    }
+
+    function gerarPartida() {
+      const numPlayers = parseInt(document.getElementById("numPlayers").value);
+      const objetivosDiv = document.getElementById("objetivos");
+      const jogadoresDiv = document.getElementById("jogadores");
+
+      objetivosDiv.innerHTML = "<h2>Objetivos:</h2>";
+      tabuleiros.forEach((nome, i) => {
+        const objDiv = document.createElement("div");
+        objDiv.className = `objective-card ${cores[i]}`;
+        objDiv.style.backgroundColor = coreshtml[i];
+        objDiv.innerHTML = `<span class="emoji">${emojis[i]}</span> ${nome}: <strong>${getRandomCard()}</strong>`;
+        objetivosDiv.appendChild(objDiv);
+      });
+
+      jogadoresDiv.innerHTML = "<h2>Jogadores:</h2>";
+
+      // Gerar números únicos por cor entre jogadores (1 a 8)
+      const usadosPorCor = [[], [], [], []];
+
+      for (let p = 1; p <= numPlayers; p++) {
+        const playerDiv = document.createElement("div");
+        playerDiv.className = "player-card";
+        playerDiv.innerHTML = `<h3>Jogador ${p}</h3>`;
+
+        const boardDiv = document.createElement("div");
+        boardDiv.className = "board-tiles";
+
+        for (let i = 0; i < 4; i++) {
+          let numero;
+          do {
+            numero = Math.floor(Math.random() * 8) + 1;
+          } while (usadosPorCor[i].includes(numero));
+
+          usadosPorCor[i].push(numero);
+
+          const tile = document.createElement("div");
+          tile.className = `board-tile ${cores[i]}`;
+          tile.title = tabuleiros[i];
+          tile.innerHTML = `<span class="emoji">${emojis[i]}</span>${numero}`;
+          boardDiv.appendChild(tile);
+        }
+
+        playerDiv.appendChild(boardDiv);
+        jogadoresDiv.appendChild(playerDiv);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,178 +1,241 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roll Player Randomizador</title>
-    <style>
-        body {
-            background-color: #4e342e;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 30px;
-        }
-        h1 {
-            color: #ffd700;
-            font-size: 36px;
-        }
-        select, button {
-            padding: 10px;
-            margin: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-        }
-        select {
-            background-color: #6d4c41;
-            color: white;
-        }
-        button {
-            background-color: #ffb300;
-            color: #432f28;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #ffa000;
-        }
-        .section {
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 12px;
-        }
-        .player, .monstro-final {
-            border-radius: 12px;
-            padding: 15px;
-            margin: 10px auto 20px auto;
-            width: 80%;
-            font-weight: bold;
-            font-size: 18px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.5);
-        }
-        .monstro-final h2, .player h2 {
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roll Player</title>
+  <style>
+    body {
+      background-color: #4e342e;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 30px;
+    }
+    h1 {
+      color: #ffd700;
+      font-size: 36px;
+    }
+    h2 {
+      font-size: 26px;
+    }
+    select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+    }
+    select {
+      background-color: #6d4c41;
+      color: white;
+    }
+    button {
+      background-color: #ffb300;
+      color: #432f28;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ffa000;
+    }
+    .section {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    .section-title {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fffde7;
+    }
+    .player, .monstro-final {
+      border-radius: 12px;
+      padding: 15px;
+      margin: 10px auto 20px auto;
+      width: 80%;
+      font-weight: bold;
+      font-size: 18px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+    .monstro-final h2, .player h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+    .emoji {
+      text-shadow: 0 0 3px black;
+      font-size: 22px;
+    }
+    .player-title {
+        font-size: 12px;
+        font-style: italic;
+    }
+  </style>
 </head>
 <body>
-    <h1>🎲 Roll Player 🎲</h1>
+  <h1>🎲 Roll Player 🎲</h1>
 
-    <label for="players">Número de jogadores:</label>
-    <select id="players">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
-    <br>
-    <button onclick="gerarPartida()"><strong>Monte uma partida!</strong></button>
+  <label for="players">Número de jogadores:</label>
+  <select id="players">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+  <br>
+  <button onclick="gerarPartida()"><strong>Monte uma partida!</strong></button>
 
-    <div id="resultado"></div>
+  <div id="resultado"></div>
 
-    <script>
-        const coresClasse = {
-            "Vermelho": "#d62828",
-            "Azul": "#0077b6",
-            "Roxo": "#7209b7",
-            "Verde": "#2a9d8f",
-            "Branco": "#f1faee",
-            "Preto": "#212529"
-        };
+  <script>
+    const coresClasse = {
+      "Vermelho": "#e53e3d",
+      "Azul": "#0d61cc",
+      "Roxo": "#a451aa",
+      "Verde": "#088d4e",
+      "Branco": "#f9ffff",
+      "Preto": "#161819"
+    };
 
-        const emojisClasse = {
-            "Vermelho": "🟥",
-            "Azul": "🟦",
-            "Roxo": "🟪",
-            "Verde": "🟩",
-            "Branco": "⬜",
-            "Preto": "⬛"
-        };
+    const racas = ["🥧 Halfling", "🐲 Dragonkin", "🧝🏼‍♀️ Elf", "⛏️ Dwarf", "🧌 Orc", "👨🏻 Human", 
+                    "🐯 Bastja", "🤖 Construct", "😈 Wrathborn", "🧝🏿 Dark Elf", "🔧 Gnome",
+                    "🦖 Saurian", "🐀 Vargar", "🪵 Sheki", "🐧 Kaiika", "🐂 Minotaur", "🐸 Frogkin"];
 
-        const racas = ["Elfo", "Anão", "Humano", "Orc", "Goblin"];
-        const familiares = ["Coruja", "Gato", "Falcão", "Lobo", "Rato"];
-        const classes = [
-            { nome: "Guerreiro", cor: "Vermelho" },
-            { nome: "Paladino", cor: "Branco" },
-            { nome: "Mago", cor: "Azul" },
-            { nome: "Ladino", cor: "Preto" },
-            { nome: "Druida", cor: "Verde" },
-            { nome: "Bardo", cor: "Roxo" },
-            { nome: "Caçador", cor: "Verde" },
-            { nome: "Clérigo", cor: "Branco" }
-        ];
+    const familiares = ["🐹 Long-Tailed Weasel", "🐗 Silver Warthog", "🐺 Dragul Wolf", "🐦‍⬛ Cursed Raven", 
+                        "🐢 Ancient Tortoise", "🦡 Blood Badger", "🐍 Horned Viper", "🦉 Screech Owl", 
+                        "🐻 Ice Bear", "🐆 Nalos Leopard", "🔥 Flame Imp", "🐉 Shadow Drake", 
+                        "🐦‍🔥 Scorch Phoenix", "🦊 Tempest Fox", "🐇 Jackalope"];
 
-        const monstros = [
-            { nome: "🪼 Kraken", cor: "Azul" },
-            { nome: "🐙 Leviathan", cor: "Azul" },
-            { nome: "🦁 Chimera", cor: "Roxo" },
-            { nome: "🦅 Gryphon", cor: "Roxo" },
-            { nome: "👿 Demon", cor: "Preto" },
-            { nome: "🐛 Megapede", cor: "Preto" },
-            { nome: "👁️ Cyclops", cor: "Verde" },
-            { nome: "🧌 Giant Troll", cor: "Verde" },
-            { nome: "🐲 Dragon", cor: "Vermelho" },
-            { nome: "🐉 Hydra", cor: "Vermelho" },
-            { nome: "🐍 Gorgon", cor: "Branco" },
-            { nome: "🧛🏻‍♂️ Vampire", cor: "Branco" }
-        ];
+    const classes = [
+        { nome: "😠 Barbarian", cor: "Vermelho" },
+        { nome: "⚔️ Warrior", cor: "Vermelho" },
+        { nome: "🪖 Warlord", cor: "Vermelho" },
+        { nome: "🐴 Knight", cor: "Vermelho" },
+        { nome: "🔱 Centurion", cor: "Vermelho" },
+        { nome: "????", cor: "Vermelho" },
 
-        function shuffle(array) {
-            let a = array.slice();
-            for (let i = a.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [a[i], a[j]] = [a[j], a[i]];
-            }
-            return a;
-        }
+        { nome: "🛡️ Paladin", cor: "Branco" },
+        { nome: "🛐 Cleric", cor: "Branco" },
+        { nome: "✝️ Crusader", cor: "Branco" },
+        { nome: "⛪ Priest", cor: "Branco" },
+        { nome: "📜 Scribe", cor: "Branco" },
+        { nome: "?????", cor: "Branco" },
 
-        function gerarPartida() {
-            const numJogadores = parseInt(document.getElementById("players").value);
-            const resultadoDiv = document.getElementById("resultado");
-            resultadoDiv.innerHTML = '';
+        { nome: "🪄 Wizard", cor: "Azul" },
+        { nome: "🧙🏼‍♂️ Sorcerer", cor: "Azul" },
+        { nome: "🎭 Illusionist", cor: "Azul" },
+        { nome: "🔮 Enchanter", cor: "Azul" },
+        { nome: "✨ Conjurer", cor: "Azul" },
+        { nome: "🎩 Magician", cor: "Azul" },
 
-            const racasEmbaralhadas = shuffle(racas);
-            const familiaresEmbaralhados = shuffle(familiares);
+        { nome: "🗡️ Thief", cor: "Preto" },
+        { nome: "🥷🏽 Rogue", cor: "Preto" },
+        { nome: "🩸 Assassin", cor: "Preto" },
+        { nome: "🔭 Scout", cor: "Preto" },
+        { nome: "🐎 Outrider", cor: "Preto" },
+        { nome: "?????", cor: "Preto" },
 
-            const classesEmbaralhadas = shuffle(classes);
-            const classesUsadas = [];
-            const coresUsadas = new Set();
+        { nome: "🍄 Druid", cor: "Verde" },
+        { nome: "🏹 Ranger", cor: "Verde" },
+        { nome: "🌊 Elementalist", cor: "Verde" },
+        { nome: "🌿 Shaman", cor: "Verde" },
+        { nome: "🪤 Hunter", cor: "Verde" },
+        { nome: "?????", cor: "Verde" },
 
-            for (let i = 0; i < numJogadores; i++) {
-                const classe = classesEmbaralhadas.find(c => !coresUsadas.has(c.cor));
-                coresUsadas.add(classe.cor);
-                classesUsadas.push(classe);
+        { nome: "📿 Monk", cor: "Roxo" },
+        { nome: "🎻 Bard", cor: "Roxo" },
+        { nome: "⚗️ Alchemist", cor: "Roxo" },
+        { nome: "🧠 Psionic", cor: "Roxo" },
+        { nome: "🦌 Beastmaster", cor: "Roxo" },
+        { nome: "?????", cor: "Roxo" },
+    ];
 
-                const cor = coresClasse[classe.cor] || "#444";
-                const emoji = emojisClasse[classe.cor] || "❔";
+    const monstros = [
+      { emoji: "🪼", nome: "Kraken", cor: "Azul" },
+      { emoji: "🦑", nome: "Leviathan", cor: "Azul" },
+      { emoji: "🦁", nome: "Chimera", cor: "Roxo" },
+      { emoji: "🦅", nome: "Gryphon", cor: "Roxo" },
+      { emoji: "👿", nome: "Demon", cor: "Preto" },
+      { emoji: "🐛", nome: "Megapede", cor: "Preto" },
+      { emoji: "👁️", nome: "Cyclops", cor: "Verde" },
+      { emoji: "🧌", nome: "Giant Troll", cor: "Verde" },
+      { emoji: "🐲", nome: "Dragon", cor: "Vermelho" },
+      { emoji: "🐉", nome: "Hydra", cor: "Vermelho" },
+      { emoji: "🐍", nome: "Gorgon", cor: "Branco" },
+      { emoji: "🧛🏻‍♂️", nome: "Vampire", cor: "Branco" }
+    ];
 
-                const playerDiv = document.createElement("div");
-                playerDiv.className = "player";
-                playerDiv.style.backgroundColor = cor;
-                playerDiv.style.color = (classe.cor === "Branco") ? "#000" : "#fff";
-                playerDiv.innerHTML = `<h2>${emoji}</h2>
-                    Race: ${racasEmbaralhadas[i % racas.length]}<br>
-                    Class: ${classe.nome}<br>
-                    Familiar: ${familiaresEmbaralhados[i % familiares.length]}`;
-                resultadoDiv.appendChild(playerDiv);
-            }
+    function shuffle(array) {
+      let a = array.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
 
-            // Monstro
-            const coresDisponiveis = Object.keys(coresClasse).filter(cor => !coresUsadas.has(cor));
-            const monstrosFiltrados = monstros.filter(m => coresDisponiveis.includes(m.cor));
-            const monstro = monstrosFiltrados[Math.floor(Math.random() * monstrosFiltrados.length)];
+    function gerarPartida() {
+      const numJogadores = parseInt(document.getElementById("players").value);
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = '';
 
-            const monstroDiv = document.createElement("div");
-            monstroDiv.className = "monstro-final section";
-            const corMonstro = coresClasse[monstro.cor] || "#333";
-            monstroDiv.style.backgroundColor = corMonstro;
-            monstroDiv.style.color = (monstro.cor === "Branco") ? "#000" : "#fff";
-            const lenticular = Math.random() < 0.5 ? "✨ Lenticular": "☠️ Classic"
-            monstroDiv.innerHTML = `<h2>${monstro.nome}</h2>
-                ${lenticular}`;
-            resultadoDiv.appendChild(monstroDiv);
-        }
-    </script>
+      const jogadoresTitle = document.createElement("div");
+      jogadoresTitle.className = "section-title";
+      jogadoresTitle.innerHTML = '<span class="emoji">👥</span> Personagens:';
+      resultadoDiv.appendChild(jogadoresTitle);
+
+      const racasEmbaralhadas = shuffle(racas);
+      const familiaresEmbaralhados = shuffle(familiares);
+
+      const classesEmbaralhadas = shuffle(classes);
+      const classesUsadas = [];
+      const coresUsadas = new Set();
+
+      for (let i = 0; i < numJogadores; i++) {
+        const classe = classesEmbaralhadas.find(c => !coresUsadas.has(c.cor));
+        coresUsadas.add(classe.cor);
+        classesUsadas.push(classe);
+
+        const cor = coresClasse[classe.cor] || "#444";
+
+        const playerDiv = document.createElement("div");
+        playerDiv.className = "player";
+        playerDiv.style.backgroundColor = cor;
+        playerDiv.style.color = (classe.cor === "Branco") ? "#000" : "#fff";
+        playerDiv.innerHTML = `
+          <span class="player-title">Raça</span><br>
+          ${racasEmbaralhadas[i % racas.length]}<br>
+          <span class="player-title">Classe</span><br>
+          ${classe.nome}<br>
+          <span class="player-title">Familiar</span><br>
+          ${familiaresEmbaralhados[i % familiares.length]}`;
+        resultadoDiv.appendChild(playerDiv);
+      }
+
+      // Monstro
+      const monstroTitle = document.createElement("div");
+      monstroTitle.className = "section-title";
+      monstroTitle.innerHTML = '<span class="emoji">👹</span> Monstro:';
+      resultadoDiv.appendChild(monstroTitle);
+
+      const coresDisponiveis = Object.keys(coresClasse).filter(cor => !coresUsadas.has(cor));
+      const monstrosFiltrados = monstros.filter(m => coresDisponiveis.includes(m.cor));
+      const monstro = monstrosFiltrados[Math.floor(Math.random() * monstrosFiltrados.length)];
+
+      const monstroDiv = document.createElement("div");
+      monstroDiv.className = "monstro-final section";
+      const corMonstro = coresClasse[monstro.cor] || "#333";
+      monstroDiv.style.backgroundColor = corMonstro;
+      monstroDiv.style.color = (monstro.cor === "Branco") ? "#000" : "#fff";
+
+      const lenticular = Math.random() < 0.5
+        ? '✨ Lenticular'
+        : '☠️ Classic';
+
+      monstroDiv.innerHTML = `<h2><span class="emoji">${monstro.emoji}</span> ${monstro.nome}</h2>${lenticular}`;
+      resultadoDiv.appendChild(monstroDiv);
+    }
+  </script>
 </body>
 </html>

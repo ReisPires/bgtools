@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Newton</title>
+  <style>
+    body {
+      background-color: #5e2a2a; /* vermelho escuro */
+      color: #e6ffe6; /* verde bem claro */
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: #a8f0a3; /* verde claro */
+    }
+
+    select, button {
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      background-color: #a8f0a3; /* verde claro */
+      color: #2c2c2c;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .setup, .players {
+      margin-top: 30px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .setup-card, .player-card {
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+      background-color: #402b23; /* marrom */
+      color: #f0f0d8; /* bege */
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+
+    .player-card {
+      background-color: #6b4e3d;
+    }
+
+    .emoji {
+      margin-right: 6px;
+      font-size: 20px;
+      text-shadow: 0 0 2px black;
+    }
+
+    .highlight {
+      font-size: 22px;
+      font-weight: bold;
+      display: block;
+      margin-top: 6px;
+      color: #fffce6;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍏 Newton 🍏</h1>
+
+  <label for="numPlayers">Número de jogadores:</label>
+  <select id="numPlayers">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+  <button onclick="gerarSetup()">Monte uma partida!</button>
+
+  <div class="setup" id="setup"></div>
+  <div class="players" id="jogadores"></div>
+
+  <script>
+    const coresJogador = [
+      { nome: "Vermelho", emoji: "🔴" },
+      { nome: "Verde", emoji: "🟢" },
+      { nome: "Azul", emoji: "🔵" },
+      { nome: "Amarelo", emoji: "🟡" }
+    ];
+    const tabuleirosJogador = [
+      { nome: "Trabalho", emoji: "📐" },
+      { nome: "Tecnologia", emoji: "⚙️" },
+      { nome: "Viagem", emoji: "🧭" },
+      { nome: "Estudo", emoji: "📖" }
+    ];
+
+    function gerarSetup() {
+      const numPlayers = parseInt(document.getElementById("numPlayers").value);
+      const setupDiv = document.getElementById("setup");
+      const jogadoresDiv = document.getElementById("jogadores");
+      setupDiv.innerHTML = "";
+      jogadoresDiv.innerHTML = "";
+
+      const mapas = ["Europa", "Italy Grand Tour"];
+      const tabuleiros = ["Clássico", "New Horizon"];
+
+      const mapaSorteado = mapas[Math.floor(Math.random() * mapas.length)];
+      const tabuleiroSorteado = tabuleiros[Math.floor(Math.random() * tabuleiros.length)];
+
+      const mapaDiv = document.createElement("div");
+      mapaDiv.className = "setup-card";
+      mapaDiv.innerHTML = `<span class="emoji">🗺️</span>Mapa:<span class="highlight">${mapaSorteado}</span>`;
+
+      const tabuleiroDiv = document.createElement("div");
+      tabuleiroDiv.className = "setup-card";
+      tabuleiroDiv.innerHTML = `<span class="emoji">🌳</span>Tabuleiro de Evolução:<span class="highlight">${tabuleiroSorteado}</span>`;
+
+      setupDiv.appendChild(mapaDiv);
+      setupDiv.appendChild(tabuleiroDiv);
+
+      const coresEmbaralhadas = coresJogador.sort(() => Math.random() - 0.5).slice(0, numPlayers);
+      const tabuleirosEmbaralhados = tabuleirosJogador.sort(() => Math.random() - 0.5).slice(0, numPlayers);
+
+      for (let i = 0; i < numPlayers; i++) {
+        const jogadorDiv = document.createElement("div");
+        jogadorDiv.className = "player-card";
+        jogadorDiv.innerHTML = `Jogador ${i + 1}: <span class="highlight">${coresEmbaralhadas[i].emoji} ${coresEmbaralhadas[i].nome}</span>
+            <span class="highlight">${tabuleirosEmbaralhados[i].emoji} ${tabuleirosEmbaralhados[i].nome}</span>`;
+        jogadoresDiv.appendChild(jogadorDiv);
+      }
+    }
+  </script>
+</body>
+</html>
