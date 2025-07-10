@@ -75,10 +75,16 @@
       list-style: none;
       padding: 0;
       margin: 0;
+      font-size: 16px;
     }
 
     li {
       padding: 3px 0;
+    }
+
+    .emoji {
+        font-size: 28px;
+        text-shadow: 0 0 3px black;
     }
   </style>
 </head>
@@ -150,28 +156,28 @@
 
       resultDiv.innerHTML += `
         <div class="section">
-          <h2>🪐 Tabuleiro</h2>
-          <p>${selectedMap}</p>
+          <h2><span class="emoji">🪐</span> Tabuleiro</h2>
+          <ul>${selectedMap}</ul>
         </div>
       `;
 
       resultDiv.innerHTML += `
         <div class="section">
-          <h2>🌕 Colônias (${colonyCount})</h2>
+          <h2><span class="emoji">🌕</span> Colônias (${colonyCount})</h2>
           <ul>${selectedColonies.map(c => `<li>${c}</li>`).join('')}</ul>
         </div>
       `;
 
       resultDiv.innerHTML += `
         <div class="section">
-          <h2>🏆 Marcos</h2>
+          <h2><span class="emoji">🏆</span> Marcos</h2>
           <ul>${selectedMilestones.map(m => `<li>${m}</li>`).join('')}</ul>
         </div>
       `;
 
       resultDiv.innerHTML += `
         <div class="section">
-          <h2>🎖️ Prêmios</h2>
+          <h2><span class="emoji">🎖️</span> Prêmios</h2>
           <ul>${selectedAwards.map(a => `<li>${a}</li>`).join('')}</ul>
         </div>
       `;

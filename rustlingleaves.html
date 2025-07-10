@@ -1,81 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BG Setup Tools</title>
-    <style>
-        body {
-            background: linear-gradient(135deg, #1e1e2f, #2c2c3e);
-            color: #f0f0f0;
-            font-family: 'Segoe UI', sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 40px 20px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rustling Leaves</title>
+  <style>
+    body {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
 
-        h1 {
-            color: white;
-            font-size: 40px;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px #000;
-        }
+    h1 {
+      font-size: 36px;
+      color: #f8c971;
+      margin-bottom: 20px;
+    }
 
-        ul {
-            list-style: none;
-            padding: 1px;
-            max-width: 400px;
-            margin: auto;
-            background-color: #383858;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
+    h2 {
+      font-size: 18px;
+      color: white;
+    }
 
-        li {
-            margin: 15px 0;
-        }
+    select, button {
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+    }
 
-        a {
-            text-decoration: none;
-            color: white;
-            font-size: 24px;
-            background-color: #4a4a70;
-            padding: 10px 20px;
-            border-radius: 12px;
-            display: inline-block;
-            transition: all 0.3s;
-        }
+    button {
+      background-color: #27ae60;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-        a:hover {
-            background-color: #ff6600;
-            color: white;
-            transform: scale(1.05);
-        }
-    </style>
+    .season {
+        font-size: 22px;
+        padding: 20px;
+        margin-top: 30px;
+        border-radius: 12px;
+        color: #2c3e50;
+        font-weight: bold;
+        background-color: #dfe6e9;
+        max-width: 300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .players {
+        margin-top: 30px;
+    }
+
+    .player {
+        font-size: 20px;
+        padding: 20px;
+        border-radius: 12px;
+        margin: 15px auto;
+        color: #4c5d45;
+        font-weight: bold;
+        background-color: #f8c971;
+        max-width: 300px;
+    }
+
+    .emoji {
+        font-size: 22px;
+        text-shadow: 0 0 3px black;
+    }
+
+  </style>
 </head>
 <body>
-    <h1>🎲🛠️<br>BG Setup Tools</h1>
-    <ul>
-        <li><a href="altiplano.html">🦙 Altiplano</a></li>
-        <li><a href="barenpark.html">🐻 Bärenpark</a></li>
-        <li><a href="brazilimperial.html">👑 Brazil Imperial</a></li>
-        <li><a href="carcassonne.html">🧩 Carcassonne</a></li>
-        <li><a href="citadels.html">🏰 Citadels</a></li>
-        <li><a href="floresta.html">🌲 Floresta</a></li>
-        <li><a href="finalgirl.html">🩸 Final Girl</a></li>
-        <li><a href="greatwesterntrail.html">🐂 Great Western Trail</a></li>
-        <li><a href="hallertau.html">🍺 Hallertau</a></li>
-        <li><a href="istanbul.html">☪️ Istanbul</a></li>
-        <li><a href="kanagawa.html">🎨 Kanagawa</a></li>
-        <li><a href="longshot.html">🏇 Long Shot</a></li>
-        <li><a href="newton.html">🍏 Newton</a></li>
-        <li><a href="oikos.html">🐯 Oikos</a></li>
-        <li><a href="robinsoncrusoe.html">🏝️ Robinson Crusoe</a></li>
-        <li><a href="rollplayer.html">🎲 Roll Player</a></li>
-        <li><a href="rustlingleaves.html">🍃 Rustling Leaves</a></li>
-        <li><a href="terraformingmars.html">🪐 Terraforming Mars</a></li>
-        <li><a href="twilightinscription.html">🌌 Twilight Inscription</a></li>
-        <li><a href="zenkaiadventure.html">⚡ Zenkai Adventure</a></li>
-    </ul>
+  <h1>🍃 Rustling Leaves 🍃</h1>
+
+  <label for="numPlayers">Número de jogadores:</label>
+  <select id="numPlayers">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+  </select>
+  <button onclick="gerarPartida()">Montar partida!</button>
+
+  <div id="sheet"></div>
+  <div class="players" id="players"></div>
+
+  <script>
+    const estacoes = [
+      { nome: "Primavera", cor: "#d2dfa8", emoji: "🌸" },
+      { nome: "Verão", cor: "#fcf1b1", emoji: "🌞" },
+      { nome: "Outono", cor: "#ebc6a2", emoji: "🍁" },
+      { nome: "Inverno", cor: "#e8eff7", emoji: "❄️" }
+    ];
+
+    function gerarPartida() {
+      const num = parseInt(document.getElementById("numPlayers").value);
+      const sheetDiv = document.getElementById("sheet");
+      const playersDiv = document.getElementById("players");
+      sheetDiv.innerHTML = "";
+      playersDiv.innerHTML = "";
+    
+      sheetDiv.innerHTML = "<br><h2>Estação:</h2>";
+      const estacao = estacoes[Math.floor(Math.random() * estacoes.length)];
+      const card = document.createElement("div");
+      card.className = "season";
+      card.style.backgroundColor = estacao.cor;
+      card.innerHTML = `<span class="emoji">${estacao.emoji}</span> <strong>${estacao.nome}</strong>`;
+      sheetDiv.appendChild(card);
+
+      playersDiv.innerHTML = "<h2>Posição Inicial:</h2>";
+      const posicoes = shuffle([1, 2, 3, 4, 5, 6]).slice(0, num);
+      for (let i = 0; i < num; i++) {
+        const div = document.createElement("div");
+        div.className = "player";
+        div.innerHTML = `P${i + 1}: <span class="emoji">🌿</span> <strong>${posicoes[i]}</strong>`;
+        playersDiv.appendChild(div);
+      }
+    }
+
+    function shuffle(arr) {
+      return arr.slice().sort(() => Math.random() - 0.5);
+    }
+  </script>
 </body>
 </html>

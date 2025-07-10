@@ -56,6 +56,10 @@
             display: block;
             margin-bottom: 5px;
         }
+        .emoji {
+            font-size: 22px;
+            text-shadow: 0 0 3px black;
+        }
     </style>
 </head>
 <body>
@@ -91,26 +95,31 @@
         ];
 
         function generateGame() {
-            const killer = killers[Math.floor(Math.random() * killers.length)];
-            const location = locations[Math.floor(Math.random() * locations.length)];
-            const finalGirl = finalGirls[Math.floor(Math.random() * finalGirls.length)];
-            const tearTracker = Math.random() < 0.5 ? 'A' : 'B';
+          const killer = killers[Math.floor(Math.random() * killers.length)];
+          const location = locations[Math.floor(Math.random() * locations.length)];
+          const finalGirl = finalGirls[Math.floor(Math.random() * finalGirls.length)];
+          const tearTracker = Math.random() < 0.5 ? 'A' : 'B';
 
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = '';
+          const resultDiv = document.getElementById('result');
+          resultDiv.innerHTML = '';
 
-            const card = document.createElement('div');
-            card.className = 'card';
+          const card = document.createElement('div');
+          card.className = 'card';
 
-            card.innerHTML = `
-                <div class="item"><span class="label">Killer</span> ${killer}</div>
-                <div class="item"><span class="label">Location</span> ${location}</div>
-                <div class="item"><span class="label">Final Girl</span> ${finalGirl}</div>
-                <div class="item"><span class="label">Tear Tracker</span> 💧 Side ${tearTracker}</div>
-            `;
+          function highlightEmoji(text) {
+              return text.replace(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic}|\p{Emoji})+/gu, match => `<span class="emoji">${match}</span>`);
+          }
 
-            resultDiv.appendChild(card);
-        }
+          card.innerHTML = `
+              <div class="item"><span class="label">Killer</span> ${highlightEmoji(killer)}</div>
+              <div class="item"><span class="label">Location</span> ${highlightEmoji(location)}</div>
+              <div class="item"><span class="label">Final Girl</span> ${highlightEmoji(finalGirl)}</div>
+              <div class="item"><span class="label">Tear Tracker</span> <span class="emoji">💧</span> Side ${tearTracker}</div>
+          `;
+
+          resultDiv.appendChild(card);
+      }
+
     </script>
 </body>
 </html>

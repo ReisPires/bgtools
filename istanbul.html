@@ -67,19 +67,24 @@
     }
 
     .cell {
-      width: 60px;
-      height: 60px;
+      width: 75px;
+      height: 75px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: bold;
       border: 2px solid #e63946;
       border-radius: 6px;
       color: #e63946;
       background-color: #fff4ec;
       line-height: 1.2;
+    }
+
+    .emoji {
+        font-size: 22px;
+        text-shadow: 0 0 3px black;
     }
   </style>
 </head>
@@ -182,7 +187,7 @@
     function displayGrid(grid, rows, cols, pegasus, kebab) {
       const gridContainer = document.getElementById('gridContainer');
       gridContainer.innerHTML = '';
-      gridContainer.style.gridTemplateColumns = `repeat(${cols}, 60px)`;
+      gridContainer.style.gridTemplateColumns = `repeat(${cols}, 75px)`;
       gridContainer.className = 'grid';
 
       for (let r = 0; r < rows; r++) {
@@ -195,7 +200,7 @@
           if (kebab && value === 7 && Math.random() < 0.5) value = 'KS';
 
           const emoji = emojiMap[value] || '';
-          cell.innerHTML = `${emoji}<br>${value}`;
+          cell.innerHTML = `<span class="emoji">${emoji}</span>${value}`;
           gridContainer.appendChild(cell);
         }
       }

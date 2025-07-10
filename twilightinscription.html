@@ -73,25 +73,22 @@
     }
 
     .board-tiles {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 10px;
-      margin-bottom: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      width: 180px; /* controls total width of the 2x2 grid */
+      margin: 10px auto;
     }
 
     .board-tile {
-        min-width: 80px;
-        height: 40px;
-        padding: 5px 10px;
-        font-size: 20px;
-        font-weight: bold;
-        border-radius: 8px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        color: white;
+      aspect-ratio: 2 / 1; /* keeps shape consistent */
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
     }
 
     .emoji {

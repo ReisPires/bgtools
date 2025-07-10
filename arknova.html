@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ark Nova</title>
+  <style>
+    body {
+      background-color: #e8fafa;
+      color: #0c3c3c;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #02b3bf;
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    select, button {
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: 2px solid #02b3bf;
+    }
+
+    button {
+      background-color: #26a639;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1c8f30;
+    }
+
+    .players {
+      margin-top: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .player-card {
+      background-color: #02b3bf;
+      color: white;
+      padding: 16px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      font-size: 18px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .emoji {
+      font-size: 24px;
+      margin-right: 6px;
+      text-shadow: 0 0 3px black;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐘 Ark Nova 🐘</h1>
+  <label for="numPlayers">Número de jogadores:</label>
+  <select id="numPlayers">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+  <button onclick="sortearMapas()">Sortear Mapas!</button>
+
+  <div class="players" id="resultado"></div>
+
+  <script>
+    const mapas = [
+      { id: "1", nome: "Torre de Observação", emoji: "🗼" },
+      { id: "2", nome: "Áreas Externas", emoji: "🐐" },
+      { id: "3", nome: "Lago Prateado", emoji: "🌊" },
+      { id: "4", nome: "Porto Comercial", emoji: "🏗️" },
+      { id: "5", nome: "Restaurante", emoji: "🍴" },
+      { id: "6", nome: "Instituto de Pesquisa", emoji: "🔬" },
+      { id: "7", nome: "Salões de Sorvetes", emoji: "🍦" },
+      { id: "8", nome: "Montanhas de Hollywood", emoji: "🎬" },
+      { id: "9", nome: "Zoológico Geográfico", emoji: "🗺️" },
+      { id: "10", nome: "Estação de Resgate", emoji: "🐸" },
+      { id: "11", nome: "Cavernas", emoji: "🪨" },
+      { id: "12", nome: "Inteligência Artificial", emoji: "🧠" },
+      { id: "13", nome: "Mesa de Desenho", emoji: "✏️" },
+      { id: "14", nome: "Lagoa", emoji: "🪷" },
+      { id: "T1", nome: "Torneio 1", emoji: "🏁" }
+    ];
+
+    function sortearMapas() {
+      const numPlayers = parseInt(document.getElementById("numPlayers").value);
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = "";
+
+      const mapasSorteados = mapas.slice().sort(() => 0.5 - Math.random()).slice(0, numPlayers);
+
+      mapasSorteados.forEach((mapa, i) => {
+        const card = document.createElement("div");
+        card.className = "player-card";
+        card.innerHTML = `Jogador ${i + 1}<br><span class="emoji">${mapa.emoji}</span> <strong>${mapa.id}: ${mapa.nome}</strong>`;
+        resultadoDiv.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
