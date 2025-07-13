@@ -185,7 +185,7 @@
         block.innerHTML = `
           <strong>Jogador ${i + 1}</strong>
           <div class="animal-name">
-            ${playerCount <= 3 ? "Espécie principal: " : ""}${assignment.main.name}
+            ${playerCount <= 3 ? "Principal: " : ""}${assignment.main.name}
           </div>
           <div class="animal-info">
             Número: ${assignment.main.num} | Tipo: ${assignment.main.type}
@@ -194,7 +194,7 @@
 
         if (assignment.support) {
           block.innerHTML += `
-            <div class="animal-name">Espécie suporte: ${assignment.support.name}</div>
+            <div class="animal-name">Suporte: ${assignment.support.name}</div>
             <div class="animal-info">
               Número: ${assignment.support.num} | Tipo: ${assignment.support.type}
             </div>
