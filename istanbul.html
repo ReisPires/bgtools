@@ -67,8 +67,8 @@
     }
 
     .cell {
-      width: 75px;
-      height: 75px;
+      width: 70px;
+      height: 70px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -187,7 +187,7 @@
     function displayGrid(grid, rows, cols, pegasus, kebab) {
       const gridContainer = document.getElementById('gridContainer');
       gridContainer.innerHTML = '';
-      gridContainer.style.gridTemplateColumns = `repeat(${cols}, 75px)`;
+      gridContainer.style.gridTemplateColumns = `repeat(${cols}, 70px)`;
       gridContainer.className = 'grid';
 
       for (let r = 0; r < rows; r++) {
