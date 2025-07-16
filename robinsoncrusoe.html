@@ -62,6 +62,17 @@
       text-shadow: 0 0 3px black;
       font-size: 22px;
     }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      text-align: center;
+      justify-content: center;
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -80,6 +91,80 @@
   <div id="resultado"></div>
 
   <script>
+    const cenarios = [
+      // 🏝️ A castaway story
+      { emoji: "🪵", nome: "Castaways: Chilling on the Beach", dificuldade: "🟢 There is hope", audiencia: "🟢 Kids & family time", duracao: "🔴 Long death", tema: "🏝️ A castaway story" },
+      { emoji: "👨🏻‍👩🏻‍👧🏻‍👦🏻", nome: "Family Robinson: Brilliant Kids", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🔴 Long death", tema: "🏝️ A castaway story" },
+      { emoji: "🪵", nome: "Castaways", dificuldade: "🟡 Small chance", audiencia: "🟢 Kids & family time", duracao: "🔴 Long death", tema: "🏝️ A castaway story" },
+      { emoji: "✨", nome: "The Old World", dificuldade: "🟡 Small chance", audiencia: "🔴 Experts at table", duracao: "🔴 Long death", tema: "🏝️ A castaway story" },
+      { emoji: "🪵", nome: "Castaways: Sky is the Limit", dificuldade: "🟠 No chance", audiencia: "🟡 Everyone have fun", duracao: "🔴 Long death", tema: "🏝️ A castaway story" },
+      { emoji: "👨🏻‍👩🏻‍👧🏻‍👦🏻", nome: "Family Robinson", dificuldade: "🟠 No chance", audiencia: "🟡 Everyone have fun", duracao: "🔴 Long death", tema: "🏝️ A castaway story" },
+      { emoji: "👨🏻‍👩🏻‍👧🏻‍👦🏻", nome: "Family Robinson: Hardships of Pregnancy", dificuldade: "🔴 Straight to hell", audiencia: "🟡 Everyone have fun", duracao: "🔴 Long death", tema: "🏝️ A castaway story" },
+
+      // 🧨 Unusual perils
+      { emoji: "🐠", nome: "Piranha Cook Off", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "🧨 Unusual perils" },
+      { emoji: "🍌", nome: "Monkeys Gone Bananas", dificuldade: "🟡 Small chance", audiencia: "🔴 Experts at table", duracao: "🟡 Standard strife", tema: "🧨 Unusual perils" },
+      { emoji: "🍂", nome: "The Dying Island", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🔴 Long death", tema: "🧨 Unusual perils" },
+      { emoji: "🦪", nome: "Pearl Hunting", dificuldade: "🟡 Small chance", audiencia: "🔴 Experts at table", duracao: "🟢 Die in 5 minutes", tema: "🧨 Unusual perils" },
+      { emoji: "📺", nome: "The Reality Island", dificuldade: "🟠 No chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "🧨 Unusual perils" },
+      { emoji: "🎰", nome: "Gamblers' Gold", dificuldade: "🟠 No chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "🧨 Unusual perils" },
+      { emoji: "🍖", nome: "Cannibal Island: Growing in Strength", dificuldade: "🔴 Straight to hell", audiencia: "🟢 Kids & family time", duracao: "🔴 Long death", tema: "🧨 Unusual perils" },
+      { emoji: "🪨", nome: "Underground and Overwhelmed", dificuldade: "🔴 Straight to hell", audiencia: "🟡 Everyone have fun", duracao: "🔴 Long death", tema: "🧨 Unusual perils" },
+
+      // 🎬 Book/movie inspired
+      { emoji: "☠️", nome: "Treasure Island Junior", dificuldade: "🟢 There is hope", audiencia: "🟢 Kids & family time", duracao: "🟢 Die in 5 minutes", tema: "🎬 Book/movie inspired" },
+      { emoji: "🧚", nome: "Adventure in Neverland", dificuldade: "🟢 There is hope", audiencia: "🟢 Kids & family time", duracao: "🟢 Die in 5 minutes", tema: "🎬 Book/movie inspired" },
+      { emoji: "🌋", nome: "Volcano Island: Unexpected Eruption!", dificuldade: "🟢 There is hope", audiencia: "🟢 Kids & family time", duracao: "🟡 Standard strife", tema: "🎬 Book/movie inspired" },
+      { emoji: "🦍", nome: "The Exciting Adventure on King Kong Island", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "🎬 Book/movie inspired" },
+      { emoji: "⏱️", nome: "Time Travel: Determination Endurement", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "🎬 Book/movie inspired" },
+      { emoji: "☠️", nome: "Treasure Island Adept", dificuldade: "🟡 Small chance", audiencia: "🟢 Kids & family time", duracao: "🟢 Die in 5 minutes", tema: "🎬 Book/movie inspired" },
+      { emoji: "🧚", nome: "Challenge in Neverland Adept", dificuldade: "🟡 Small chance", audiencia: "🟢 Kids & family time", duracao: "🟢 Die in 5 minutes", tema: "🎬 Book/movie inspired" },
+      { emoji: "🛥️", nome: "The Ark", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🟢 Die in 5 minutes", tema: "🎬 Book/movie inspired" },
+      { emoji: "🌋", nome: "Volcano Island", dificuldade: "🟠 No chance", audiencia: "🔴 Experts at table", duracao: "🟢 Die in 5 minutes", tema: "🎬 Book/movie inspired" },
+      { emoji: "🦍", nome: "The Dreadful Adventure on King Kong Island", dificuldade: "🟠 No chance", audiencia: "🔴 Experts at table", duracao: "🟡 Standard strife", tema: "🎬 Book/movie inspired" },
+      { emoji: "👴🏾", nome: "The Map to Eternity", dificuldade: "🟠 No chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "🎬 Book/movie inspired" },
+      { emoji: "⏱️", nome: "Time Travel", dificuldade: "🟠 No chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "🎬 Book/movie inspired" },
+      { emoji: "🌋", nome: "Volcano Island: Freezin' Treasures", dificuldade: "🔴 Straight to hell", audiencia: "🔴 Experts at table", duracao: "🟢 Die in 5 minutes", tema: "🎬 Book/movie inspired" },
+      { emoji: "🦍", nome: "The Deadly Adventure on King Kong Island", dificuldade: "🔴 Straight to hell", audiencia: "🔴 Experts at table", duracao: "🟡 Standard strife", tema: "🎬 Book/movie inspired" },
+      { emoji: "⏱️", nome: "Time Travel: Lost in the Horizon of Events", dificuldade: "🔴 Straight to hell", audiencia: "🟡 Everyone have fun", duracao: "🔴 Long death", tema: "🎬 Book/movie inspired" },
+
+      // Dramatic Events
+      { emoji: "👩🏻", nome: "Determined Jenny Needs Help!", dificuldade: "🟢 There is hope", audiencia: "🟢 Kids & family time", duracao: "🟢 Die in 5 minutes", tema: "Dramatic events" },
+      { emoji: "⚕️", nome: "Sick Mother", dificuldade: "🟢 There is hope", audiencia: "🔴 Experts at table", duracao: "🟢 Die in 5 minutes", tema: "Dramatic events" },
+      { emoji: "👩🏻", nome: "Jenny Needs Help", dificuldade: "🟡 Small chance", audiencia: "🟢 Kids & family time", duracao: "🟢 Die in 5 minutes", tema: "Dramatic events" },
+      { emoji: "👩🏻", nome: "Jenny Needs Help! and She is Traumatized!", dificuldade: "🟠 No chance", audiencia: "🟢 Kids & family time", duracao: "🟢 Die in 5 minutes", tema: "Dramatic events" },
+      { emoji: "😰", nome: "Run, Anxiety, Run!", dificuldade: "🟠 No chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "Dramatic events" },
+
+      // Eerie Tales
+      { emoji: "🛐", nome: "Cursed Island: Strong in Faith", dificuldade: "🟢 There is hope", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "Eerie tales" },
+      { emoji: "🛐", nome: "Cursed Island", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "Eerie tales" },
+      { emoji: "🍖", nome: "Cannibal Island: Enriched Diet", dificuldade: "🟡 Small chance", audiencia: "🟢 Kids & family time", duracao: "🟡 Standard strife", tema: "Eerie tales" },
+      { emoji: "🦠", nome: "Wave of the Living Corpses", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "Eerie tales" },
+      { emoji: "🛐", nome: "Cursed Island: God Has Abandoned Us…", dificuldade: "🟠 No chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "Eerie tales" },
+      { emoji: "🌫️", nome: "The Forbidden Island", dificuldade: "🟠 No chance", audiencia: "🟡 Everyone have fun", duracao: "🟢 Die in 5 minutes", tema: "Eerie tales" },
+      { emoji: "🍖", nome: "Cannibal Island", dificuldade: "🟠 No chance", audiencia: "🟢 Kids & family time", duracao: "🟡 Standard strife", tema: "Eerie tales" },
+      { emoji: "📸", nome: "Bigfoot Spotting!", dificuldade: "🔴 Straight to hell", audiencia: "🟡 Everyone have fun", duracao: "🔴 Long death", tema: "Eerie tales" },
+
+      // 📜 Realistic fiction
+      { emoji: "🕳️", nome: "Drawbridge", dificuldade: "🟢 There is hope", audiencia: "🟢 Kids & family time", duracao: "🟢 Die in 5 minutes", tema: "📜 Realistic fiction" },
+      { emoji: "📰", nome: "Tracing Doctor Livingstone", dificuldade: "🟡 Small chance", audiencia: "🟢 Kids & family time", duracao: "🟢 Die in 5 minutes", tema: "📜 Realistic fiction" },
+      { emoji: "🐾", nome: "Poachers of the Injured", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "📜 Realistic fiction" },
+      { emoji: "🦕", nome: "Front Page Nessie!", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🔴 Long death", tema: "📜 Realistic fiction" },
+      { emoji: "🪦", nome: "Get the Tomb Raiders", dificuldade: "🟡 Small chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "📜 Realistic fiction" },
+      { emoji: "🐾", nome: "Poachers", dificuldade: "🟠 No chance", audiencia: "🟡 Everyone have fun", duracao: "🟡 Standard strife", tema: "📜 Realistic fiction" },
+      { emoji: "🐾", nome: "Poachers: Inflamed Wounds", dificuldade: "🔴 Straight to hell", audiencia: "🔴 Experts at table", duracao: "🟡 Standard strife", tema: "📜 Realistic fiction" },
+      { emoji: "🪼", nome: "Sinking Lands", dificuldade: "🔴 Straight to hell", audiencia: "🟢 Kids & family time", duracao: "🔴 Long death", tema: "📜 Realistic fiction" },
+      { emoji: "👹", nome: "Cloudy with a Chance of Chupacabras", dificuldade: "🔴 Straight to hell", audiencia: "🟡 Everyone have fun", duracao: "🔴 Long death", tema: "📜 Realistic fiction" }
+    ];
+
+
+    const decks = [
+      { emoji: "🏝️", nome: "Clássico"},
+      { emoji: "🧟", nome: "Feridas Podres"},
+      { emoji: "🏴‍☠️", nome: "Mapa do Pirata"},
+      { emoji: "🗿", nome: "Totems Sombrios"}
+    ];
+
     const personagens = [
       {emoji: "🛠️", nome: "Carpinteiro"},
       {emoji: "🗺️", nome: "Explorador"},
@@ -88,12 +173,6 @@
       {emoji: "⚓", nome: "Marujo"},
       {emoji: "🎲", nome: "Jogador"},
       {emoji: "✝️", nome: "Missionário"},
-    ];
-
-    const cenarios = [
-      { emoji: "⚓", nome: "Cenário 1", nivel: "Fácil", duracao: "8 Rodadas", tema: "Naufrágio" },
-      { emoji: "⚓", nome: "Cenário 2", nivel: "Médio", duracao: "10 Rodadas", tema: "Ilha Vulcânica" },
-      { emoji: "⚓", nome: "Cenário 3", nivel: "Difícil", duracao: "12 Rodadas", tema: "Ameaça Canibal" }
     ];
 
     const itens = [
@@ -141,6 +220,38 @@
       const resultadoDiv = document.getElementById("resultado");
       resultadoDiv.innerHTML = "";
 
+      // Cenário
+      const cenarioDiv = document.createElement('div');
+      cenarioDiv.className = 'section';
+      const cenario = cenarios[Math.floor(Math.random() * cenarios.length)];
+      cenarioDiv.innerHTML = `
+        <h2>Cenário</h2>
+        <div class="item">
+          <span class="emoji">${cenario.emoji}</span> <strong>${cenario.nome}</strong>
+        </div>
+        <div class="item grid-two">
+          <div>
+            Dificuldade: <strong>${cenario.dificuldade}</strong><br>
+            Duração: <strong>${cenario.duracao}</strong>
+          </div>
+          <div>
+            Audiência: <strong>${cenario.audiencia}</strong><br>
+            Tema: <strong>${cenario.tema}</strong>
+          </div>
+        </div>
+      `;
+      resultadoDiv.appendChild(cenarioDiv);
+
+      // Decks
+      const decksDiv = document.createElement('div');
+      decksDiv.className = 'section';
+      const deck = Math.random() < 0.5 ? decks[0] : decks[Math.floor(Math.random() * 3) + 1];
+      decksDiv.innerHTML = `
+        <h2>Decks de Aventura</h2>
+        <div class="item"><span class="emoji">${deck.emoji}</span> ${deck.nome}</strong>
+      `;
+      resultadoDiv.appendChild(decksDiv);
+
       // Personagens
       const personagemDiv = document.createElement('div');
       personagemDiv.className = 'section';
@@ -150,19 +261,6 @@
         personagemDiv.innerHTML += `<div class="item"><span class="emoji">${c.emoji}</span> ${c.nome}</div>`;
       });
       resultadoDiv.appendChild(personagemDiv);
-
-      // Cenário
-      const cenarioDiv = document.createElement('div');
-      cenarioDiv.className = 'section';
-      const cenario = cenarios[Math.floor(Math.random() * cenarios.length)];
-      cenarioDiv.innerHTML = `
-        <h2>Cenário</h2>
-        <div class="item"><span class="emoji">${cenario.emoji}</span> <strong>${cenario.nome}</strong></div>
-        <div class="item">Nível: ${cenario.nivel}</div>
-        <div class="item">Duração: ${cenario.duracao}</div>
-        <div class="item">Tema: ${cenario.tema}</div>
-      `;
-      resultadoDiv.appendChild(cenarioDiv);
 
       // Itens Iniciais
       const itemDiv = document.createElement('div');
