@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bardwood Grove</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      margin: 30px;
+      background-color: #3e9251;
+      color: #fff;
+    }
+    h1 {
+      font-size: 26px;
+      color: #55270b;
+      margin-bottom: 10px;
+    }
+    select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #f3b334;
+      color: #55270b;
+      cursor: pointer;
+    }
+    .card {
+      background-color: #185b1f;
+      border: 2px solid #55270b;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 10px auto 20px auto;
+      width: 80%;
+      text-align: center;
+      font-size: 18px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+    .instrumento {
+      font-size: 0.9em;
+      color: #f0e6c4;
+    }
+    .seasons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 20px;
+    }
+    .season-card {
+      width: 130px;
+      height: 130px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      border: 2px solid #55270b;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .player-title {
+        font-size: 12px;
+        font-style: italic;
+    }
+    .emoji {
+      text-shadow: 0 0 3px black;
+      font-size: 22px;
+    }
+    .season-emoji {
+      text-shadow: 0 0 3px black;
+      font-size: 36px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎶 Bardwood Grove 🎶</h1>
+
+  <label for="players">Número de jogadores:</label>
+  <select id="players">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+  <br>
+  <button onclick="gerarPartida()"><strong>Monte uma partida!</strong></button>
+
+  <div id="resultado"></div>
+
+  <script>
+    const personagens = [
+      { nome: "Alex dos Bosquex", instrumento: "Soqueira de Metal", emoji: "👊🏼" },
+      { nome: "Heddy Van Balen", instrumento: "Machado de Fritar", emoji: "🪓" },
+      { nome: "Brute Verinsteen", instrumento: "Mímico de 6 Cordas", emoji: "🎸" },
+      { nome: "Brie Yonsey", instrumento: "Microfone Mágico", emoji: "🎤" },
+      { nome: "Marsala Ondinha", instrumento: "Sapatos de Dança das Ondas", emoji: "🥿" },
+      { nome: "Mog Presa-Branca", instrumento: "Tambores de Guerra", emoji: "🥁" },
+      { nome: "Faustina Edele", instrumento: "Harpa Cantante", emoji: "🎻" },
+      { nome: "Jadd Stanza", instrumento: "Banda Percussiva", emoji: "🪘" },
+      { nome: "Linzy Silverstring", instrumento: "Banjo de Dois Gumes", emoji: "🪕" },
+      { nome: "Loux Moonsong", instrumento: "Barítono dos Metais", emoji: "🎺" },
+      { nome: "Alma Aspirante", instrumento: "Sanfona", emoji: "🪈" },
+      { nome: "Beque", instrumento: "Realejo", emoji: "🎷" },
+    ];
+
+    const estacoes = [
+      { nome: "Inverno", emoji: "❄️", cor: "#2596be" },
+      { nome: "Verão", emoji: "☀️", cor: "#e0b400" },
+      { nome: "Outono", emoji: "🍂", cor: "#d73727" },
+      { nome: "Primavera", emoji: "🌱", cor: "#509244" }
+    ];
+
+    function shuffle(array) {
+      let a = array.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function gerarPartida() {
+      const numJogadores = parseInt(document.getElementById("players").value);
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = '';
+
+      const jogadoresTitle = document.createElement("div");
+      jogadoresTitle.className = "section-title";
+      jogadoresTitle.innerHTML = '<span class="emoji">👥</span> Personagens:';
+      resultadoDiv.appendChild(jogadoresTitle);
+
+      const personagensEmbaralhados = shuffle(personagens);
+      for (let i = 0; i < numJogadores; i++) {
+        const sorteado = personagensEmbaralhados[i]
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <span class="player-title">Jogador ${i + 1}:</span><br>
+          <span class="emoji">${sorteado.emoji}</span> <strong>${sorteado.nome}</strong><br>
+          <span class="instrumento">${sorteado.instrumento}</span>
+        `;
+        resultadoDiv.appendChild(card);
+      }
+
+      // Selecionar estações
+      let idx = Math.floor(Math.random() * estacoes.length);
+      const primeira = estacoes[idx];
+      const segunda = estacoes[(idx + (Math.random() < 0.5 ? 0 : 1)) % estacoes.length];
+
+      const estacoesDiv = document.createElement("div");
+      estacoesDiv.className = "seasons";
+      [primeira, segunda].forEach(est => {
+        const s = document.createElement("div");
+        s.className = "season-card";
+        s.style.backgroundColor = est.cor;
+        s.innerHTML = `<span class="season-emoji">${est.emoji}</span>${est.nome}`;
+        estacoesDiv.appendChild(s);
+      });
+
+      resultadoDiv.appendChild(estacoesDiv);
+    }
+  </script>
+</body>
+</html>

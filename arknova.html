@@ -10,19 +10,19 @@
       color: #0c3c3c;
       font-family: 'Segoe UI', sans-serif;
       text-align: center;
-      padding: 30px;
+      margin: 30px;
     }
 
     h1 {
       color: #02b3bf;
-      font-size: 36px;
+      font-size: 26px;
       margin-bottom: 10px;
     }
 
     select, button {
-      font-size: 18px;
       padding: 10px;
       margin: 10px;
+      font-size: 16px;
       border-radius: 8px;
       border: 2px solid #02b3bf;
     }
@@ -48,6 +48,7 @@
     .player-card {
       background-color: #02b3bf;
       color: white;
+      border: 2px solid white;
       padding: 16px;
       margin-bottom: 20px;
       border-radius: 12px;
@@ -70,8 +71,8 @@
     <option value="2">2</option>
     <option value="3">3</option>
     <option value="4">4</option>
-  </select>
-  <button onclick="sortearMapas()">Sortear Mapas!</button>
+  </select><br>
+  <button onclick="sortearMapas()">Monte uma partida!</button>
 
   <div class="players" id="resultado"></div>
 

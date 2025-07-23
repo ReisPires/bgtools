@@ -10,12 +10,12 @@
       color: #fff;
       font-family: 'Segoe UI', sans-serif;
       text-align: center;
-      padding: 30px;
+      margin: 30px;
     }
 
     h1 {
       color: #ffeb3b;
-      font-size: 36px;
+      font-size: 26px;
       margin-bottom: 10px;
     }
 
@@ -23,24 +23,22 @@
       font-size: 18px;
     }
 
-    select {
-      padding: 8px 14px;
+    select, button {
+      padding: 10px;
+      margin: 10px;
       font-size: 16px;
-      margin-top: 8px;
       border-radius: 8px;
       border: none;
-      background-color: #033d1e;
+    }
+
+    select {
+      background-color: #056632;
       color: #ffeb3b;
     }
 
     button {
-      padding: 10px;
-      font-size: 16px;
       font-weight: bold;
-      border: none;
-      border-radius: 8px;
       cursor: pointer;
-      margin: 10px;
     }
 
     .generate {
@@ -88,13 +86,13 @@
 <body>
   <h1>🐯 Oikos 🐯</h1>
 
-  <label for="players">Número de jogadores:</label><br>
+  <label for="players">Número de jogadores:</label>
   <select id="players">
-    <option value="2">2 jogadores</option>
-    <option value="3">3 jogadores</option>
-    <option value="4">4 jogadores</option>
-    <option value="5">5 jogadores</option>
-    <option value="6">6 jogadores</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
   </select>
   <br>
   <button class="generate" onclick="generateMatch()">Monte uma partida!</button>

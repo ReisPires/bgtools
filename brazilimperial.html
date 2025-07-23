@@ -9,40 +9,38 @@
       background-color: #fff8dc;
       font-family: 'Segoe UI', sans-serif;
       text-align: center;
-      padding: 30px;
+      margin: 30px;
       color: #333;
     }
 
     h1 {
       color: #2e7d32;
-      font-size: 32px;
+      font-size: 26px;
       margin-bottom: 10px;
     }
 
-    label, select {
+    label {
       font-size: 18px;
     }
 
-    select {
-      padding: 8px 14px;
-      margin-top: 8px;
+    select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
       border-radius: 8px;
       border: 2px solid #fdd835;
+    }
+
+    select {
       background-color: #fff59d;
       color: #333;
     }
 
     button {
-      display: block;
-      margin: 20px auto 0 auto;
-      padding: 10px 18px;
-      font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
       background-color: #fdd835;
       color: #2e7d32;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
     }
 
     button:hover {
@@ -87,30 +85,28 @@
       border-radius: 12px;
       padding: 14px;
       margin-bottom: 22px;
-    }
-
-    .empire-card h2 {
-      margin: 0 0 10px 0;
-      font-size: 16px;
+      border: 2px solid #2e7d32;
       color: white;
     }
 
-    .empire-card.light-text {
-      color: white;
+    .empire-title {
+        font-size: 16px;
+        font-style: italic;
     }
   </style>
 </head>
 <body>
   <h1>👑 Brazil: Imperial 👑</h1>
 
-  <label for="players">Número de jogadores:</label><br>
+  <label for="players">Número de jogadores:</label>
   <select id="players">
-    <option value="1">1 jogador</option>
-    <option value="2">2 jogadores</option>
-    <option value="3">3 jogadores</option>
-    <option value="4">4 jogadores</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
   </select>
-
+  <br>
   <button onclick="gerarPartida()">Monte uma partida!</button>
 
   <div class="result" id="resultado"></div>
@@ -178,7 +174,7 @@
       mapaCard.className = "card";
       mapaCard.innerHTML = `
         <h2>🗺️ Mapa</h2>
-        <div class="map-name">${mapaEscolhido.nome} ${emojiEspadas}</div>
+        <div class="map-name">${mapaEscolhido.nome}<br>${emojiEspadas}</div>
       `;
       resultadoDiv.appendChild(mapaCard);
 
@@ -196,12 +192,8 @@
         card.className = "empire-card";
         card.style.backgroundColor = coresCSS[cor];
 
-        if (textoClaro.includes(cor)) {
-          card.classList.add("light-text");
-        }
-
         card.innerHTML = `
-          <h2>Jogador ${i + 1}:</h2> <div class="empire-name">${nome}</div>
+          <span class="empire-title">Jogador ${i + 1}:</span> <div class="empire-name">${nome}</div>
         `;
         resultadoDiv.appendChild(card);
       });

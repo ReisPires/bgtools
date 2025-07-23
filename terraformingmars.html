@@ -15,7 +15,7 @@
 
     h1 {
       color: #FFA500;
-      font-size: 28px;
+      font-size: 26px;
       margin-bottom: 10px;
     }
 
@@ -23,12 +23,15 @@
       font-size: 18px;
     }
 
-    select {
-      padding: 8px 14px;
+    select, button {
+      padding: 10px;
+      margin: 10px;
       font-size: 16px;
-      margin-top: 8px;
-      border-radius: 8px;
       border: none;
+      border-radius: 8px;
+    }
+
+    select {
       background-color: #222;
       color: #FFA500;
     }
@@ -92,13 +95,12 @@
   <h1>🪐 Terraforming Mars 🪐</h1>
 
   <label for="playerCount">Número de jogadores:</label>
-  <br>
   <select id="playerCount">
-    <option value="1">1 jogador</option>
-    <option value="2">2 jogadores</option>
-    <option value="3">3 jogadores</option>
-    <option value="4">4 jogadores</option>
-    <option value="5">5 jogadores</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
   </select>
   <br>
   <button class="generate" onclick="generateMatch()">Monte uma partida!</button>

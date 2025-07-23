@@ -10,13 +10,13 @@
       color: #ecf0f1;
       font-family: 'Segoe UI', sans-serif;
       text-align: center;
-      padding: 30px;
+      margin: 30px;
     }
 
     h1 {
-      font-size: 28px;
+      font-size: 26px;
       color: #f8c971;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     h2 {
@@ -25,9 +25,9 @@
     }
 
     select, button {
-      font-size: 18px;
       padding: 10px;
       margin: 10px;
+      font-size: 16px;
       border-radius: 8px;
       border: none;
     }
@@ -85,17 +85,17 @@
     <option value="4">4</option>
     <option value="5">5</option>
     <option value="6">6</option>
-  </select>
-  <button onclick="gerarPartida()">Montar partida!</button>
+  </select><br>
+  <button onclick="gerarPartida()">Monte uma partida!</button>
 
   <div id="sheet"></div>
   <div class="players" id="players"></div>
 
   <script>
     const estacoes = [
-      { nome: "Primavera", cor: "#d2dfa8", emoji: "🌸" },
-      { nome: "Verão", cor: "#fcf1b1", emoji: "🌞" },
-      { nome: "Outono", cor: "#ebc6a2", emoji: "🍁" },
+      { nome: "Primavera", cor: "#d2dfa8", emoji: "🌱" },
+      { nome: "Verão", cor: "#fcf1b1", emoji: "☀️" },
+      { nome: "Outono", cor: "#ebc6a2", emoji: "🍂" },
       { nome: "Inverno", cor: "#e8eff7", emoji: "❄️" }
     ];
 
