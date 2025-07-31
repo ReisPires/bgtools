@@ -148,7 +148,7 @@
         const objDiv = document.createElement("div");
         objDiv.className = `objective-card ${cores[i]}`;
         objDiv.style.backgroundColor = coreshtml[i];
-        objDiv.innerHTML = `<span class="emoji">${emojis[i]}</span> ${nome}: <strong>${getRandomCard(nome)}</strong>`;
+        objDiv.innerHTML = `<span class="emoji">${emojis[i]}</span> <strong>${getRandomCard(nome)}</strong>`;
         objetivosDiv.appendChild(objDiv);
       });
 
