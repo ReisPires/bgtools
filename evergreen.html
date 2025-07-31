@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evergreen</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #ffffff;
+      color: #2e5939;
+      text-align: center;
+      margin: 30px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: #2e5939;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+      background-color: #7cc28e;
+      color: #1e3d2f;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    button:hover {
+        background-color: #a9e8b9;
+    }
+
+    .powers {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .power {
+      background-color: #d8f2df;
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      width: 150px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .emoji {
+      font-size: 40px;
+      text-shadow: 0 0 3px black;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌱 Evergreen 🌱</h1>
+  <button onclick="gerarPartida()"><strong>Monte uma partida!</strong></button>
+  <div class="powers" id="resultado"></div>
+
+  <script>
+    const poderes = [
+      { nome: "Broto", emoji: "🪵", cor: "#774801" },
+      { nome: "Árvore Pequena", emoji: "🌱", cor: "#849f31" },
+      { nome: "Árvore Grande", emoji: "🌳", cor: "#146e31" },
+      { nome: "Arbusto", emoji: "🌾", cor: "#bba828" },
+      { nome: "Lago", emoji: "🌊", cor: "#039dd7" },
+      { nome: "Semente", emoji: "🌰", cor: "#AB9779" },
+      { nome: "Árvore Gigante", emoji: "🌲", cor: "#1b493b" },
+      { nome: "Cogumelo", emoji: "🍄", cor: "#bb303e" },
+      { nome: "Pinheiro", emoji: "🎄", cor: "#6e99a9" },
+      { nome: "Cacto", emoji: "🌵", cor: "#AB925C" }
+    ];
+
+    function gerarPartida() {
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = "";
+
+      const selecionados = shuffle(poderes).slice(0, 6);
+
+      // Separar fixos (1-6) e extras (7-10)
+      const fixos = Array(6).fill(null);
+      const extras = [];
+
+      for (const poder of selecionados) {
+        const idx = poderes.findIndex(p => p.nome === poder.nome);
+        if (idx < 6) {
+          fixos[idx] = poder;
+        } else {
+          extras.push(poder);
+        }
+      }
+
+      // Preencher as posições faltantes com os extras em ordem aleatória
+      const extrasEmbaralhados = shuffle(extras);
+      let extraIndex = 0;
+      for (let i = 0; i < 6; i++) {
+        if (fixos[i] === null && extraIndex < extrasEmbaralhados.length) {
+          fixos[i] = extrasEmbaralhados[extraIndex++];
+        }
+      }
+
+      // Mostrar
+      for (const poder of fixos) {
+        if (poder) {
+          const card = document.createElement("div");
+          card.className = "power";
+          card.style.backgroundColor = poder.cor;
+          card.innerHTML = `
+            <div class="emoji">${poder.emoji}</div>
+            ${poder.nome}
+          `;
+          resultadoDiv.appendChild(card);
+        }
+      }
+    }
+
+    function shuffle(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+  </script>
+</body>
+</html>

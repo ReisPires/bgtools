@@ -126,8 +126,16 @@
     const coreshtml = ["#246592", "#229453", "#b63c30", "#ac8c0e"];
     const emojis = ["🚀", "🪐", "⚔️", "⚙️"];
 
-    function getRandomCard() {
-      return "Carta " + (Math.floor(Math.random() * 3) + 1);
+    const cartasPorTabuleiro = {
+      Navegação: ["Prospector", "Mercantilista", "Colecionador"],
+      Expansão: ["Expansionista", "Consumidor de Núcleos", "Tecnocrata"],
+      Guerra: ["Armada", "Frente Unida", "Ativos Assegurados"],
+      Indústria: ["Produção Diversificada", "Especialista em Abastecimento", "Eficiência Máxima"]
+    };
+
+    function getRandomCard(tabuleiro) {
+      const cartas = cartasPorTabuleiro[tabuleiro];
+      return cartas[Math.floor(Math.random() * cartas.length)];
     }
 
     function gerarPartida() {
@@ -140,7 +148,7 @@
         const objDiv = document.createElement("div");
         objDiv.className = `objective-card ${cores[i]}`;
         objDiv.style.backgroundColor = coreshtml[i];
-        objDiv.innerHTML = `<span class="emoji">${emojis[i]}</span> ${nome}: <strong>${getRandomCard()}</strong>`;
+        objDiv.innerHTML = `<span class="emoji">${emojis[i]}</span> ${nome}: <strong>${getRandomCard(nome)}</strong>`;
         objetivosDiv.appendChild(objDiv);
       });
 

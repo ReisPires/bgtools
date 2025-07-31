@@ -151,6 +151,11 @@
       }
 
       // Selecionar estações
+      const estacoesTitle = document.createElement("div");
+      estacoesTitle.className = "section-title";
+      estacoesTitle.innerHTML = '<span class="emoji">🍃</span> Estações:';
+      resultadoDiv.appendChild(estacoesTitle);
+
       let idx = Math.floor(Math.random() * estacoes.length);
       const primeira = estacoes[idx];
       const segunda = estacoes[(idx + (Math.random() < 0.5 ? 0 : 1)) % estacoes.length];
