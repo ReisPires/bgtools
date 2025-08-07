@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Paris: La Cité de la Lumière</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0c1a3c; /* deep blue */
+      color: #f5f5dc; /* soft yellowish white */
+      text-align: center;
+      margin: 30px;
+    }
+
+    h1 {
+      color: #f3d14b; /* yellow */
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.2);
+      margin-right: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #f3d14b;
+      color: #0c1a3c;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 20px 0;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ffe25c;
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: #1b2f5d;
+      color: #f5f5dc;
+      padding: 16px 20px;
+      border-radius: 12px;
+      width: 100%;
+      text-align: left;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .emoji {
+        font-size: 28px;
+        text-shadow: 0 0 3px black;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌃 Paris: La Cité de la Lumière 🌃</h1>
+
+  <label>
+    <input type="checkbox" id="eiffelCheckbox" />
+    Eiffel
+  </label>
+
+  <br>
+  <button onclick="gerarCartoes()">Monte uma partida!</button>
+
+  <div class="card-list" id="resultado"></div>
+
+  <script>
+    const principais = [
+      { nome: "Moulin Rouge", emoji: "💃" },
+      { nome: "Fontaine de Mers", emoji: "⛲" },
+      { nome: "Le Penseur", emoji: "🗿" },
+      { nome: "La Grande Lumière", emoji: "💡" },
+      { nome: "Levitation", emoji: "🪄" },
+      { nome: "Metropolitan", emoji: "🚇" },
+      { nome: "Jardin des Plantes", emoji: "🌸" },
+      { nome: "Sacré Coeur", emoji: "⛪" },
+      { nome: "Le Peintre", emoji: "🎨" },
+      { nome: "Chartier", emoji: "🍽️" },
+      { nome: "Bouquinistes Sur a Seine", emoji: "📚" },
+      { nome: "Lampadaire", emoji: "🕯️" }
+    ];
+
+    const expansaoEiffel = [
+      { nome: "Obélisque de Louxor", emoji: "🌟" },
+      { nome: "Quartiers Pauvres", emoji: "🏚️" },
+      { nome: "Hôtel des Invalides", emoji: "🏰" },
+      { nome: "Notre-Dame de Paris", emoji: "🦇" },
+      { nome: "Arc de Triomphe", emoji: "🏛️" },
+      { nome: "Tour Eiffel", emoji: "🗼" },
+      { nome: "Musée du Louvre", emoji: "🖼️" },
+      { nome: "Catacombes de Paris", emoji: "💀" }
+    ];
+
+    function gerarCartoes() {
+      const incluirEiffel = document.getElementById("eiffelCheckbox").checked;
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = "";
+
+      let pool = [...principais];
+      if (incluirEiffel) {
+        pool = pool.concat(expansaoEiffel);
+      }
+
+      const sorteados = shuffle(pool).slice(0, 8);
+
+      sorteados.forEach(cartao => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<span class="emoji">${cartao.emoji}</span> <strong>${cartao.nome}</strong>`;
+        resultado.appendChild(div);
+      });
+    }
+
+    function shuffle(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+  </script>
+</body>
+</html>
