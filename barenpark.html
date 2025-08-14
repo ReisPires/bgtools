@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bärenpark</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #4b1e1e; /* dark reddish brown */
+      color: #f8e08e; /* soft yellow */
+      text-align: center;
+      margin: 30px;
+    }
+
+    h1 {
+      color: #f8e08e;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #f8e08e;
+      color: #4b1e1e;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 20px 0;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ffe78f;
+    }
+
+    .achievement-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .achievement {
+      background-color: #5c2626;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 138px;
+    }
+
+    .achievement img {
+      width: 138px;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .achievement-name {
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐻 Bärenpark 🐻</h1>
+
+  <button onclick="gerarConquistas()">Monte uma partida!</button>
+
+  <div class="achievement-list" id="resultado"></div>
+
+  <script>
+    const conquistas = [
+      // Base
+      { nome: "Áreas Verdes", arquivo: "areas_verdes.png" },
+      { nome: "Casas dos Animais", arquivo: "casas_dos_animais.png" },
+      { nome: "Cercados", arquivo: "cercados.png" },
+      { nome: "Coalas", arquivo: "coalas.png" },
+      { nome: "Pandas", arquivo: "pandas.png" },
+      { nome: "Rio Longo", arquivo: "rio_longo.png" },
+      { nome: "Rua do Food Truck", arquivo: "rua_do_food_truck.png" },
+      { nome: "Urso Gobi", arquivo: "urso_gobi.png" },
+      { nome: "Urso Polar", arquivo: "urso_polar.png" },
+      { nome: "Em Dobro", arquivo: "em_dobro.png" },
+      // Bad News Bear
+      { nome: "Pausa na Construção", arquivo: "pausa_na_construcao.png" },
+      { nome: "Planejamento de Cercados", arquivo: "planejamento_de_cercados.png" },
+      { nome: "Toaletes Separados", arquivo: "toaletes_separados.png" },
+      { nome: "Conexões de Food Truck", arquivo: "conexoes_de_food_trucks.png" },
+      { nome: "Rios nas Esquinas", arquivo: "rios_nas_esquinas.png" },
+      { nome: "Parquinhos com Estátuas", arquivo: "parquinhos_com_estatuas.png" }
+    ];
+
+    function gerarConquistas() {
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = "";
+
+      const sorteadas = shuffle(conquistas).slice(0, 3);
+
+      sorteadas.forEach(c => {
+        const div = document.createElement("div");
+        div.className = "achievement";
+
+        const img = document.createElement("img");
+        img.src = `./figs/barenpark/${c.arquivo}`;
+        img.alt = c.nome;
+
+        const nome = document.createElement("div");
+        nome.className = "achievement-name";
+        nome.textContent = c.nome;
+
+        div.appendChild(img);
+        div.appendChild(nome);
+        resultado.appendChild(div);
+      });
+    }
+
+    function shuffle(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+  </script>
+</body>
+</html>
