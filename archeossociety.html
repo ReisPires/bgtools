@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Archeos Society - Setup</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --brown: #6b4b28;
+      --gold: #c6a44a;
+      --card-bg: #fbf7ef;
+      --shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--brown);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      text-align: center;
+      padding: 28px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    button {
+      background: var(--gold);
+      color: var(--brown);
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    button:hover { background: #e5c76d; }
+
+    .content {
+      display: none;
+      margin-top: 30px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .roles, .site {
+      margin-bottom: 30px;
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .role-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      justify-content: center;
+    }
+
+    .role-emoji {
+      font-size: 28px;
+      text-shadow: 0 0 3px black;
+    }
+
+    .site-card {
+      border-radius: var(--radius);
+      padding: 18px;
+      color: white;
+      box-shadow: var(--shadow);
+      display: inline-block;
+      min-width: 220px;
+      text-align: center;
+    }
+
+    .site-emoji {
+      font-size: 40px;
+      text-shadow: 0 0 3px black;
+      display: block;
+    }
+
+    .site-name {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏺 Archeos Society 🏺</h1>
+  <button onclick="gerarPartida()">Monte uma partida!</button>
+
+  <div class="content" id="content">
+    <div class="roles">
+      <h2>🎭 Personagens</h2>
+      <div class="roles-grid" id="rolesGrid"></div>
+    </div>
+
+    <div class="site">
+      <h2>📍 Sítio Arqueológico</h2>
+      <div class="site-card" id="siteCard"></div>
+    </div>
+  </div>
+
+  <script>
+    // ----- CONFIGURÁVEL -----
+    const ROLES = [
+      { nome: "Botânico", emoji: "🌿" },
+      { nome: "Cartógrafa", emoji: "🗺️" },
+      { nome: "Curadora", emoji: "🏛️" },
+      { nome: "Guia", emoji: "🧭" },
+      { nome: "Linguista", emoji: "📜" },
+      { nome: "Mercenário", emoji: "🤠" },
+      { nome: "Patrono", emoji: "💵" },
+      { nome: "Fotógrafa", emoji: "📷" },
+      { nome: "Médico", emoji: "⚕️" },
+      { nome: "Pilota", emoji: "✈️" },
+      { nome: "Professora", emoji: "📚" },
+      { nome: "Estudante", emoji: "🎓" }
+    ];
+
+    const SITES = [
+      { nome: "Chichén Itza", color: "#b33a3a", emoji: "🛕" },
+      { nome: "Rapa Nui", color: "#2e8b57", emoji: "🗿" },
+      { nome: "Ta-Sekhet-Ma'at", color: "#d0a400", emoji: "⚱️" },
+      { nome: "Tantallon Castle", color: "#2a6fb5", emoji: "🏰" },
+      { nome: "Uluru", color: "#8a2b8a", emoji: "⛰️" },
+      { nome: "Ur", color: "#d36b94", emoji: "🪨" }
+    ];
+
+    // ----- FUNÇÕES -----
+    function shuffle(array) {
+      const arr = array.slice();
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function gerarPartida() {
+      document.getElementById("content").style.display = "block";
+
+      // Seleciona 6 papéis
+      const rolesSelecionados = shuffle(ROLES).slice(0, 6);
+      const rolesGrid = document.getElementById("rolesGrid");
+      rolesGrid.innerHTML = "";
+      rolesSelecionados.forEach(role => {
+        const div = document.createElement("div");
+        div.className = "role-card";
+        div.innerHTML = `<div class="role-emoji">${role.emoji}</div> <strong>${role.nome}</strong>`;
+        rolesGrid.appendChild(div);
+      });
+
+      // Seleciona 1 sítio
+      const site = SITES[Math.floor(Math.random() * SITES.length)];
+      const siteCard = document.getElementById("siteCard");
+      siteCard.style.backgroundColor = site.color;
+      siteCard.innerHTML = `
+        <div class="site-emoji">${site.emoji}</div>
+        <div class="site-name">${site.nome}</div>
+      `;
+    }
+  </script>
+</body>
+</html>
