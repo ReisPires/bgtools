@@ -43,6 +43,17 @@
 
     button:hover { background: #e5c76d; }
 
+    select {
+      padding: 10px;
+      margin: 10px;
+      margin-right: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--brown);
+      background: var(--card-bg);
+      color: var(--brown);
+      font-size: 15px;
+    }
+
     .content {
       display: none;
       margin-top: 30px;
@@ -79,12 +90,18 @@
       text-shadow: 0 0 3px black;
     }
 
+    .sites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      justify-items: center;
+    }
+
     .site-card {
       border-radius: var(--radius);
       padding: 18px;
       color: white;
       box-shadow: var(--shadow);
-      display: inline-block;
       min-width: 220px;
       text-align: center;
     }
@@ -104,7 +121,18 @@
 </head>
 <body>
   <h1>🏺 Archeos Society 🏺</h1>
-  <button onclick="gerarPartida()">Monte uma partida!</button>
+
+  <label for="siteCount">Sítios Arqueológicos:</label>
+  <select id="siteCount">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+  </select>
+  <br>
+  <button onclick="gerarPartida()"><strong>Monte uma partida!</strong></button>
 
   <div class="content" id="content">
     <div class="roles">
@@ -113,8 +141,8 @@
     </div>
 
     <div class="site">
-      <h2>📍 Sítio Arqueológico</h2>
-      <div class="site-card" id="siteCard"></div>
+      <h2>📍 Sítios Arqueológicos</h2>
+      <div class="sites-grid" id="sitesGrid"></div>
     </div>
   </div>
 
@@ -168,14 +196,21 @@
         rolesGrid.appendChild(div);
       });
 
-      // Seleciona 1 sítio
-      const site = SITES[Math.floor(Math.random() * SITES.length)];
-      const siteCard = document.getElementById("siteCard");
-      siteCard.style.backgroundColor = site.color;
-      siteCard.innerHTML = `
-        <div class="site-emoji">${site.emoji}</div>
-        <div class="site-name">${site.nome}</div>
-      `;
+      // Seleciona N sítios
+      const n = parseInt(document.getElementById("siteCount").value);
+      const sitesSelecionados = shuffle(SITES).slice(0, n);
+      const sitesGrid = document.getElementById("sitesGrid");
+      sitesGrid.innerHTML = "";
+      sitesSelecionados.forEach(site => {
+        const div = document.createElement("div");
+        div.className = "site-card";
+        div.style.backgroundColor = site.color;
+        div.innerHTML = `
+          <div class="site-emoji">${site.emoji}</div>
+          <div class="site-name">${site.nome}</div>
+        `;
+        sitesGrid.appendChild(div);
+      });
     }
   </script>
 </body>
