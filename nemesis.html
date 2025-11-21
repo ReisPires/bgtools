@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nemesis</title>
+  <style>
+    :root{
+      --bg: #071019;            /* very dark navy/black */
+      --panel: #0b1830;         /* dark panel */
+      --accent: #0f4c75;        /* bluish accent for button */
+      --muted: #9aa7b0;
+      --card-radius: 10px;
+      --shadow: 0 6px 20px rgba(0,0,0,0.6);
+      --gap: 14px;
+      --text: #e6eef2;
+    }
+
+    * { box-sizing: border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      background: linear-gradient(180deg, var(--bg) 0%, #04040a 100%);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial;
+      padding: 28px;
+      text-align: center;
+    }
+
+    h1{
+      margin: 0 0 14px 0;
+      font-size: 28px;
+      letter-spacing: 0.4px;
+    }
+
+    select {
+      font-size: 18px;
+      margin: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background: #082233;
+      color: var(--text);
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: background-color 0.3s;
+    }
+
+    .controls {
+      margin: 18px 0;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button.generate {
+      background: linear-gradient(180deg, var(--accent), #0b3a62);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      padding: 10px 18px;
+    }
+    button.generate:hover { transform: translateY(-2px); }
+
+    /* container for results */
+    .output {
+      margin-top: 22px;
+      max-width: 920px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    /* section style (vertical stacked boxes) */
+    .section {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: var(--card-radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.03);
+      text-align: left;
+    }
+
+    .section h2 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: var(--muted);
+    }
+
+    /* roles list */
+    .roles-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .role-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border-radius: 8px;
+      padding: 10px 12px;
+      min-height: 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* left colored stripe */
+    .role-card .stripe {
+      width: 10px;
+      border-radius: 6px;
+      flex: 0 0 10px;
+      height: 100%;
+    }
+
+    .role-emoji {
+      font-size: 26px;
+      margin-left: 4px;
+      text-shadow: 0 0 3px black;
+    }
+
+    .role-body {
+      display:flex;
+      flex-direction: column;
+      gap: 4px;
+      color: var(--text);
+    }
+
+    .role-name {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .role-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* alien & ship cards */
+    .big-card {
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding: 12px;
+    }
+
+    .big-card .big-emoji {
+      font-size: 36px;
+      width: 72px;
+      height: 72px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+      text-shadow: 0 0 3px black;
+    }
+
+    .big-card .big-body { flex:1; text-align:left; }
+    .big-card .big-title { font-size:18px; font-weight:700; margin-bottom:6px; }
+    .big-card .big-sub { color: var(--muted); font-size:13px; }
+
+    /* color palette classes used for stripe colors */
+    .c-blue { background: #1f6feb; }      /* blue */
+    .c-red  { background: #d9534f; }      /* red */
+    .c-purple{ background: #7a4de6; }     /* purple */
+    .c-white { background: #f5f5f5; }     /* white */
+    .c-green { background: #2dbf73; }     /* green */
+    .c-pink  { background: #e070b8; }     /* pink */
+    .c-orange{ background: #e07a2e; }     /* orange */
+
+    /* small responsive tweaks */
+    @media (max-width:560px){
+      .roles-list { grid-template-columns: 1fr; }
+      .big-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .big-card .big-emoji { width: 56px; height:56px; font-size:34px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>👽 Nemesis 👽</h1>
+
+    <label for="numPlayers">Número de jogadores:</label>
+    <select id="numPlayers">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <br />
+    <button class="generate" onclick="gerarPartida()">Monte uma partida!</button>
+
+  <div class="output" id="output" aria-live="polite" hidden>
+    <!-- sections inserted here -->
+  </div>
+
+  <script>
+    // ---- Configuration: roles mapped by color (easy to edit) ----
+    // Each color has a list of possible roles (strings).
+    // You can change the emoji for each role in ROLE_EMOJI below.
+    const COLOR_ROLES = [
+      { colorKey: 'blue', stripeClass: 'c-blue', roles: ['Capitão', 'CEO'] },
+      { colorKey: 'red', stripeClass: 'c-red', roles: ['Soldado', 'Condenado'] },
+      { colorKey: 'purple', stripeClass: 'c-purple', roles: ['Batedora', 'Caçador de Recompensas'] },
+      { colorKey: 'white', stripeClass: 'c-white', roles: ['Cientista', 'Psicóloga'] },
+      { colorKey: 'green', stripeClass: 'c-green', roles: ['Pilota', 'Android'] },
+      { colorKey: 'pink', stripeClass: 'c-pink', roles: ['Médica'] },
+      { colorKey: 'orange', stripeClass: 'c-orange', roles: ['Mecânico'] }
+    ];
+
+    // Placeholder emojis per role (easy to edit)
+    const ROLE_EMOJI = {
+      'Capitão': '🧭',
+      'CEO': '💼',
+      'Soldado': '🔫',
+      'Condenado': '⛓️',
+      'Batedora': '💨',
+      'Caçador de Recompensas': '🐕‍🦺',
+      'Cientista': '🧪',
+      'Psicóloga': '👓',
+      'Pilota': '🚀',
+      'Android': '🤖',
+      'Médica': '🩺',
+      'Mecânico': '🔧'
+    };
+
+    // Alien races and emojis (placeholders)
+    const ALIEN_RACES = [
+      { name: 'Intruders', emoji: '👽' },
+      { name: 'Carnomorphs', emoji: '💀' },
+      { name: 'Void Seeders', emoji: '🧠' },
+      { name: 'Chytrids', emoji: '🍄' }
+    ];
+
+    // shuffle helper
+    function shuffle(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    // main generator
+    function gerarPartida() {
+      const numPlayers = parseInt(document.getElementById('numPlayers').value, 10);
+      const output = document.getElementById('output');
+      output.hidden = false;
+      output.innerHTML = '';
+
+      // 1) Select colors (no duplicates)
+      const available = shuffle(COLOR_ROLES).slice(); // shuffled copy
+      const selectedColors = available.slice(0, numPlayers);
+
+      // 2) For each selected color, choose a role (random among that color's roles)
+      const playerAssignments = selectedColors.map((c, idx) => {
+        const chosenRole = c.roles[Math.floor(Math.random() * c.roles.length)];
+        return {
+          playerIndex: idx + 1,
+          colorKey: c.colorKey,
+          stripeClass: c.stripeClass,
+          role: chosenRole,
+          emoji: ROLE_EMOJI[chosenRole] || '❔'
+        };
+      });
+
+      // ----- Build "Personagens" section -----
+      const secRoles = document.createElement('section');
+      secRoles.className = 'section';
+      secRoles.innerHTML = '<h2>🧑‍🚀 Personagens</h2>';
+
+      const rolesList = document.createElement('div');
+      rolesList.className = 'roles-list';
+
+      playerAssignments.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'role-card';
+        // special case: white stripe uses dark text for readability
+        if (p.colorKey === 'white') card.classList.add('white-text-fix');
+
+        card.innerHTML = `
+          <div class="stripe ${p.stripeClass}" aria-hidden="true"></div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="role-emoji">${p.emoji}</div>
+            <div class="role-body">
+              <div class="role-name">${p.role}</div>
+              <div class="role-sub">${capitalizeColorName(p.colorKey)}</div>
+            </div>
+          </div>
+        `;
+        rolesList.appendChild(card);
+      });
+
+      secRoles.appendChild(rolesList);
+      output.appendChild(secRoles);
+
+      // ----- Alien race section -----
+      const race = ALIEN_RACES[Math.floor(Math.random() * ALIEN_RACES.length)];
+      const secAlien = document.createElement('section');
+      secAlien.className = 'section';
+      secAlien.innerHTML = '<h2>👾 Alien</h2>';
+      const bigAlien = document.createElement('div');
+      bigAlien.className = 'big-card';
+      bigAlien.innerHTML = `
+        <div class="big-emoji">${race.emoji}</div>
+        <div class="big-body">
+          <div class="big-title">${race.name}</div>
+        </div>
+      `;
+      secAlien.appendChild(bigAlien);
+      output.appendChild(secAlien);
+
+      // ----- Ship config section -----
+      const ship = Math.random() < 0.5 ? 'Tradicional' : 'Alternativo';
+      const secShip = document.createElement('section');
+      secShip.className = 'section';
+      secShip.innerHTML = '<h2>🛸 Mapa da Nave</h2>';
+      const bigShip = document.createElement('div');
+      bigShip.className = 'big-card';
+      bigShip.innerHTML = `
+        <div class="big-emoji">${ship === 'Tradicional' ? '🔴' : '🔵'}</div>
+        <div class="big-body">
+          <div class="big-title">${ship}</div>
+        </div>
+      `;
+      secShip.appendChild(bigShip);
+      output.appendChild(secShip);
+
+      // scroll into view (nice UX)
+      setTimeout(()=> {
+        output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    }
+
+    function capitalizeColorName(key){
+      switch(key){
+        case 'blue': return 'Azul';
+        case 'red': return 'Vermelho';
+        case 'purple': return 'Roxo';
+        case 'white': return 'Branco';
+        case 'green': return 'Verde';
+        case 'pink': return 'Rosa';
+        case 'orange': return 'Laranja';
+        default: return key;
+      }
+    }
+  </script>
+</body>
+</html>
