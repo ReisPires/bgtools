@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bingo</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0f172a;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100svh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .display {
+      margin: 48px 0;
+      line-height: 1;
+    }
+
+    .letter {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .number {
+      font-size: 132px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    /* Cores por letra */
+    .B { color: #38bdf8; }
+    .I { color: #22c55e; }
+    .N { color: #eab308; }
+    .G { color: #a855f7; }
+    .O { color: #f97316; }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    button {
+      width: 60px;
+      height: 60px;
+      font-size: 26px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .draw {
+      background: #22c55e;
+    }
+
+    .list {
+      background: #334155;
+    }
+
+    .reset {
+      background: #ef4444;
+    }
+
+    .sorted-list {
+      margin-top: 12px;
+      font-size: 18px;
+      line-height: 1.6;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+    <div class="display">
+      <div class="letter" id="letter">—</div>
+      <div class="number" id="number"></div>
+    </div>
+
+    <div class="buttons">
+      <button class="draw" onclick="drawNumber()">🎲</button>
+      <button class="list" onclick="toggleList()">📋</button>
+      <button class="reset" onclick="resetGame()">🔄</button>
+    </div>
+
+    <div class="sorted-list" id="sortedList"></div>
+  </div>
+
+  <script>
+    const bingoRanges = {
+      B: [1, 15],
+      I: [16, 30],
+      N: [31, 45],
+      G: [46, 60],
+      O: [61, 75]
+    };
+
+    let remainingNumbers = [];
+    let drawnNumbers = [];
+    let canDraw = true;
+
+    function initGame() {
+      remainingNumbers = [];
+      drawnNumbers = [];
+      canDraw = true;
+
+      for (const letter in bingoRanges) {
+        const [min, max] = bingoRanges[letter];
+        for (let i = min; i <= max; i++) {
+          remainingNumbers.push({ letter, number: i });
+        }
+      }
+
+      const letterDiv = document.getElementById("letter");
+      letterDiv.textContent = "—";
+      letterDiv.className = "letter";
+
+      document.getElementById("number").textContent = "";
+      document.getElementById("sortedList").style.display = "none";
+      document.getElementById("sortedList").textContent = "";
+    }
+
+    function drawNumber() {
+      if (!canDraw) return;
+      if (remainingNumbers.length === 0) {
+        alert("Todos os números já foram sorteados.");
+        return;
+      }
+
+      canDraw = false;
+
+      const index = Math.floor(Math.random() * remainingNumbers.length);
+      const drawn = remainingNumbers.splice(index, 1)[0];
+      drawnNumbers.push(drawn);
+
+      const letterDiv = document.getElementById("letter");
+      letterDiv.textContent = drawn.letter;
+      letterDiv.className = `letter ${drawn.letter}`;
+
+      document.getElementById("number").textContent = drawn.number;
+
+      updateList();
+
+      setTimeout(() => {
+        canDraw = true;
+      }, 500);
+    }
+
+    function resetGame() {
+      initGame();
+    }
+
+    function toggleList() {
+      const listDiv = document.getElementById("sortedList");
+      listDiv.style.display =
+        listDiv.style.display === "none" ? "block" : "none";
+    }
+
+    function updateList() {
+      const listDiv = document.getElementById("sortedList");
+
+      const ordered = [...drawnNumbers].sort((a, b) => a.number - b.number);
+
+      listDiv.textContent = ordered
+        .map(item => `${item.letter}${item.number}`)
+        .join(" · ");
+    }
+
+    initGame();
+  </script>
+
+</body>
+</html>
