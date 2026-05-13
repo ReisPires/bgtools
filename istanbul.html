@@ -129,10 +129,10 @@
         rows = 5; cols = 5;
         numbers = [...Array(25).keys()].map(n => n + 1);
       } else if (mocha) {
-        rows = 5; cols = 4;
+        rows = 4; cols = 5;
         numbers = [...Array(20).keys()].map(n => n + 1);
       } else if (letters) {
-        rows = 5; cols = 4;
+        rows = 4; cols = 5;
         numbers = [...Array(16).keys()].map(n => n + 1).concat([21, 22, 23, 24]);
       } else {
         numbers = [...Array(16).keys()].map(n => n + 1);
@@ -168,6 +168,7 @@
         }
       }
 
+      if ((cols === 5 && rows === 5) && (pos7[0] != 2  || pos7[1] != 2)) return false;
       if (!isInsideCenter(pos7, rows, cols)) return false;
       if (manhattanDistance(pos8, pos9) < 3) return false;
       if ((cols === 4 && rows === 5) && (pos8[0] === pos9[0] || pos8[1] === pos9[1])) return false;

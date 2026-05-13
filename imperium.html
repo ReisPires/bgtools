@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imperium</title>
+
+<style>
+body {
+  background:
+    radial-gradient(circle at 20% 30%, #f8f8f8 0%, transparent 30%),
+    radial-gradient(circle at 80% 70%, #ececec 0%, transparent 25%),
+    linear-gradient(135deg, #f5f5f5, #dddddd);
+  color: #222;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  margin: 30px;
+}
+
+h1 {
+  color: #444;
+  font-size: 28px;
+}
+
+select, button {
+  padding: 10px;
+  margin: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+}
+
+select {
+  background-color: #666;
+  color: white;
+}
+
+button {
+  background-color: #d8d8d8;
+  color: #222;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #c7c7c7;
+}
+
+label {
+  font-size: 16px;
+}
+
+.player, .deck-box {
+  position: relative;
+  background: rgba(255,255,255,0.95);
+  color: #222;
+  border: 1px solid #cfcfcf;
+  border-radius: 14px;
+  padding: 18px 18px 18px 32px;
+  margin: 12px auto;
+  width: 80%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  text-align: left;
+  overflow: hidden;
+}
+
+.color-stripe {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 16px;
+  height: calc(100% + 2px);
+  border-radius: 14px 0 0 14px;
+}
+
+.player h3, .deck-box h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+}
+
+.player div {
+  margin: 6px 0;
+}
+
+.player em {
+  color: #666;
+  margin-left: 6px;
+}
+
+.emoji {
+  font-size: 24px;
+  text-shadow: 0 0 3px black;
+}
+
+.dot {
+  font-size: 18px;
+}
+
+.green { color: #4caf50; }
+.red { color: #f44336; }
+
+.section-title {
+  margin-top: 30px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.classicos { color: #d20073; font-weight: bold; }
+.lendas { color: #00a5a3; font-weight: bold; }
+.horizontes { color: #ee9727; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>🏛️ Imperium 🏛️</h1>
+
+<label>Número de jogadores:</label>
+<select id="players">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+</select>
+
+<br>
+
+<label>
+<input type="checkbox" id="rotas">
+Rotas Comerciais
+</label>
+
+<br>
+
+<button onclick="gerarPartida()">Monte uma partida!</button>
+
+<div id="resultado"></div>
+
+<script>
+const civilizacoes = [
+  {nome:"Abássidas", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#31a037", cor2:"#dedc00", emoji:"🌙", rotas:true},
+  {nome:"Arturianos", caixa:"Lendas", agressividade:2, dificuldade:5, cor:"#8dbe22", cor2:"#8dbe22", emoji:"👑", rotas:false},
+  {nome:"Atlantes", caixa:"Lendas", agressividade:3, dificuldade:3, cor:"#64c7f3", cor2:"#64c7f3", emoji:"🌊", rotas:false},
+  {nome:"Axumitas", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#fcc11d", cor2:"#ca2d17", emoji:"🪙", rotas:true},
+  {nome:"Cartagineses", caixa:"Clássicos", agressividade:2, dificuldade:2, cor:"#005da3", cor2:"#005da3", emoji:"⚓", rotas:false},
+  {nome:"Celtas", caixa:"Clássicos", agressividade:3, dificuldade:2, cor:"#00683a", cor2:"#00683a", emoji:"🍀", rotas:false},
+  {nome:"Citas", caixa:"Clássicos", agressividade:2, dificuldade:2, cor:"#b7b867", cor2:"#b7b867", emoji:"🐎", rotas:false},
+  {nome:"Cultistas", caixa:"Horizontes", agressividade:3, dificuldade:5, cor:"#b0182e", cor2:"#711517", emoji:"🐙", rotas:false},
+  {nome:"Egípcios", caixa:"Lendas", agressividade:2, dificuldade:3, cor:"#ffee00", cor2:"#ffee00", emoji:"𓂀", rotas:false},
+  {nome:"Gregos", caixa:"Clássicos", agressividade:2, dificuldade:3, cor:"#edebeb", cor2:"#edebeb", emoji:"🧿", rotas:false},
+  {nome:"Guptas", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#64163b", cor2:"#b23e45", emoji:"🕉️", rotas:true},
+  {nome:"Inuits", caixa:"Horizontes", agressividade:0, dificuldade:4, cor:"#8ad2f3", cor2:"#e8f5f9", emoji:"❄️", rotas:false},
+  {nome:"Japoneses", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#532674", cor2:"#f4e1b5", emoji:"⛩️", rotas:false},
+  {nome:"Macedônios", caixa:"Clássicos", agressividade:1, dificuldade:1, cor:"#552b81", cor2:"#552b81", emoji:"⚔️", rotas:false},
+  {nome:"Magiares", caixa:"Horizontes", agressividade:3, dificuldade:1, cor:"#a11a16", cor2:"#e6650c", emoji:"🦅", rotas:false},
+  {nome:"Maias", caixa:"Horizontes", agressividade:1, dificuldade:4, cor:"#018b7b", cor2:"#fabc72", emoji:"🌽", rotas:false},
+  {nome:"Marcianos", caixa:"Horizontes", agressividade:1, dificuldade:5, cor:"#762282", cor2:"#f191bc", emoji:"👽", rotas:false},
+  {nome:"Máuria", caixa:"Lendas", agressividade:2, dificuldade:2, cor:"#9e622e", cor2:"#9e622e", emoji:"🛕", rotas:false},
+  {nome:"Minoicos", caixa:"Lendas", agressividade:1, dificuldade:2, cor:"#000000", cor2:"#000000", emoji:"🐂", rotas:false},
+  {nome:"Olmecas", caixa:"Lendas", agressividade:1, dificuldade:4, cor:"#8e8e8d", cor2:"#8e8e8d", emoji:"🗿", rotas:false},
+  {nome:"Persas", caixa:"Clássicos", agressividade:3, dificuldade:1, cor:"#a45396", cor2:"#a45396", emoji:"🦁", rotas:false},
+  {nome:"Polinésios", caixa:"Horizontes", agressividade:0, dificuldade:5, cor:"#a45396", cor2:"#cfe9f1", emoji:"🛶", rotas:false},
+  {nome:"Qin", caixa:"Lendas", agressividade:1, dificuldade:2, cor:"#ef82ac", cor2:"#ef82ac", emoji:"🪭", rotas:false},
+  {nome:"Romanos", caixa:"Clássicos", agressividade:2, dificuldade:1, cor:"#e30613", cor2:"#e30613", emoji:"🌿", rotas:false},
+  {nome:"Sassânidas", caixa:"Horizontes", agressividade:2, dificuldade:4, cor:"#fad374", cor2:"#3a388e", emoji:"🐅", rotas:true},
+  {nome:"Taínos", caixa:"Horizontes", agressividade:1, dificuldade:3, cor:"#e7cd5f", cor2:"#3a672b", emoji:"🌴", rotas:false},
+  {nome:"Tangues", caixa:"Horizontes", agressividade:0, dificuldade:3, cor:"#9a1915", cor2:"#e94e0f", emoji:"🐉", rotas:true},
+  {nome:"Uagadus", caixa:"Horizontes", agressividade:0, dificuldade:3, cor:"#ffdd00", cor2:"#f39200", emoji:"💰", rotas:true},
+  {nome:"Utopianos", caixa:"Lendas", agressividade:0, dificuldade:5, cor:"#12b1ad", cor2:"#12b1ad", emoji:"☮️", rotas:false},
+  {nome:"Vikings", caixa:"Clássicos", agressividade:3, dificuldade:3, cor:"#f59e00", cor2:"#f59e00", emoji:"⛵", rotas:false},
+];
+
+const decks = [
+  { nome: "Clássicos", cor: "#d20073", emoji: "🏺" },
+  { nome: "Lendas", cor: "#00a5a3", emoji: "📜" },
+  { nome: "Horizontes", cor: "#ee9727", emoji: "🌅" }
+];
+
+function shuffle(array){
+    let a = array.slice();
+    for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+}
+
+function getCaixaClass(caixa){
+    if(caixa==="Clássicos") return "classicos";
+    if(caixa==="Lendas") return "lendas";
+    return "horizontes";
+}
+
+function gerarBolinhas(n){
+    let html="";
+    for(let i=0;i<5;i++){
+        html += `<span class="dot ${i<n?'red':'green'}">●</span>`;
+    }
+    return html;
+}
+
+function textoAgressividade(n){
+    return [
+        "Pacíficos",
+        "Parcialmente pacíficos",
+        "Agressivos",
+        "Impiedosos"
+    ][n];
+}
+
+function textoDificuldade(n){
+    return [
+        "Simples",
+        "Fácil",
+        "Médio",
+        "Difícil",
+        "Desafiador"
+    ][n-1];
+}
+
+function gerarPartida(){
+    const jogadores = parseInt(document.getElementById("players").value);
+    const rotas = document.getElementById("rotas").checked;
+    const resultado = document.getElementById("resultado");
+    resultado.innerHTML="";
+
+    let pool = civilizacoes.filter(c => rotas || !c.rotas);
+    const sorteadas = shuffle(pool).slice(0,jogadores);
+
+    resultado.innerHTML += `<div class="section-title">🌍 Civilizações</div>`;
+
+    sorteadas.forEach(civ=>{
+        resultado.innerHTML += `
+        <div class="player">
+          <div class="color-stripe" style="background:linear-gradient(to right, ${civ.cor} 50%, ${civ.cor2} 50%)"></div>
+
+          <h3><span class="emoji">${civ.emoji}</span> ${civ.nome}</h3>
+
+          <div class="${getCaixaClass(civ.caixa)}">${civ.caixa}</div>
+
+          <div>
+            Agressividade: ${"⚔️".repeat(civ.agressividade)}
+            <em>${textoAgressividade(civ.agressividade)}</em>
+          </div>
+
+          <div>
+            Dificuldade: ${gerarBolinhas(civ.dificuldade)}
+            <em>${textoDificuldade(civ.dificuldade)}</em>
+          </div>
+        </div>
+        `;
+    });
+
+    const deck = decks[Math.floor(Math.random()*decks.length)];
+
+    resultado.innerHTML += `
+    <div class="section-title">🎴 Cartas Comuns</div>
+
+    <div class="deck-box">
+      <div class="color-stripe" style="background:${deck.cor}"></div>
+      <h3>${deck.emoji} <strong style="color:${deck.cor}">${deck.nome}</strong></h3>
+      
+    </div>
+    `;
+}
+</script>
+
+</body>
+</html>
