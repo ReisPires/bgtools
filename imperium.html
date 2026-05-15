@@ -7,10 +7,7 @@
 
 <style>
 body {
-  background:
-    radial-gradient(circle at 20% 30%, #f8f8f8 0%, transparent 30%),
-    radial-gradient(circle at 80% 70%, #ececec 0%, transparent 25%),
-    linear-gradient(135deg, #f5f5f5, #dddddd);
+  background: #f5f5f5;
   color: #222;
   font-family: 'Segoe UI', sans-serif;
   text-align: center;
@@ -117,7 +114,7 @@ label {
 <label>Número de jogadores:</label>
 <select id="players">
 <option value="1">1</option>
-<option value="2">2</option>
+<option value="2" selected>2</option>
 <option value="3">3</option>
 <option value="4">4</option>
 </select>
@@ -137,20 +134,20 @@ Rotas Comerciais
 
 <script>
 const civilizacoes = [
-  {nome:"Abássidas", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#31a037", cor2:"#dedc00", emoji:"🌙", rotas:true},
+  {nome:"Abássidas 💱", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#31a037", cor2:"#dedc00", emoji:"🌙", rotas:true},
   {nome:"Arturianos", caixa:"Lendas", agressividade:2, dificuldade:5, cor:"#8dbe22", cor2:"#8dbe22", emoji:"👑", rotas:false},
   {nome:"Atlantes", caixa:"Lendas", agressividade:3, dificuldade:3, cor:"#64c7f3", cor2:"#64c7f3", emoji:"🌊", rotas:false},
-  {nome:"Axumitas", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#fcc11d", cor2:"#ca2d17", emoji:"🪙", rotas:true},
+  {nome:"Axumitas 💱", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#fcc11d", cor2:"#ca2d17", emoji:"🪙", rotas:true},
   {nome:"Cartagineses", caixa:"Clássicos", agressividade:2, dificuldade:2, cor:"#005da3", cor2:"#005da3", emoji:"⚓", rotas:false},
   {nome:"Celtas", caixa:"Clássicos", agressividade:3, dificuldade:2, cor:"#00683a", cor2:"#00683a", emoji:"🍀", rotas:false},
   {nome:"Citas", caixa:"Clássicos", agressividade:2, dificuldade:2, cor:"#b7b867", cor2:"#b7b867", emoji:"🐎", rotas:false},
   {nome:"Cultistas", caixa:"Horizontes", agressividade:3, dificuldade:5, cor:"#b0182e", cor2:"#711517", emoji:"🐙", rotas:false},
   {nome:"Egípcios", caixa:"Lendas", agressividade:2, dificuldade:3, cor:"#ffee00", cor2:"#ffee00", emoji:"𓂀", rotas:false},
   {nome:"Gregos", caixa:"Clássicos", agressividade:2, dificuldade:3, cor:"#edebeb", cor2:"#edebeb", emoji:"🧿", rotas:false},
-  {nome:"Guptas", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#64163b", cor2:"#b23e45", emoji:"🕉️", rotas:true},
+  {nome:"Guptas 💱", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#64163b", cor2:"#b23e45", emoji:"🕉️", rotas:true},
   {nome:"Inuits", caixa:"Horizontes", agressividade:0, dificuldade:4, cor:"#8ad2f3", cor2:"#e8f5f9", emoji:"❄️", rotas:false},
   {nome:"Japoneses", caixa:"Horizontes", agressividade:0, dificuldade:2, cor:"#532674", cor2:"#f4e1b5", emoji:"⛩️", rotas:false},
-  {nome:"Macedônios", caixa:"Clássicos", agressividade:1, dificuldade:1, cor:"#552b81", cor2:"#552b81", emoji:"⚔️", rotas:false},
+  {nome:"Macedônios", caixa:"Clássicos", agressividade:1, dificuldade:1, cor:"#552b81", cor2:"#552b81", emoji:"🗡️", rotas:false},
   {nome:"Magiares", caixa:"Horizontes", agressividade:3, dificuldade:1, cor:"#a11a16", cor2:"#e6650c", emoji:"🦅", rotas:false},
   {nome:"Maias", caixa:"Horizontes", agressividade:1, dificuldade:4, cor:"#018b7b", cor2:"#fabc72", emoji:"🌽", rotas:false},
   {nome:"Marcianos", caixa:"Horizontes", agressividade:1, dificuldade:5, cor:"#762282", cor2:"#f191bc", emoji:"👽", rotas:false},
@@ -161,10 +158,10 @@ const civilizacoes = [
   {nome:"Polinésios", caixa:"Horizontes", agressividade:0, dificuldade:5, cor:"#a45396", cor2:"#cfe9f1", emoji:"🛶", rotas:false},
   {nome:"Qin", caixa:"Lendas", agressividade:1, dificuldade:2, cor:"#ef82ac", cor2:"#ef82ac", emoji:"🪭", rotas:false},
   {nome:"Romanos", caixa:"Clássicos", agressividade:2, dificuldade:1, cor:"#e30613", cor2:"#e30613", emoji:"🌿", rotas:false},
-  {nome:"Sassânidas", caixa:"Horizontes", agressividade:2, dificuldade:4, cor:"#fad374", cor2:"#3a388e", emoji:"🐅", rotas:true},
+  {nome:"Sassânidas 💱", caixa:"Horizontes", agressividade:2, dificuldade:4, cor:"#fad374", cor2:"#3a388e", emoji:"🐅", rotas:true},
   {nome:"Taínos", caixa:"Horizontes", agressividade:1, dificuldade:3, cor:"#e7cd5f", cor2:"#3a672b", emoji:"🌴", rotas:false},
-  {nome:"Tangues", caixa:"Horizontes", agressividade:0, dificuldade:3, cor:"#9a1915", cor2:"#e94e0f", emoji:"🐉", rotas:true},
-  {nome:"Uagadus", caixa:"Horizontes", agressividade:0, dificuldade:3, cor:"#ffdd00", cor2:"#f39200", emoji:"💰", rotas:true},
+  {nome:"Tangues 💱", caixa:"Horizontes", agressividade:0, dificuldade:3, cor:"#9a1915", cor2:"#e94e0f", emoji:"🐉", rotas:true},
+  {nome:"Uagadus 💱", caixa:"Horizontes", agressividade:0, dificuldade:3, cor:"#ffdd00", cor2:"#f39200", emoji:"💰", rotas:true},
   {nome:"Utopianos", caixa:"Lendas", agressividade:0, dificuldade:5, cor:"#12b1ad", cor2:"#12b1ad", emoji:"☮️", rotas:false},
   {nome:"Vikings", caixa:"Clássicos", agressividade:3, dificuldade:3, cor:"#f59e00", cor2:"#f59e00", emoji:"⛵", rotas:false},
 ];
@@ -238,7 +235,9 @@ function gerarPartida(){
           <div class="${getCaixaClass(civ.caixa)}">${civ.caixa}</div>
 
           <div>
-            ${"⚔️".repeat(civ.agressividade)}
+            ${
+              ["🕊️", "🛡️", "⚔️", "🔥"][civ.agressividade]
+            }
             <em>${textoAgressividade(civ.agressividade)}</em>
           </div>
 
@@ -258,7 +257,64 @@ function gerarPartida(){
     <div class="deck-box">
       <div class="color-stripe" style="background:${deck.cor}"></div>
       <h3>${deck.emoji} <strong style="color:${deck.cor}">${deck.nome}</strong></h3>
-      
+    </div>
+    `;
+
+    const remocoes = {
+      1: { civilizada:4, incivilizada:3, regiao:1, tributario:2, desordem:4 },
+      2: { civilizada:4, incivilizada:3, regiao:1, tributario:2, desordem:4 },
+      3: { civilizada:1, incivilizada:2, tributario:1, desordem:2 },
+      4: {}
+    };
+
+    const famaBase = {
+      1:6,
+      2:6,
+      3:7,
+      4:8
+    };
+
+    const pilhas = {
+      civilizada: jogadores <= 2 ? 6 : jogadores === 3 ? 7 : 8,
+      incivilizada: jogadores <= 2 ? 6 : jogadores === 3 ? 7 : 8,
+      regiao: jogadores <= 2 ? 6 : jogadores === 3 ? 7 : 8,
+      fama: famaBase[jogadores] + (rotas ? 1 : 0)
+    };
+
+    const tipos = {
+      civilizada: { nome:"Civilizada", cor:"#4caf50" },
+      incivilizada: { nome:"Incivilizada", cor:"#9e9e9e" },
+      regiao: { nome:"Região", cor:"#fbc02d" },
+      tributario: { nome:"Tributário", cor:"#2196f3" },
+      desordem: { nome:"Desordem", cor:"#f44336" },
+      fama: { nome:"Fama", cor:"#c2185b" }
+    };
+
+    function gerarLinha(tipo, valor){
+      return `
+        <div style="margin:6px 0; color:${tipos[tipo].cor}; font-weight:bold;">
+          ● ${tipos[tipo].nome}: <span style="color:#222">${valor}</span>
+        </div>
+      `;
+    }
+
+    const rem = remocoes[jogadores];
+
+    if(Object.keys(rem).length > 0){
+      resultado.innerHTML += `
+      <div class="deck-box">
+        <div class="color-stripe" style="background:#888"></div>
+        <h3>🗑️ Remoções</h3>
+        ${Object.entries(rem).map(([tipo,val]) => gerarLinha(tipo,val)).join("")}
+      </div>
+      `;
+    }
+
+    resultado.innerHTML += `
+    <div class="deck-box">
+      <div class="color-stripe" style="background:#555"></div>
+      <h3>📚 Pilhas</h3>
+      ${Object.entries(pilhas).map(([tipo,val]) => gerarLinha(tipo,val)).join("")}
     </div>
     `;
 }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Archeos Society - Setup</title>
+  <title>Archeos Society</title>
   <style>
     :root {
       --bg: #ffffff;
@@ -15,6 +15,7 @@
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       background: var(--bg);
@@ -117,21 +118,57 @@
       font-size: 18px;
       margin-top: 8px;
     }
+
+    /* TOOLTIP */
+    .role-card, .site-card {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .role-card::after,
+    .site-card::after {
+      content: attr(data-desc);
+      position: absolute;
+      bottom: 105%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(30,30,30,0.95);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 220px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 100;
+    }
+
+    .role-card:hover::after,
+    .site-card:hover::after,
+    .role-card:active::after,
+    .site-card:active::after {
+      opacity: 1;
+    }
+
   </style>
 </head>
 <body>
+
   <h1>🏺 Archeos Society 🏺</h1>
 
   <label for="siteCount">Sítios Arqueológicos:</label>
   <select id="siteCount">
     <option value="1">1</option>
     <option value="2">2</option>
-    <option value="3">3</option>
+    <option value="3" selected>3</option>
     <option value="4">4</option>
     <option value="5">5</option>
     <option value="6">6</option>
   </select>
   <br>
+
   <button onclick="gerarPartida()"><strong>Monte uma partida!</strong></button>
 
   <div class="content" id="content">
@@ -147,32 +184,30 @@
   </div>
 
   <script>
-    // ----- CONFIGURÁVEL -----
     const ROLES = [
-      { nome: "Botânico", emoji: "🌿" },
-      { nome: "Cartógrafa", emoji: "🗺️" },
-      { nome: "Curadora", emoji: "🏛️" },
-      { nome: "Guia", emoji: "🧭" },
-      { nome: "Linguista", emoji: "📜" },
-      { nome: "Mercenário", emoji: "🤠" },
-      { nome: "Patrono", emoji: "💵" },
-      { nome: "Fotógrafa", emoji: "📷" },
-      { nome: "Médico", emoji: "⚕️" },
-      { nome: "Pilota", emoji: "✈️" },
-      { nome: "Professora", emoji: "📚" },
-      { nome: "Estudante", emoji: "🎓" }
+      { nome: "Botânico", emoji: "🌿", descricao: "Se sua expedição for maior que a expedição com a moldura do Botânico, adicione-a na sua expedição e marque 2 pontos. Ao fim da temporada, a moldura vale 2 pontos ." },
+      { nome: "Cartógrafa", emoji: "🗺️", descricao: "Se você avançou seu veículo, jogue uma segunda expedição com as cartas restantes em sua mão." },
+      { nome: "Curadora", emoji: "🏛️", descricao: "Colecione relíquias no seu tabuleiro de museu de acordo com a cor da expedição. Cores diferentes valem pontos." },
+      { nome: "Guia", emoji: "🧭", descricao: "Conte essa expedição como se tivesse tamanho +1 para avançar o veículo." },
+      { nome: "Linguista", emoji: "📜", descricao: "Avance seu veículo no tabuleiro da Linguista de acordo com o tamanho da expedição. Ao passar por um artefato, avance em um Sítio Arqueológico qualquer. Ao fim da temporada, o(s) jogadore(s) mais avançado(s) ganham 2 pontos." },
+      { nome: "Mercenário", emoji: "🤠", descricao: "É um personagem curinga. Vale como qualquer personagem ou cor, mas nunca pode liderar uma expedição." },
+      { nome: "Patrono", emoji: "💵", descricao: "Após descartar suas cartas restantes, compre cartasdo deck de acordo com o tamanho da expedição." },
+      { nome: "Fotógrafa", emoji: "📷", descricao: "Ao fim da temporada, pontue pela expedição da Fotógrafa como se tivesse tamanho +1." },
+      { nome: "Médico", emoji: "⚕️", descricao: "Ao descartar as cartas restantes, você pode ficar com uma quantidade de cartas de acordo com o tamanho da expedição." },
+      { nome: "Pilota", emoji: "✈️", descricao: "Você pode avançar seu veículo em qualquer Sítio Arqueológico, desde que cumpra os requisitos de tamanho da expedição." },
+      { nome: "Professora", emoji: "📚", descricao: "Pegue uma ficha de Professora de tamanho menor ou igual a expedição. Ao fim da temporada, o jogador com a maior somatória avança 1 em qualquer Sítio Arqueológico. O jogador com a menor somatória regressa 1." },
+      { nome: "Estudante", emoji: "🎓", descricao: "Quando o estudante é o líder da expedição, não avance seu veículo, independente do tamanho. Aparece 2x mais no deck." }
     ];
 
     const SITES = [
-      { nome: "Chichén Itza", color: "#b33a3a", emoji: "🛕" },
-      { nome: "Rapa Nui", color: "#2e8b57", emoji: "🗿" },
-      { nome: "Ta-Sekhet-Ma'at", color: "#d0a400", emoji: "⚱️" },
-      { nome: "Tantallon Castle", color: "#2a6fb5", emoji: "🏰" },
-      { nome: "Uluru", color: "#8a2b8a", emoji: "⛰️" },
-      { nome: "Ur", color: "#d36b94", emoji: "🪨" }
+      { nome: "Chichén Itza", color: "#b33a3a", emoji: "🛕", descricao: "Compre cartas do deck após avançar seu veículo de acordo com o número mostrado no espaço." },
+      { nome: "Rapa Nui", color: "#2e8b57", emoji: "🗿", descricao: "Ao fim da temporada, o jogador mais avançado marca 3 pontos e volta ao início da trilha." },
+      { nome: "Ta-Sekhet-Ma'at", color: "#d0a400", emoji: "⚱️", descricao: "Use 2 veículos por jogador nesta trilha. Ao fim da temporada, marque apenas os pontos do veículo mais atrás." },
+      { nome: "Tantallon Castle", color: "#2a6fb5", emoji: "🏰", descricao: "Ao fim da temporada, marque os pontos da estrela maior se estiver sozinho. Do contrário, marque da estrela menor." },
+      { nome: "Uluru", color: "#8a2b8a", emoji: "⛰️", descricao: "Ao avançar seu veículo, escolha se quer marcar os pontos imediatamente e reiniciar na trilha. Uluru NÃO pontua no fim da temporada." },
+      { nome: "Ur", color: "#d36b94", emoji: "🪨", descricao: "Assim que o 3º macaco é comprado, cada jogador pode jogar uma última expedição de tamanho máximo igual ao indicado nesta trilha." }
     ];
 
-    // ----- FUNÇÕES -----
     function shuffle(array) {
       const arr = array.slice();
       for (let i = arr.length - 1; i > 0; i--) {
@@ -185,26 +220,28 @@
     function gerarPartida() {
       document.getElementById("content").style.display = "block";
 
-      // Seleciona 6 papéis
       const rolesSelecionados = shuffle(ROLES).slice(0, 6);
       const rolesGrid = document.getElementById("rolesGrid");
       rolesGrid.innerHTML = "";
+
       rolesSelecionados.forEach(role => {
         const div = document.createElement("div");
         div.className = "role-card";
+        div.setAttribute("data-desc", `${role.nome}: ${role.descricao}`);
         div.innerHTML = `<div class="role-emoji">${role.emoji}</div> <strong>${role.nome}</strong>`;
         rolesGrid.appendChild(div);
       });
 
-      // Seleciona N sítios
       const n = parseInt(document.getElementById("siteCount").value);
       const sitesSelecionados = shuffle(SITES).slice(0, n);
       const sitesGrid = document.getElementById("sitesGrid");
       sitesGrid.innerHTML = "";
+
       sitesSelecionados.forEach(site => {
         const div = document.createElement("div");
         div.className = "site-card";
         div.style.backgroundColor = site.color;
+        div.setAttribute("data-desc", `${site.nome}: ${site.descricao}`);
         div.innerHTML = `
           <div class="site-emoji">${site.emoji}</div>
           <div class="site-name">${site.nome}</div>
@@ -213,5 +250,6 @@
       });
     }
   </script>
+
 </body>
 </html>
