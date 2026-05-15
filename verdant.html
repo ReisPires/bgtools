@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verdant</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #5d8c68;
+      color: white;
+      text-align: center;
+      margin: 30px;
+    }
+
+    h1 {
+      font-size: 26px;
+      color: #ffd0e5;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #ff72a1;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 30px;
+      transition: 0.25s;
+    }
+
+    button:hover {
+      background-color: #ca829e;
+    }
+
+    #resultado {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .card {
+      border-radius: 16px;
+      padding: 20px;
+      margin: 18px 0;
+      border: 2px solid rgba(255,255,255,0.45);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+      text-align: center;
+      color: white;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      font-style: italic;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .plantas {
+      background-color: #a5d6a7;
+      color: #1b3d1f;
+    }
+
+    .itens {
+      background-color: #519c54;
+    }
+
+    .salas {
+      background-color: #1f5f22;
+    }
+
+    .emoji {
+        text-shadow: 0 0 3px black;
+        font-size: 22px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🪴 Verdant 🪴</h1>
+
+  <button onclick="gerarPartida()">Monte uma partida!</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    const objetivosPlantas = [
+      "Alinhamento Coordenado", "Cada Tom de Verde", "Coleções Competitivas", "Colheitas Favoritas", 
+      "Condições Perfeitas", "Contra Todas as Probabilidades", "Crescendo Muito", "De Férias", 
+      "Loved Lines", "Misturando", "Narrow Necessities", "Vivendo em Apartamento"
+    ];
+
+    const objetivosItens = [
+      "Abrir Caminho", "Aficionado por Móveis", "Conforto das Criaturas", "Gratificação Atrasada", 
+      "Nobody to Impress", "O Tempero da Vida", "Oleiro Exigente", "Pares de Cores", 
+      "Pares de Vasos", "Plano de Apoio", "Three of a Kind", "Troféu Joinha"
+    ];
+
+    const objetivosSalas = [
+      "Ambientação Perfeita", "Balancing Act", "Combinação Combinante", "Competição Colorida", 
+      "Coordenador Caótico", "Corredores Coordenados", "Designer Diversificador", "Dever Duplo", 
+      "Match Three", "Minimalismo de Cor", "Quatro Cantos", "Tratamento Triplo", 
+    ];
+
+    function sorteia(lista) {
+      return lista[Math.floor(Math.random() * lista.length)];
+    }
+
+    function criarCard(subtitulo, emoji, titulo, classe) {
+      return `
+        <div class="card ${classe}">
+          <div class="subtitle">${subtitulo}</div>
+          <div class="title"><span class="emoji">${emoji}</span> ${titulo}</div>
+        </div>
+      `;
+    }
+
+    function gerarPartida() {
+      const resultado = document.getElementById("resultado");
+
+      resultado.innerHTML = `
+        ${criarCard("Objetivo de Plantas", "🌿", sorteia(objetivosPlantas), "plantas")}
+        ${criarCard("Objetivo de Itens", "🐈", sorteia(objetivosItens), "itens")}
+        ${criarCard("Objetivo de Salas", "🛋️", sorteia(objetivosSalas), "salas")}
+      `;
+    }
+  </script>
+
+</body>
+</html>

@@ -7,8 +7,8 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #4b1e1e; /* dark reddish brown */
-      color: #f8e08e; /* soft yellow */
+      background-color: #4b1e1e;
+      color: #f8e08e;
       text-align: center;
       margin: 30px;
     }
@@ -36,6 +36,10 @@
       background-color: #ffe78f;
     }
 
+    label {
+      font-size: 16px;
+    }
+
     .achievement-list {
       display: flex;
       flex-direction: column;
@@ -48,12 +52,14 @@
     .achievement {
       background-color: #5c2626;
       border-radius: 12px;
-      overflow: hidden;
+      overflow: visible;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 138px;
+      position: relative;
+      cursor: pointer;
     }
 
     .achievement img {
@@ -61,6 +67,7 @@
       height: 200px;
       object-fit: cover;
       display: block;
+      border-radius: 12px 12px 0 0;
     }
 
     .achievement-name {
@@ -69,10 +76,42 @@
       font-weight: bold;
       text-align: center;
     }
+
+    .tooltip {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      bottom: 105%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(30,30,30,0.95);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 240px;
+      text-align: center;
+      transition: opacity 0.2s;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .achievement:hover .tooltip,
+    .achievement:active .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
   <h1>🐻 Bärenpark 🐻</h1>
+
+  <label>
+    <input type="checkbox" id="badNews">
+    The Bad News Bears 
+  </label>
+
+  <br>
 
   <button onclick="gerarConquistas()">Monte uma partida!</button>
 
@@ -81,30 +120,34 @@
   <script>
     const conquistas = [
       // Base
-      { nome: "Áreas Verdes", arquivo: "areas_verdes.png" },
-      { nome: "Casas dos Animais", arquivo: "casas_dos_animais.png" },
-      { nome: "Cercados", arquivo: "cercados.png" },
-      { nome: "Coalas", arquivo: "coalas.png" },
-      { nome: "Pandas", arquivo: "pandas.png" },
-      { nome: "Rio Longo", arquivo: "rio_longo.png" },
-      { nome: "Rua do Food Truck", arquivo: "rua_do_food_truck.png" },
-      { nome: "Urso Gobi", arquivo: "urso_gobi.png" },
-      { nome: "Urso Polar", arquivo: "urso_polar.png" },
-      { nome: "Em Dobro", arquivo: "em_dobro.png" },
+      { nome: "Áreas Verdes", arquivo: "areas_verdes.png", descricao: "Ter um conjunto de 6 Áreas Verdes.", expansao: false },
+      { nome: "Casas dos Animais", arquivo: "casas_dos_animais.png", descricao: "Ter ao menos um de cada tipo dos 4 formatos de Casas dos Animais.", expansao: false },
+      { nome: "Cercados", arquivo: "cercados.png", descricao: "Ter todos os 3 Cercados laranjas adjacentes.", expansao: false },
+      { nome: "Coalas", arquivo: "coalas.png", descricao: "Ter 3 cartelas com Coalas (não precisam estar adjacentes).", expansao: false },
+      { nome: "Pandas", arquivo: "pandas.png", descricao: "Ter 3 cartelas com Pandas (não precisam estar adjacentes).", expansao: false },
+      { nome: "Rio Longo", arquivo: "rio_longo.png", descricao: "Ter 3 cartelas de Rios formando um curso de rio ininterrupto.", expansao: false },
+      { nome: "Rua do Food Truck", arquivo: "rua_do_food_truck.png", descricao: "Ter uma linha (horizontal ou vertical) de 3 Food Trucks.", expansao: false },
+      { nome: "Urso Gobi", arquivo: "urso_gobi.png", descricao: "Ter 3 cartelas com Ursos Gobi (não precisam estar adjacentes).", expansao: false },
+      { nome: "Urso Polar", arquivo: "urso_polar.png", descricao: "Ter 3 cartelas com Ursos Polares (não precisam estar adjacentes).", expansao: false },
+      { nome: "Em Dobro", arquivo: "em_dobro.png", descricao: "Ganhar 2+ Estátuas de Urso em um mesmo turno.", expansao: false },
+
       // Bad News Bear
-      { nome: "Pausa na Construção", arquivo: "pausa_na_construcao.png" },
-      { nome: "Planejamento de Cercados", arquivo: "planejamento_de_cercados.png" },
-      { nome: "Toaletes Separados", arquivo: "toaletes_separados.png" },
-      { nome: "Conexões de Food Truck", arquivo: "conexoes_de_food_trucks.png" },
-      { nome: "Rios nas Esquinas", arquivo: "rios_nas_esquinas.png" },
-      { nome: "Parquinhos com Estátuas", arquivo: "parquinhos_com_estatuas.png" }
+      { nome: "Pausa na Construção", arquivo: "pausa_na_construcao.png", descricao: "Colocar um Cercado laranja sem cobrir nenhum ícone.", expansao: true },
+      { nome: "Planejamento de Cercados", arquivo: "planejamento_de_cercados.png", descricao: "Ganhar 2+ Cercados laranjas em um mesmo turno.", expansao: true },
+      { nome: "Toaletes Separados", arquivo: "toaletes_separados.png", descricao: "Ter 2 Toaletes separados por 11+ espaços ortogonais.", expansao: true },
+      { nome: "Conexões de Food Truck", arquivo: "conexoes_de_food_trucks.png", descricao: "Ter 3 pares diferentes de Áreas de Parque com um Food Truck atravessando elas.", expansao: true },
+      { nome: "Rios nas Esquinas", arquivo: "rios_nas_esquinas.png", descricao: "Ter 3 Áreas de Parque diferentes com um Rio posicionado fazendo a curva no canto.", expansao: true },
+      { nome: "Parquinhos com Estátuas", arquivo: "parquinhos_com_estatuas.png", descricao: "Ter 3 Estátuas de Urso diferentes adjacentes a Parquinhos.", expansao: true }
     ];
 
     function gerarConquistas() {
       const resultado = document.getElementById("resultado");
+      const badNews = document.getElementById("badNews").checked;
+
       resultado.innerHTML = "";
 
-      const sorteadas = shuffle(conquistas).slice(0, 3);
+      const pool = conquistas.filter(c => badNews || !c.expansao);
+      const sorteadas = shuffle(pool).slice(0, 3);
 
       sorteadas.forEach(c => {
         const div = document.createElement("div");
@@ -118,14 +161,25 @@
         nome.className = "achievement-name";
         nome.textContent = c.nome;
 
+        const tooltip = document.createElement("div");
+        tooltip.className = "tooltip";
+        tooltip.innerHTML = `<strong>${c.nome}</strong>: ${c.descricao}`;
+
         div.appendChild(img);
         div.appendChild(nome);
+        div.appendChild(tooltip);
+
         resultado.appendChild(div);
       });
     }
 
     function shuffle(array) {
-      return [...array].sort(() => Math.random() - 0.5);
+      let a = array.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
     }
   </script>
 </body>
