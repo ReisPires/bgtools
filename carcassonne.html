@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carcassonne</title>
+
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
       background-color: #084981;
       color: #e7db8b;
-      margin: 30px;
+      font-family: 'Segoe UI', sans-serif;
       text-align: center;
+      margin: 30px;
     }
 
     h1 {
@@ -19,34 +20,35 @@
       margin-bottom: 10px;
     }
 
-    .container {
-      display: block;
-      margin: 0 auto 30px auto;
-      max-width: 300px;
-      text-align: left;
-    }
-
-    .input-group {
-      margin-bottom: 16px;
-    }
-
-    .input-group label {
-      display: block;
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 6px;
+    select, button {
+      padding: 10px;
+      margin: 10px;
       font-size: 16px;
-      border: 2px solid #e7db8b;
+      border: none;
       border-radius: 8px;
     }
 
-    .input-group.mini input {
-      margin-top: 6px;
+    select {
+      background-color: #345d88;
+      color: white;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0px;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    .control-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .control-row label {
+      font-weight: bold;
     }
 
     button {
@@ -65,70 +67,111 @@
 
     button:hover {
       background-color: #e7db8b;
-      transform: scale(1.05);
     }
 
-    .list-container {
-      background-color: #cff07e;
-      color: #66462d;
-      padding: 20px;
-      border-radius: 16px;
-      text-align: left;
-      max-width: 500px;
-      margin: 0 auto;
+    .results {
+      margin-top: 30px;
       display: none;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
 
-    .section-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-top: 16px;
-      border-bottom: 2px solid white;
-      padding-bottom: 6px;
-      margin-bottom: 10px;
+    .section {
+      margin-bottom: 35px;
+    }
+
+    .section h2 {
+      color: #ffe082;
+      margin-bottom: 15px;
+    }
+
+    .expansion-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
 
     .expansion-item {
-      background-color: #fdf7ef;
-      border: 1px solid #f0e0c5;
-      border-radius: 8px;
-      padding: 8px 12px;
-      margin: 6px 0;
-      font-size: 17px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      background-color: #dcedc8;
+      color: #2e3d1f;
+      padding: 12px 18px;
+      border-radius: 10px;
+      width: 320px;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3);
     }
 
     .emoji {
-      font-size: 20px;
+      font-size: 24px;
       text-shadow: 0 0 2px black;
     }
   </style>
 </head>
+
 <body>
+
   <h1>🧩 Carcassonne 🧩</h1>
 
-  <br>
-
-  <div class="container">
-    <div class="input-group">
-      <label for="expansions">Expansões:</label>
-      <input type="number" id="expansions" name="expansions" min="0" />
+  <div class="controls">
+    <div class="control-row">
+      <label>Jogadores:</label>
+      <select id="players">
+        <option value="2">2</option>
+        <option value="3" selected>3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+      </select>
     </div>
-    <div class="input-group mini">
-      <label for="mini-expansions">Mini-expansões:</label>
-      <input type="number" id="mini-expansions" name="mini-expansions" min="0" />
+    <div class="control-row">
+      <label>Expansões:</label>
+      <select id="expansions">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2" selected>2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+      </select>
     </div>
-    <button onclick="shuffle()">Monte uma partida!</button>
+    <div class="control-row">
+      <label>Mini-Expansões:</label>
+      <select id="miniExpansions">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3" selected>3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+      </select>
+    </div>
   </div>
 
-  <div class="list-container" id="results">
-    <div class="section-title">Expansões:</div>
-    <div id="expansion-list"></div>
-    <div class="section-title">Mini-expansões:</div>
-    <div id="mini-expansion-list"></div>
+  <button onclick="generateGame()">Monte uma partida!</button>
+
+  <div class="results" id="results">
+
+    <div class="section">
+      <h2>📦 Expansões</h2>
+      <div class="expansion-list" id="expansionResults"></div>
+    </div>
+
+    <div class="section">
+      <h2>♟️ Mini-Expansões</h2>
+      <div class="expansion-list" id="miniExpansionResults"></div>
+    </div>
+
+    <div class="section" id="wondersSection" style="display:none;">
+      <h2>🗿 Wonders of Humanity</h2>
+      <div class="expansion-list" id="wonderResults"></div>
+    </div>
+
   </div>
 
   <script>
@@ -139,35 +182,136 @@
     ];
 
     const miniExpansionList = [
-      "🌼 The Abbot", "⚕️ The Barber-Surgeons", "💸 The Bets", "🌾 Crop Circles", "🌉 The Drawbridges", "🚣 The Ferries",
-      "🎉 The Festival II", "🪽 The Flying Machines", "🍎 The Fruit-Bearing Trees", "🛐 German Cathedrals", "🎁 The Gifts",
-      "🪙 The Gold Mines", "📐 Halb so Wild", "🧙🏼‍♂️ Mage & Witch", "🏦 The Markets of Leipzig", "💌 The Messengers",
-      "🏛️ Monasteries in Germany", "🔥 The Peasant Revolts", "🥷🏼 The Robbers", "🌊 The River", "🚧 The Signposts",
-      "💲 The Tollkeepers", "🗿 The Wonders of Humanity", "💂🏽‍♂️ Watchtowers"
+      "🌼 The Abbot", "⚕️ The Barber-Surgeons", "💸 The Bets", "🏰 Castles in Germany", "🌾 Crop Circles", "🌉 The Drawbridges", 
+      "🚣 The Ferries", "🎉 The Festival II", "🪽 The Flying Machines", "🍎 The Fruit-Bearing Trees", "🛐 German Cathedrals",
+      "🎁 The Gifts", "🪙 The Gold Mines", "📐 Halb so Wild", "🧙🏼‍♂️ Mage & Witch", "🏦 The Markets of Leipzig", "💌 The Messengers",
+      "🏛️ Monasteries in Germany", "🔥 The Peasant Revolts", "🥷🏼 The Robbers", "🌊 The River", "🌊 The River II", 
+      "🚧 The Signposts", "💲 The Tollkeepers", "🗿 The Wonders of Humanity", "💂🏽‍♂️ Watchtowers"
     ];
 
-    function shuffle() {
-      const expansions = parseInt(document.getElementById('expansions').value, 10) || 0;
-      const miniExpansions = parseInt(document.getElementById('mini-expansions').value, 10) || 0;
+    const wonders = [
+      "⛪ Notre-Dame",
+      "🪨 Stonehenge",
+      "🎪 Circus Maximus",
+      "🕌 Alhambra",
+      "⌛ Abu Simbel",
+      "🌿 Tikal",
+      "🛕 Angkor Wat",
+      "👥 Exército de Terracota",
+      "🧱 Grande Muralha da China",
+      "🌀 Linhas de Nazca",
+      "⚓ Porto de Cártago",
+      "👑 Taj Mahal"
+    ];
 
-      const wrapEmoji = str => {
-        return str.replace(/^([^\w\s]+)/, emoji => `<span class="emoji">${emoji}</span>`);
-      };
+    function shuffle(array) {
+      const arr = array.slice();
 
-      const selectedExpansions = expansionList
-        .sort(() => 0.5 - Math.random())
-        .slice(0, expansions)
-        .map(item => `<div class="expansion-item">${wrapEmoji(item)}</div>`);
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
 
-      const selectedMiniExpansions = miniExpansionList
-        .sort(() => 0.5 - Math.random())
-        .slice(0, miniExpansions)
-        .map(item => `<div class="expansion-item">${wrapEmoji(item)}</div>`);
+      return arr;
+    }
 
-      document.getElementById('expansion-list').innerHTML = selectedExpansions.join('');
-      document.getElementById('mini-expansion-list').innerHTML = selectedMiniExpansions.join('');
-      document.getElementById('results').style.display = 'block';
+    function generateGame() {
+      const expansionCount = parseInt(document.getElementById("expansions").value);
+      const miniExpansionCount = parseInt(document.getElementById("miniExpansions").value);
+      const players = parseInt(document.getElementById("players").value);
+
+      const expansionResults = document.getElementById("expansionResults");
+      const miniExpansionResults = document.getElementById("miniExpansionResults");
+      const wonderResults = document.getElementById("wonderResults");
+      const wondersSection = document.getElementById("wondersSection");
+
+      expansionResults.innerHTML = "";
+      miniExpansionResults.innerHTML = "";
+      wonderResults.innerHTML = "";
+
+      // Expansões grandes
+      const selectedExpansions = shuffle(expansionList).slice(0, expansionCount);
+
+      selectedExpansions.forEach(expansion => {
+        const div = document.createElement("div");
+        div.className = "expansion-item";
+
+        const [emoji, ...rest] = expansion.split(" ");
+        const text = rest.join(" ");
+
+        div.innerHTML = `
+          <span class="emoji">${emoji}</span> ${text}
+        `;
+
+        expansionResults.appendChild(div);
+      });
+
+      // Mini expansões com regra do River
+      let miniPool = [...miniExpansionList];
+
+      const selectedMiniExpansions = [];
+
+      while (
+        selectedMiniExpansions.length < miniExpansionCount &&
+        miniPool.length > 0
+      ) {
+        const shuffled = shuffle(miniPool);
+        const selected = shuffled[0];
+
+        selectedMiniExpansions.push(selected);
+
+        miniPool = miniPool.filter(item => item !== selected);
+
+        if (selected === "🌊 The River") {
+          miniPool = miniPool.filter(item => item !== "🌊 The River II");
+        }
+
+        if (selected === "🌊 The River II") {
+          miniPool = miniPool.filter(item => item !== "🌊 The River");
+        }
+      }
+
+      selectedMiniExpansions.forEach(expansion => {
+        const div = document.createElement("div");
+        div.className = "expansion-item";
+        div.textContent = expansion;
+        miniExpansionResults.appendChild(div);
+      });
+
+      // Wonders of Humanity
+      const hasWonders = selectedMiniExpansions.includes("🗿 The Wonders of Humanity");
+
+      if (hasWonders) {
+        wondersSection.style.display = "block";
+
+        const hasRiver =
+          selectedMiniExpansions.includes("🌊 The River") ||
+          selectedMiniExpansions.includes("🌊 The River II");
+
+        let wonderPool = [...wonders];
+
+        if (!hasRiver) {
+          wonderPool = wonderPool.filter(
+            w => w !== "⚓ Porto de Cártago"
+          );
+        }
+
+        const selectedWonders = shuffle(wonderPool).slice(0, players);
+
+        selectedWonders.forEach(wonder => {
+          const div = document.createElement("div");
+          div.className = "expansion-item";
+          div.textContent = wonder;
+          wonderResults.appendChild(div);
+        });
+
+      } else {
+        wondersSection.style.display = "none";
+      }
+
+      document.getElementById("results").style.display = "block";
     }
   </script>
+
 </body>
 </html>
