@@ -40,6 +40,14 @@
       font-size: 16px;
     }
 
+    select {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: none;
+      margin-left: 8px;
+      font-size: 15px;
+    }
+
     .achievement-list {
       display: flex;
       flex-direction: column;
@@ -101,10 +109,47 @@
       visibility: visible;
       opacity: 1;
     }
+
+    .parks-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .park-card {
+      background-color: #5c2626;
+      color: #f8e08e;
+      border-radius: 12px;
+      padding: 14px 20px;
+      width: 260px;
+      font-size: 20px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .section-title {
+      font-size: 24px;
+      margin-top: 10px;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <h1>🐻 Bärenpark 🐻</h1>
+
+  <label>
+    Jogadores:
+    <select id="players">
+      <option value="2" selected>2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+  </label>
+
+  <br><br>
 
   <label>
     <input type="checkbox" id="badNews">
@@ -115,7 +160,15 @@
 
   <button onclick="gerarConquistas()">Monte uma partida!</button>
 
-  <div class="achievement-list" id="resultado"></div>
+  <div id="parksSection" style="display:none;">
+    <div class="section-title">🌍 Parques Iniciais</div>
+    <div class="parks-container" id="parksResultado"></div>
+  </div>
+
+  <div id="achievementsSection" style="display:none;">
+    <div class="section-title">🏆 Conquistas</div>
+    <div class="achievement-list" id="resultado"></div>
+  </div>
 
   <script>
     const conquistas = [
@@ -140,11 +193,50 @@
       { nome: "Parquinhos com Estátuas", arquivo: "parquinhos_com_estatuas.png", descricao: "Ter 3 Estátuas de Urso diferentes adjacentes a Parquinhos.", expansao: true }
     ];
 
+    const parques = [
+      { pais: "Rússia", bandeira: "🇷🇺", nome: "Медвежий парк" },
+      { pais: "França", bandeira: "🇫🇷", nome: "Parc D'Ours" },
+
+      { pais: "Polônia", bandeira: "🇵🇱", nome: "Park Niedźwiedzi" },
+      { pais: "Alemanha", bandeira: "🇩🇪", nome: "Bärenpark" },
+
+      { pais: "Japão", bandeira: "🇯🇵", nome: "クマ牧場" },
+      { pais: "Dinamarca", bandeira: "🇩🇰", nome: "Bjørnepark" },
+
+      { pais: "Reino Unido", bandeira: "🇬🇧", nome: "Bear Park" },
+      { pais: "Rep. Tcheca", bandeira: "🇨🇿", nome: "Medvěd Park" }
+    ];
+
+    const paresParques = [
+      [parques[0], parques[1]],
+      [parques[2], parques[3]],
+      [parques[4], parques[5]],
+      [parques[6], parques[7]]
+    ];
+
     function gerarConquistas() {
       const resultado = document.getElementById("resultado");
+      const parksResultado = document.getElementById("parksResultado");
       const badNews = document.getElementById("badNews").checked;
+      const jogadores = parseInt(document.getElementById("players").value);
 
       resultado.innerHTML = "";
+      parksResultado.innerHTML = "";
+
+      document.getElementById("parksSection").style.display = "block";
+      document.getElementById("achievementsSection").style.display = "block";
+
+      const paresSelecionados = shuffle(paresParques).slice(0, jogadores);
+
+      paresSelecionados.forEach(par => {
+        const escolhido = shuffle(par).slice(0,1)[0];
+
+        const div = document.createElement("div");
+        div.className = "park-card";
+        div.innerHTML = `${escolhido.bandeira} ${escolhido.nome}`;
+
+        parksResultado.appendChild(div);
+      });
 
       const pool = conquistas.filter(c => badNews || !c.expansao);
       const sorteadas = shuffle(pool).slice(0, 3);
