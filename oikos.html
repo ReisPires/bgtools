@@ -73,7 +73,7 @@
     .animal-name {
       font-size: 18px;
       font-weight: bold;
-      margin-top: 8px;
+      margin-top: 4px;
     }
 
     .animal-info {
@@ -101,42 +101,47 @@
 
   <script>
     const animals = [
-      { num: 1, name: "🐯 Onça-Pintada", type: "Predador" },
-      { num: 3, name: "🐺 Lobo-Guará", type: "Meio" },
-      { num: 4, name: "🦔 Tatu-Bola", type: "Meio" },
-      { num: 6, name: "🐦‍⬛ Arara-Azul", type: "Meio" },
-      { num: 7, name: "🐒 Macaco-Prego", type: "Base" },
-      { num: 8, name: "🦝 Quati", type: "Base" },
-      { num: 1, name: "🐦‍🔥 Harpia", type: "Predador" },
-      { num: 4, name: "🦩 Colhereiro", type: "Meio" },
-      { num: 5, name: "🦤 Tucano", type: "Meio" },
-      { num: 7, name: "🦜 Papagaio-Charão", type: "Base" },
-      { num: 8, name: "🐦 Quero-Quero", type: "Base" },
-      { num: 9, name: "🐤 Canário-da-Terra", type: "Base" },
-      { num: 2, name: "🐊 Jacaré", type: "Predador" },
-      { num: 3, name: "🐍 Sucuri", type: "Meio" },
-      { num: 4, name: "🐢 Jabuti", type: "Meio" },
-      { num: 5, name: "🪱 Coral", type: "Meio" },
-      { num: 7, name: "🦕 Iguana-Verde", type: "Meio" },
-      { num: 9, name: "🦎 Calango-do-Sertão", type: "Base" },
-      { num: 2, name: "🐗 Javali", type: "Predador" },
-      { num: 3, name: "🦊 Jaguatirica", type: "Meio" },
-      { num: 4, name: "🦡 Tamanduá-Bandeira", type: "Meio" },
-      { num: 5, name: "🦍 Bugio-Preto", type: "Meio" },
-      { num: 6, name: "🦦 Ariranha", type: "Meio" },
-      { num: 9, name: "🐀 Camundongo", type: "Base" },
-      { num: 2, name: "🦅 Osprey", type: "Predador" },
-      { num: 3, name: "🦉 Suindara", type: "Meio" },
-      { num: 5, name: "🦫 Capivara", type: "Meio" },
-      { num: 6, name: "🦧 Mico-Leão-Dourado", type: "Meio" },
-      { num: 8, name: "🦥 Preguiça", type: "Meio" },
-      { num: 9, name: "🐸 Sapo-Boi-Azul", type: "Base" },
-      { num: 5, name: "🦫 Capivara (Alternativa)", type: "Meio" },
-      { num: 10, name: "🐈‍⬛ Pantera", type: "Predador" }
+      { pop: "1️⃣", name: "🐯 Onça-Pintada", type: "🟥 Predador", complex: "🔵 Muito Fácil" },
+      { pop: "3️⃣", name: "🐺 Lobo-Guará", type: "🟧 Subpredador", complex: "🟡 Médio" },
+      { pop: "4️⃣", name: "🦔 Tatu-Bola", type: "🟨 Meio", complex: "🔵 Muito Fácil" },
+      { pop: "6️⃣", name: "🐦‍⬛ Arara-Azul", type: "🟨 Meio", complex: "🟠 Difícil" },
+      { pop: "7️⃣", name: "🐒 Macaco-Prego", type: "🟦 Base", complex: "🟢 Fácil" },
+      { pop: "8️⃣", name: "🦝 Quati", type: "🟦 Base", complex: "🟢 Fácil" },
+      { pop: "1️⃣", name: "🐦‍🔥 Harpia", type: "🟥 Predador", complex: "🟠 Difícil" },
+      { pop: "4️⃣", name: "🦩 Colhereiro", type: "🟨 Meio", complex: "🟡 Médio" },
+      { pop: "5️⃣", name: "🦤 Tucano", type: "🟨 Meio", complex: "🟡 Médio" },
+      { pop: "7️⃣", name: "🦜 Papagaio-Charão", type: "🟦 Base", complex: "🟢 Fácil" },
+      { pop: "8️⃣", name: "🐦 Quero-Quero", type: "🟦 Base", complex: "🟡 Médio" },
+      { pop: "9️⃣", name: "🐤 Canário-da-Terra", type: "🟦 Base", complex: "🟢 Fácil" },
+      { pop: "2️⃣", name: "🐊 Jacaré", type: "🟥 Predador", complex: "🟡 Médio" },
+      { pop: "3️⃣", name: "🐍 Sucuri", type: "🟧 Subpredador", complex: "🟠 Difícil" },
+      { pop: "4️⃣", name: "🐢 Jabuti", type: "🟨 Meio", complex: "🟢 Fácil" },
+      { pop: "5️⃣", name: "🪱 Coral", type: "🟨 Meio", complex: "🟠 Difícil" },
+      { pop: "7️⃣", name: "🦕 Iguana-Verde", type: "🟨 Meio", complex: "🟠 Difícil" },
+      { pop: "9️⃣", name: "🦎 Calango-do-Sertão", type: "🟦 Base", complex: "🟢 Fácil" },
+      { pop: "2️⃣", name: "🐗 Javali", type: "🟥 Predador", complex: "🔵 Muito Fácil" },
+      { pop: "3️⃣", name: "🦊 Jaguatirica", type: "🟧 Subpredador", complex: "🟠 Difícil" },
+      { pop: "4️⃣", name: "🦡 Tamanduá-Bandeira", type: "🟨 Meio", complex: "🔵 Muito Fácil" },
+      { pop: "5️⃣", name: "🦍 Bugio-Preto", type: "🟨 Meio", complex: "🟡 Médio" },
+      { pop: "6️⃣", name: "🦦 Ariranha", type: "🟧 Subpredador", complex: "🔴 Muito Difícil" },
+      { pop: "9️⃣", name: "🐀 Camundongo", type: "🟦 Base", complex: "🟢 Fácil" },
+      { pop: "2️⃣", name: "🦅 Osprey", type: "🟥 Predador", complex: "🟡 Médio" },
+      { pop: "3️⃣", name: "🦉 Suindara", type: "🟧 Subpredador", complex: "🔴 Muito Difícil" },
+      { pop: "5️⃣", name: "🦫 Capivara", type: "🟨 Meio", complex: "🟢 Fácil" },
+      { pop: "6️⃣", name: "🦧 Mico-Leão-Dourado", type: "🟨 Meio", complex: "🟠 Difícil" },
+      { pop: "8️⃣", name: "🦥 Preguiça", type: "🟨 Meio", complex: "🟡 Médio" },
+      { pop: "9️⃣", name: "🐸 Sapo-Boi-Azul", type: "🟦 Base", complex: "🟡 Médio" },
+      { pop: "5️⃣", name: "🦫 Capivara (Alternativa)", type: "🟨 Meio", complex: "🟢 Fácil" },
+      { pop: "0️⃣", name: "🐈‍⬛ Pantera", type: "🟥 Predador", complex: "🔴 Muito Difícil" }
     ];
 
-    function shuffleArray(arr) {
-      return arr.slice().sort(() => 0.5 - Math.random());
+    function shuffleArray(array) {
+      const arr = array.slice();
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
     }
 
     function generateMatch() {
@@ -151,17 +156,19 @@
         selected = [];
         const usedNums = new Set();
         for (const animal of shuffled) {
-          if (!usedNums.has(animal.num)) {
+          if (!usedNums.has(animal.pop)) {
             selected.push(animal);
-            usedNums.add(animal.num);
+            usedNums.add(animal.pop);
           }
           if (selected.length === totalAnimals) break;
         }
 
-        const predadorCount = selected.filter(a => a.type === "Predador").length;
-        const baseCount = selected.filter(a => a.type === "Base").length;
+        const predadorCount = selected.filter(a => a.type === "🟥 Predador").length;
+        const subpredadorCount = selected.filter(a => a.type === "🟧 Subpredador").length;
+        const baseCount = selected.filter(a => a.type === "🟦 Base").length;
 
-        valid = predadorCount === 1 && baseCount >= 1 && baseCount <= 2;
+        valid = (predadorCount === 1 && baseCount >= 1 && baseCount <= 2) ||
+                (subpredadorCount === 1 && baseCount === 3 && (totalAnimals === 2 || totalAnimals === 4));
       }
 
       const assignments = [];
@@ -183,12 +190,11 @@
         block.className = "player-block";
 
         block.innerHTML = `
-          <strong>Jogador ${i + 1}</strong>
           <div class="animal-name">
             ${playerCount <= 3 ? "Principal: " : ""}${assignment.main.name}
           </div>
           <div class="animal-info">
-            Número: ${assignment.main.num} | Tipo: ${assignment.main.type}
+            ${assignment.main.pop} | ${assignment.main.type} | ${assignment.main.complex}
           </div>
         `;
 
@@ -196,7 +202,7 @@
           block.innerHTML += `
             <div class="animal-name">Suporte: ${assignment.support.name}</div>
             <div class="animal-info">
-              Número: ${assignment.support.num} | Tipo: ${assignment.support.type}
+              ${assignment.support.pop} | ${assignment.support.type} | ${assignment.support.complex}
             </div>
           `;
         }
