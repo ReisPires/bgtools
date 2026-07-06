@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imperialismo: América</title>
+<style>
+  body{
+    margin:30px;
+    text-align:center;
+    font-family:'Segoe UI',sans-serif;
+    background:#0b2752;
+    color:#fff
+  }
+
+  h1 {
+    color: #fff;
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+
+  button {
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    background:#f2f2f2
+  }
+
+  label {
+    font-size:16px
+  }
+
+  .section{
+    max-width:700px;
+    margin:28px auto
+  }
+
+  .title{
+    padding:10px;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:20px
+  }
+  
+  .lat{background:#b3262e}
+  .usa{background:#1f5fbf}
+  .pen{background:#666}
+  
+  .card{
+    position:relative;
+    background:#f7f7f7;
+    color:#222;
+    border-radius:12px;
+    padding:16px 16px 16px 30px;
+    margin:10px 0;
+    text-align:left;
+    box-shadow:0 4px 10px rgba(0,0,0,.25)
+  }
+  
+  .stripe{
+    position:absolute;
+    left:0;
+    top:0;
+    width:14px;
+    height:100%;
+    border-radius:12px 0 0 12px
+  }
+  
+  .group{
+    font-style:italic;
+    color:#666
+  }
+  
+  .emoji {
+    font-size: 24px;
+    margin-right: 6px;
+    text-shadow: 0 0 3px black;
+  }
+</style>
+</head>
+<body>
+  <h1>🌎 Imperialismo: América 🌎</h1>
+  <div class="controls">
+    <label><input type="checkbox" id="pendulo"> Líder Pêndulo</label><br><br>
+    <button onclick="gerar()">Monte uma partida!</button>
+  </div>
+  <div id="out"></div>
+  <script>
+    const cores={
+      "Cone Sul":"#2f7de1",
+      "Brasil":"#2ca34a",
+      "Caribe":"#d93a3a",
+      "Andinos":"#f0c419",
+      "Mesoamérica":"#8d47d6",
+      "Sem Bloco":"#8c8c8c"
+    };
+    const lat=[
+      ["Fidel Castro","Sem Bloco"],["Simón Bolívar","Sem Bloco"],
+      ["Víctor Haya de la Torre","Andinos"],["Salvador Allende","Andinos"],
+      ["Maurice Bishop","Caribe"],["Che Guevara","Caribe"],
+      ["Pepe Mujica","Cone Sul"],["Diego Maradona","Cone Sul"],
+      ["Paulo Freire","Brasil"],["Carlos Marighella","Brasil"],
+      ["Frida Kahlo","Mesoamérica"],["Augusto Sandino","Mesoamérica"]
+    ];
+    const usa=[
+      ["Walt Disney","Sem Bloco"],["John F. Kennedy","Sem Bloco"],
+      ["Augusto Pinochet","Andinos"],["Hugo Banzer","Andinos"],
+      ["Rafael Trujillo","Caribe"],["Fulgencio Batista","Caribe"],
+      ["Dan Mitrione","Cone Sul"],["Jorge Videla","Cone Sul"],
+      ["Carmen Miranda","Brasil"],["Carlos Lacerda","Brasil"],
+      ["Carlos Castillo Armas","Mesoamérica"],["Oswaldo López Arellano","Mesoamérica"]
+    ];
+    const pen=[["Getúlio Vargas","Brasil"],["Juan Domingo Perón","Cone Sul"]];
+    
+    function shuffle(a){
+      a=[...a];
+      for(let i=a.length-1;i>0;i--){
+        let j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+      }
+    
+    function pick(pool,n,used){
+      let res=[];
+      for(const x of shuffle(pool)){
+        if(!used.has(x[1])){used.add(x[1]);res.push(x);}
+        if(res.length===n)break;
+      }
+      return res;
+    }
+
+    function cards(arr){
+      return arr.map(x=>`<div class="card"><div class="stripe" style="background:${cores[x[1]]}"></div><strong>${x[0]}</strong><div class="group">${x[1]}</div></div>`).join("");
+    }
+
+    function gerar(){
+      let used=new Set();
+      let l=pick(lat,2,used);
+      let u=pick(usa,2,used);
+      let p=document.getElementById("pendulo").checked?pick(pen,1,used):[];
+      let h=`<div class="section"><div class="title lat"><span class="emoji">⚒️</span> América Latina</div>${cards(l)}</div>`;
+      h+=`<div class="section"><div class="title usa"><span class="emoji">🦅</span> Estados Unidos</div>${cards(u)}</div>`;
+      if(p.length)h+=`<div class="section"><div class="title pen"><span class="emoji">⚖️</span> Líder Pêndulo</div>${cards(p)}</div>`;
+      document.getElementById("out").innerHTML=h;
+    }
+  </script>
+</body></html>
