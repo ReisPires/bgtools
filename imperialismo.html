@@ -15,7 +15,7 @@
 
   h1 {
     color: #fff;
-    font-size: 26px;
+    font-size: 20px;
     margin-bottom: 10px;
   }
 
@@ -123,14 +123,14 @@
       return a;
       }
     
-    function pick(pool,n,used){
-      let res=[];
-      for(const x of shuffle(pool)){
-        if(!used.has(x[1])){used.add(x[1]);res.push(x);}
-        if(res.length===n)break;
+      function pick(pool,n,used){
+        let res=[];
+        for(const x of shuffle(pool)){
+          if(!used.has(x[1])){used.add(x[1]);res.push(x);}
+          if(res.length===n)break;
+        }
+        return res;
       }
-      return res;
-    }
 
     function cards(arr){
       return arr.map(x=>`<div class="card"><div class="stripe" style="background:${cores[x[1]]}"></div><strong>${x[0]}</strong><div class="group">${x[1]}</div></div>`).join("");

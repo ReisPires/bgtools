@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cities</title>
+
+<style>
+body {
+  background: #ddeeff;
+  color: #234;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  margin: 30px;
+}
+
+h1 {
+  color: #2d6cdf;
+  font-size: 30px;
+  margin-bottom: 25px;
+}
+
+button {
+  padding: 12px 22px;
+  font-size: 17px;
+  font-weight: bold;
+  background-color: #2d6cdf;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color .2s;
+}
+
+button:hover {
+  background-color: #5087ea;
+}
+
+.section-title {
+  margin-top: 35px;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.city-card {
+  position: relative;
+  background: rgba(255,255,255,.96);
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  width: 340px;
+  margin: auto;
+  padding: 20px 20px 20px 36px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.color-stripe {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 16px;
+  height: calc(100% + 2px);
+  border-radius: 14px 0 0 14px;
+}
+
+.city-emoji {
+  font-size: 42px;
+  text-shadow: 0 0 3px black;
+  margin-bottom: 8px;
+}
+
+.city-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #222;
+}
+
+.city-subtitle {
+  margin-top: 6px;
+  color: #777;
+  font-style: italic;
+  font-size: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🏙️ Cities 🏙️</h1>
+
+<button onclick="gerarCidade()">
+Monte uma partida!
+</button>
+
+<div id="resultado"></div>
+
+<script>
+
+const cidades = [
+  {
+    nome: "Nova Iorque",
+    emoji: "🗽",
+    cor: "#4A90E2"
+  },
+  {
+    nome: "Rio de Janeiro",
+    emoji: "🌴",
+    cor: "#2E8B57"
+  },
+  {
+    nome: "Barcelona",
+    emoji: "🏛️",
+    cor: "#D94F4F"
+  },
+  {
+    nome: "Buenos Aires",
+    emoji: "💃",
+    cor: "#7D6BD9"
+  },
+  {
+    nome: "Lisboa",
+    emoji: "🚋",
+    cor: "#E3A72F"
+  },
+  {
+    nome: "Veneza",
+    emoji: "🚤",
+    cor: "#2FA8A8"
+  },
+  {
+    nome: "Sydney",
+    emoji: "🦘",
+    cor: "#E67E22"
+  },
+  {
+    nome: "Cidade do México",
+    emoji: "🌮",
+    cor: "#C0392B"
+  }
+];
+
+function shuffle(array){
+  let a = array.slice();
+
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+
+  return a;
+}
+
+function gerarCidade(){
+
+  const cidade = shuffle(cidades)[0];
+
+  document.getElementById("resultado").innerHTML = `
+  
+    <div class="section-title">
+      Cidade:
+    </div>
+
+    <div class="city-card">
+
+      <div class="color-stripe"
+           style="background:${cidade.cor}">
+      </div>
+
+      <div class="city-emoji">
+        ${cidade.emoji}
+      </div>
+
+      <div class="city-name">
+        ${cidade.nome}
+      </div>
+
+    </div>
+
+  `;
+}
+
+</script>
+
+</body>
+</html>
