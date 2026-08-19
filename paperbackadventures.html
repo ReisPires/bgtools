@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paperback Adventures</title>
+
+  <style>
+    :root {
+      --bg: #f3eee4;
+      --panel: #fffdf8;
+      --navy: #172b4d;
+      --navy-dark: #0d1b2f;
+      --muted: #6f756f;
+      --text: #202a35;
+      --shadow: 0 6px 20px rgba(35, 42, 50, 0.16);
+      --radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(
+          180deg,
+          #faf8f2 0%,
+          var(--bg) 100%
+        );
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, -apple-system,
+        "Helvetica Neue", Arial, sans-serif;
+      padding: 28px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 18px 0;
+      color: var(--navy);
+      font-size: 28px;
+      letter-spacing: 0.4px;
+    }
+
+    .controls {
+      margin: 12px 0 18px 0;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-size: 16px;
+      color: var(--navy);
+    }
+
+    select {
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #c8c4bb;
+      background: var(--panel);
+      color: var(--navy);
+    }
+
+    #modeContainer {
+      display: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 8px;
+      background: var(--navy);
+      color: white;
+      box-shadow: var(--shadow);
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background: var(--navy-dark);
+    }
+
+    .output {
+      margin-top: 26px;
+      max-width: 920px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .section {
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(23, 43, 77, 0.08);
+      text-align: left;
+    }
+
+    .section h2 {
+      margin: 0 0 10px 0;
+      font-size: 17px;
+      color: var(--navy);
+    }
+
+    /* ---------------- PERSONAGENS ---------------- */
+
+    .characters-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .character-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #faf8f2;
+      border-radius: 8px;
+      padding: 10px 12px;
+      min-height: 72px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .character-card .stripe {
+      width: 10px;
+      height: 100%;
+      border-radius: 6px;
+      flex: 0 0 10px;
+    }
+
+    .character-emoji {
+      font-size: 30px;
+      margin-left: 4px;
+      text-shadow: 0 0 3px black;
+    }
+
+    .character-body {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .character-name {
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--navy);
+    }
+
+    .character-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ---------------- ITENS ---------------- */
+
+    .items-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+
+    .item-card {
+      background: #faf8f2;
+      border-radius: 8px;
+      padding: 11px 14px;
+      position: relative;
+      overflow: hidden;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .item-card .stripe {
+      width: 8px;
+      height: 100%;
+      border-radius: 5px;
+      flex: 0 0 8px;
+    }
+
+    .item-name {
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    /* ---------------- INIMIGOS ---------------- */
+
+    .enemies-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .enemy-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #faf8f2;
+      border-radius: 8px;
+      padding: 10px 12px;
+      min-height: 70px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .enemy-card .stripe {
+      width: 10px;
+      height: 100%;
+      border-radius: 6px;
+      flex: 0 0 10px;
+    }
+
+    .enemy-emoji {
+      font-size: 28px;
+      margin-left: 4px;
+      text-shadow: 0 0 3px black;
+    }
+
+    .enemy-body {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .enemy-name {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--navy);
+    }
+
+    .enemy-category {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ---------------- CORES ---------------- */
+
+    /* Personagens */
+    .c-damsel {
+      background: #9bd59a;
+    }
+
+    .c-exmachina {
+      background: #8fc9ed;
+    }
+
+    .c-plothook {
+      background: #b8a0d8;
+    }
+
+    /* Inimigos */
+    .c-book1-lackey {
+      background: #71879a;
+    }
+
+    .c-book1-boss {
+      background: #3f9b91;
+    }
+
+    .c-book2-lackey {
+      background: #e6d78a;
+    }
+
+    .c-book2-boss {
+      background: #e38b43;
+    }
+
+    .c-book3-lackey {
+      background: #c96e6e;
+    }
+
+    .c-book3-boss {
+      background: #593b82;
+    }
+
+    @media (max-width: 560px) {
+      .characters-list,
+      .items-list,
+      .enemies-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>📓 Paperback Adventures 📓</h1>
+
+  <div class="controls">
+
+    <label for="numPlayers">
+      Número de jogadores:
+    </label>
+
+    <select id="numPlayers" onchange="atualizarModo()">
+      <option value="1" selected>1</option>
+      <option value="2">2</option>
+    </select>
+
+    <div id="modeContainer">
+
+      <label for="mode">
+        Modo:
+      </label>
+
+      <select id="mode">
+        <option value="coop">Coop</option>
+        <option value="2v2">2v2</option>
+      </select>
+
+    </div>
+
+  </div>
+
+  <button onclick="gerarPartida()">
+    Monte uma partida!
+  </button>
+
+  <div class="output" id="output" aria-live="polite" hidden></div>
+
+  <script>
+
+    /* =========================================================
+       PERSONAGENS
+       ========================================================= */
+
+    const CHARACTERS = [
+
+      {
+        name: "Damsel",
+        colorClass: "c-damsel",
+        emoji: "👩🏻",
+        items: [
+          "Venom Vial",
+          "Bandolier",
+          "Shadowdance Cloak",
+          "Whirling Blades"
+        ]
+      },
+
+      {
+        name: "Ex Machina",
+        colorClass: "c-exmachina",
+        emoji: "🤖",
+        items: [
+          "Laser Eyes",
+          "Reboot Switch",
+          "Turret Mode",
+          "Repair Panel"
+        ]
+      },
+
+      {
+        name: "Plothook",
+        colorClass: "c-plothook",
+        emoji: "🪝",
+        items: [
+          "Gambling Dice",
+          "Captain's Hat",
+          "Briny Cutlass",
+          "Plothole the Parrot"
+        ]
+      }
+
+    ];
+
+
+    /* =========================================================
+       INIMIGOS
+       ========================================================= */
+
+    const ENEMY_CATEGORIES = [
+
+      {
+        name: "Book 1 Lackey",
+        colorClass: "c-book1-lackey",
+        enemies: [
+          { name: "The Pesky Suitor", emoji: "🤵🏼‍♂️" },
+          { name: "The Shark", emoji: "🦈" },
+          { name: "Rats in the Sewer", emoji: "🐀" },
+          { name: "Deep-Sea Diver", emoji: "🤿" },
+          { name: "The Sludge Alien", emoji: "👽" }
+        ]
+      },
+
+      {
+        name: "Book 1 Boss",
+        colorClass: "c-book1-boss",
+        enemies: [
+          { name: "The Mummy", emoji: "🤕" },
+          { name: "The Swamp Troll", emoji: "🧌" },
+          { name: "The Buccaneer", emoji: "🏴‍☠️" },
+          { name: "The Nameless Agent", emoji: "🕵️" },
+          { name: "The Muscle", emoji: "💪🏻" }
+        ]
+      },
+
+      {
+        name: "Book 2 Lackey",
+        colorClass: "c-book2-lackey",
+        enemies: [
+          { name: "The Drowsy Giant", emoji: "💤" },
+          { name: "The Pack Leader", emoji: "🦕" },
+          { name: "The Sirens", emoji: "🧜🏽‍♀️" },
+          { name: "The Baroness", emoji: "👸🏼" },
+          { name: "The Titan", emoji: "🐼" }
+        ]
+      },
+
+      {
+        name: "Book 2 Boss",
+        colorClass: "c-book2-boss",
+        enemies: [
+          { name: "The Giant Spider", emoji: "🕷️" },
+          { name: "Homework Monster", emoji: "📖" },
+          { name: "The Sentient AI", emoji: "🔴" },
+          { name: "The Sea Serpent", emoji: "🐍" },
+          { name: "Cthn'plrtlnblvt", emoji: "🐙" }
+        ]
+      },
+
+      {
+        name: "Book 3 Lackey",
+        colorClass: "c-book3-lackey",
+        enemies: [
+          { name: "The Alien Queen", emoji: "👑" },
+          { name: "The Bandit King", emoji: "🪓" },
+          { name: "The Grand Cannon", emoji: "⚓" },
+          { name: "The Zombie Horde", emoji: "🧟" },
+          { name: "The Handsome Hunk", emoji: "🕺🏽" }
+        ]
+      },
+
+      {
+        name: "Book 3 Boss",
+        colorClass: "c-book3-boss",
+        enemies: [
+          { name: "The Dragon", emoji: "🐉" },
+          { name: "The Kraken", emoji: "🦑" },
+          { name: "The Mad Scientist", emoji: "🧑‍🔬" },
+          { name: "The Jailer", emoji: "🤠" },
+          { name: "The Roaring Rex", emoji: "🦖" }
+        ]
+      }
+
+    ];
+
+
+    /* =========================================================
+       SHUFFLE — FISHER-YATES
+       ========================================================= */
+
+    function shuffle(array) {
+
+      const a = array.slice();
+
+      for (let i = a.length - 1; i > 0; i--) {
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [a[i], a[j]] = [a[j], a[i]];
+
+      }
+
+      return a;
+
+    }
+
+
+    /* =========================================================
+       MODO
+       ========================================================= */
+
+    function atualizarModo() {
+
+      const numPlayers =
+        parseInt(
+          document.getElementById("numPlayers").value,
+          10
+        );
+
+      const modeContainer =
+        document.getElementById("modeContainer");
+
+      if (numPlayers === 2) {
+
+        modeContainer.style.display = "inline-block";
+
+      } else {
+
+        modeContainer.style.display = "none";
+
+      }
+
+    }
+
+
+    /* =========================================================
+       GERAR PARTIDA
+       ========================================================= */
+
+    function gerarPartida() {
+
+      const numPlayers =
+        parseInt(
+          document.getElementById("numPlayers").value,
+          10
+        );
+
+      const mode =
+        document.getElementById("mode").value;
+
+      const output =
+        document.getElementById("output");
+
+      output.hidden = false;
+      output.innerHTML = "";
+
+
+      /*
+       * 1 jogador ou Coop:
+       * 1 personagem
+       *
+       * 2v2:
+       * 2 personagens
+       */
+
+      const numCharacters =
+        numPlayers === 1 || mode === "coop"
+          ? 1
+          : 2;
+
+
+      /* ---------------------------------------------------------
+         PERSONAGENS
+         --------------------------------------------------------- */
+
+      const selectedCharacters =
+        shuffle(CHARACTERS).slice(0, numCharacters);
+
+
+      const secCharacters =
+        document.createElement("section");
+
+      secCharacters.className = "section";
+
+      secCharacters.innerHTML =
+        "<h2>🧑‍🚀 Personagens</h2>";
+
+
+      const charactersList =
+        document.createElement("div");
+
+      charactersList.className =
+        "characters-list";
+
+
+      selectedCharacters.forEach(character => {
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "character-card";
+
+
+        /*
+         * Seleciona 2 itens distintos da pool
+         * específica do personagem.
+         */
+
+        const selectedItems =
+          shuffle(character.items).slice(0, 2);
+
+
+        card.innerHTML = `
+          <div class="stripe ${character.colorClass}"
+               aria-hidden="true"></div>
+
+          <div class="character-emoji">
+            ${character.emoji}
+          </div>
+
+          <div class="character-body">
+
+            <div class="character-name">
+              ${character.name}
+            </div>
+
+            <div class="character-sub">
+              Itens: ${selectedItems.join(", ")}
+            </div>
+
+          </div>
+        `;
+
+        charactersList.appendChild(card);
+
+      });
+
+
+      secCharacters.appendChild(charactersList);
+
+      output.appendChild(secCharacters);
+
+
+      /* ---------------------------------------------------------
+         ITENS
+         --------------------------------------------------------- */
+
+      const secItems =
+        document.createElement("section");
+
+      secItems.className = "section";
+
+      secItems.innerHTML =
+        "<h2>🎒 Itens</h2>";
+
+
+      const itemsList =
+        document.createElement("div");
+
+      itemsList.className =
+        "items-list";
+
+
+      selectedCharacters.forEach(character => {
+
+        const selectedItems =
+          shuffle(character.items).slice(0, 2);
+
+        selectedItems.forEach(item => {
+
+          const card =
+            document.createElement("div");
+
+          card.className =
+            "item-card";
+
+
+          card.innerHTML = `
+            <div class="stripe ${character.colorClass}"
+                 aria-hidden="true"></div>
+
+            <div class="item-name">
+              ${item}
+            </div>
+          `;
+
+          itemsList.appendChild(card);
+
+        });
+
+      });
+
+
+      secItems.appendChild(itemsList);
+
+      output.appendChild(secItems);
+
+
+      /* ---------------------------------------------------------
+         INIMIGOS
+         --------------------------------------------------------- */
+
+      const enemyCopies =
+        numPlayers === 1 || mode === "coop"
+          ? 1
+          : 2;
+
+
+      const selectedEnemies = [];
+
+
+      ENEMY_CATEGORIES.forEach(category => {
+
+        const selected =
+          shuffle(category.enemies)
+            .slice(0, enemyCopies);
+
+        selected.forEach(enemy => {
+
+          selectedEnemies.push({
+            ...enemy,
+            category: category.name,
+            colorClass: category.colorClass
+          });
+
+        });
+
+      });
+
+
+      const secEnemies =
+        document.createElement("section");
+
+      secEnemies.className = "section";
+
+      secEnemies.innerHTML =
+        "<h2>👾 Inimigos</h2>";
+
+
+      const enemiesList =
+        document.createElement("div");
+
+      enemiesList.className =
+        "enemies-list";
+
+
+      selectedEnemies.forEach(enemy => {
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "enemy-card";
+
+
+        card.innerHTML = `
+          <div class="stripe ${enemy.colorClass}"
+               aria-hidden="true"></div>
+
+          <div class="enemy-emoji">
+            ${enemy.emoji}
+          </div>
+
+          <div class="enemy-body">
+
+            <div class="enemy-name">
+              ${enemy.name}
+            </div>
+
+            <div class="enemy-category">
+              ${enemy.category}
+            </div>
+
+          </div>
+        `;
+
+
+        enemiesList.appendChild(card);
+
+      });
+
+
+      secEnemies.appendChild(enemiesList);
+
+      output.appendChild(secEnemies);
+
+
+      /* ---------------------------------------------------------
+         SCROLL
+         --------------------------------------------------------- */
+
+      setTimeout(() => {
+
+        output.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      }, 80);
+
+    }
+
+  </script>
+
+</body>
+</html>
