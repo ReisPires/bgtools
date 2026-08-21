@@ -157,7 +157,7 @@
 
 <body>
 
-  <h1>⛪ Barcelona ⛪</h1>
+  <h1>💃🏻 Barcelona 💃🏻</h1>
 
   <div class="controls">
     <label class="checkbox-label">
@@ -273,13 +273,19 @@
     // PARALELEPÍPEDOS
     // =========================================
 
-    const PARALELEPIPEDOS = [
-      "Cerdà",
-      "Sagrada",
-      "Passageiro",
+    const PARALELEPIPEDOS_A = [
       "Marcador de Construção",
-      "Esquina",
       "Modernisme"
+    ];
+
+    const PARALELEPIPEDOS_B = [
+      "Passageiro",
+      "Esquina"
+    ];
+
+    const PARALELEPIPEDOS_C = [
+      "Cerdà",
+      "Sagrada"
     ];
 
 
@@ -432,7 +438,7 @@
         // -----------------------------------------
 
         const paralelepipedosSelecionados =
-          shuffle(PARALELEPIPEDOS).slice(0, 3);
+          shuffle(PARALELEPIPEDOS_A).slice(0, 1).concat(shuffle(PARALELEPIPEDOS_B).slice(0, 1).concat(shuffle(PARALELEPIPEDOS_C).slice(0, 1)));
 
         output.appendChild(
           criarSecao(
