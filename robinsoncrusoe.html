@@ -59,6 +59,17 @@
       margin: 6px 0;
     }
 
+    .traco {
+      font-size: 16px;
+      margin: 6px 0;
+    }
+
+    .traco_original {
+      font-size: 14px;
+      font-style: italic;
+      margin: 6px 0;
+    }
+
     .emoji {
       text-shadow: 0 0 3px black;
       font-size: 22px;
@@ -175,6 +186,19 @@
       {emoji: "🎲", nome: "Jogador"},
     ];
 
+    const tracos = [
+      {nome: "Tolo", original: "Gimp"},
+      {nome: "Pessimista", original: "Pessimist"},
+      {nome: "Bêbado", original: "Drunk"},
+      {nome: "Touro", original: "The Bull"},
+      {nome: "Criança", original: "Kid"},
+      {nome: "Cético", original: "Loss of Time"},
+      {nome: "Pirata", original: "Pirate"},
+      {nome: "Líder", original: "Leader"},
+      {nome: "Preguiçoso", original: "Lazy"},
+      {nome: "Sangue-frio", original: "Cold-blooded"}
+    ];
+
     const itens = [
       {emoji: "⚗️", nome: "Barômetro de Vidro"},
       {emoji: "📕", nome: "Bíblia"},
@@ -261,13 +285,15 @@
       `;
       resultadoDiv.appendChild(decksDiv);
 
-      // Personagens
+      // Personagens e Traços
       const personagemDiv = document.createElement('div');
       personagemDiv.className = 'section';
-      personagemDiv.innerHTML = `<h2>Personagens</h2>`;
-      const selecionados = shuffle([...personagens]).slice(0, numJogadores);
-      selecionados.forEach((c, i) => {
+      personagemDiv.innerHTML = `<h2>Personagens & Traços de Personalidade</h2>`;
+      const personagens_selecionados = shuffle([...personagens]).slice(0, numJogadores);
+      const tracos_selecionados = shuffle([...tracos]).slice(0, numJogadores);
+      personagens_selecionados.forEach((c, i) => {
         personagemDiv.innerHTML += `<div class="item"><span class="emoji">${c.emoji}</span> ${c.nome}</div>`;
+        personagemDiv.innerHTML += `<div class="traco">${tracos_selecionados[i].nome} (<span class="traco_original">${tracos_selecionados[i].original}</span>)</div>`;
       });
       resultadoDiv.appendChild(personagemDiv);
 
@@ -283,7 +309,7 @@
         // Destroços
         const destrocoDiv = document.createElement('div');
         destrocoDiv.className = 'section';
-        const destroco = destrocos[Math.floor(Math.random() * destrocos.length)];
+        const destroco = shuffle(destrocos)[0];
         destrocoDiv.innerHTML = `<h2>Destroços</h2><div class="item"><span class="emoji">${destroco.emoji}</span> ${destroco.nome}</div>`;
         resultadoDiv.appendChild(destrocoDiv);
       }
@@ -291,7 +317,7 @@
       // Tripulante
       const tripDiv = document.createElement('div');
       tripDiv.className = 'section';
-      const trip = tripulantes[Math.floor(Math.random() * tripulantes.length)];
+      const trip = shuffle(tripulantes)[0];
       if (numJogadores == 1) {
         const dog = 0.5 < Math.random() ? `<span class="emoji">🐶</span> Cão` : `<span class="emoji">🐕</span> Cão de Caça`;
         tripDiv.innerHTML = `<h2>Tripulação</h2><div class="item">${dog}</div><div class="item"><span class="emoji">🪶</span> Sexta-Feira</div><div class="item"><span class="emoji">${trip.emoji}</span> ${trip.nome}</div>`;
@@ -307,7 +333,7 @@
       // Teto Avançado
       const tetoDiv = document.createElement('div');
       tetoDiv.className = 'section';
-      const teto = tetosAvancados[Math.floor(Math.random() * tetosAvancados.length)];
+      const teto = shuffle(tetosAvancados)[0];
       tetoDiv.innerHTML = `<h2>Telhado Especial</h2><div class="item"><span class="emoji">${teto.emoji}</span> ${teto.nome}</div>`;
       resultadoDiv.appendChild(tetoDiv);
     }
