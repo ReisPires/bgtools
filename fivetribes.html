@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Five Tribes</title>
+
+  <style>
+    :root {
+      --night: #3f3b78;
+      --night-dark: #2d2a5a;
+      --sand: #e6a23c;
+      --sand-light: #fff4dc;
+
+      --blue: #4b6fd8;
+      --red: #d94b4b;
+      --gray: #777777;
+      --green: #4d9b68;
+    }
+
+    body {
+      background-color: var(--sand-light);
+      color: var(--night-dark);
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      margin: 30px;
+    }
+
+    h1 {
+      color: var(--night);
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+      margin: 8px 0;
+    }
+
+    label {
+      font-size: 16px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      padding: 10px 18px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .generate {
+      background-color: var(--night);
+      color: white;
+    }
+
+    .generate:hover {
+      background-color: var(--night-dark);
+    }
+
+    .grid {
+      display: grid;
+      gap: 6px;
+      justify-content: center;
+      margin: 20px auto 0;
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .cell {
+      width: 70px;
+      height: 70px;
+      box-sizing: border-box;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 18px;
+      font-weight: bold;
+
+      border: 3px solid;
+      border-radius: 6px;
+
+      background-color: white;
+      line-height: 1.2;
+    }
+
+    .emoji {
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    /* Cores dos tiles */
+
+    .blue {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .red {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .gray {
+      border-color: var(--gray);
+      color: var(--gray);
+    }
+
+    .green {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    /*
+      Responsividade:
+      Os cards diminuem em telas pequenas para evitar
+      que o grid ultrapasse a largura da tela.
+    */
+
+    @media (max-width: 600px) {
+      body {
+        margin: 20px 10px;
+      }
+
+      .grid {
+        gap: 4px;
+      }
+
+      .cell {
+        width: 15vw;
+        height: 15vw;
+        max-width: 65px;
+        max-height: 65px;
+        font-size: 16px;
+        border-width: 2px;
+      }
+
+      .emoji {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🌙 Five Tribes 🌙</h1>
+
+  <div class="checkbox-group">
+    <label>
+      <input type="checkbox" id="artisans">
+      Artisans of Naqala
+    </label>
+
+    <label>
+      <input type="checkbox" id="whims">
+      Whims of the Sultan
+    </label>
+  </div>
+
+  <button class="generate" onclick="generateMap()">
+    Monte uma partida!
+  </button>
+
+  <div id="gridContainer"></div>
+
+  <script>
+
+    /*
+     * ============================================================
+     * EMOJIS
+     * ============================================================
+     *
+     * Você pode alterar os emojis aqui sem precisar modificar
+     * nenhuma outra parte do código.
+     */
+
+    const emojiMap = {
+      "Local Sagrado": "🧞",
+      "Palácio": "🕌",
+      "Oasis": "🌴",
+      "Pequeno Mercado": "3️⃣",
+      "Grande Mercado": "6️⃣",
+
+      "Oficina": "🟣",
+      "Mercado Especializado": "9️⃣",
+      "Abismo": "⬛",
+
+      "Cidade Fabulosa": "🃏",
+      "Grande Lago": "🟩"
+    };
+
+
+    /*
+     * ============================================================
+     * DEFINIÇÃO DOS TILES
+     * ============================================================
+     *
+     * Cada tile possui:
+     * - name   = nome do tile
+     * - number = número (null para tiles sem número)
+     * - color  = cor da borda/número
+     * - expansion = conjunto ao qual pertence
+     */
+
+    const baseTiles = [
+
+      // Local Sagrado
+      ...createTiles("Local Sagrado", 4, 6, "blue", "base"),
+      ...createTiles("Local Sagrado", 1, 10, "blue", "base"),
+      ...createTiles("Local Sagrado", 1, 12, "blue", "base"),
+      ...createTiles("Local Sagrado", 1, 15, "blue", "base"),
+
+      // Palácio
+      ...createTiles("Palácio", 5, 5, "blue", "base"),
+
+      // Oasis
+      ...createTiles("Oasis", 6, 8, "red", "base"),
+
+      // Pequeno Mercado
+      ...createTiles("Pequeno Mercado", 8, 6, "red", "base"),
+
+      // Grande Mercado
+      ...createTiles("Grande Mercado", 4, 4, "red", "base")
+    ];
+
+
+    const artisansTiles = [
+
+      // Oficinas
+      ...createTiles("Oficina", 3, 5, "blue", "artisans"),
+
+      // Mercados Especializados
+      ...createTiles("Mercado Especializado", 2, 10, "red", "artisans"),
+
+      // Abismo
+      ...createTiles("Abismo", 1, null, "gray", "artisans")
+    ];
+
+
+    const whimsTiles = [
+
+      // Cidades Fabulosas
+      ...createTiles("Cidade Fabulosa", 3, 5, "blue", "whims"),
+      ...createTiles("Cidade Fabulosa", 2, 5, "red", "whims"),
+
+      // Grande Lago
+      ...createTiles("Grande Lago", 1, null, "green", "whims")
+    ];
+
+
+    /*
+     * Função auxiliar para criar várias cópias de um mesmo tile.
+     */
+
+    function createTiles(name, quantity, number, color, expansion) {
+      return Array.from({ length: quantity }, () => ({
+        name,
+        number,
+        color,
+        expansion
+      }));
+    }
+
+
+    /*
+     * ============================================================
+     * FISHER-YATES
+     * ============================================================
+     */
+
+    function shuffle(array) {
+      const result = [...array];
+
+      for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [result[i], result[j]] = [result[j], result[i]];
+      }
+
+      return result;
+    }
+
+
+    /*
+     * ============================================================
+     * GERAÇÃO DO MAPA
+     * ============================================================
+     */
+
+    function generateMap() {
+
+      const artisans =
+        document.getElementById("artisans").checked;
+
+      const whims =
+        document.getElementById("whims").checked;
+
+
+      let tiles = [...baseTiles];
+
+      let rows;
+      let cols;
+      let restrictedArtisans = false;
+
+
+      /*
+       * Nenhuma expansão
+       * 30 tiles
+       * 5 x 6
+       */
+
+      if (!artisans && !whims) {
+
+        rows = 5;
+        cols = 6;
+
+      }
+
+
+      /*
+       * Apenas Artisans
+       * 36 tiles
+       * 6 x 6
+       * Artisans ficam no centro 4 x 4
+       */
+
+      else if (artisans && !whims) {
+
+        tiles = [
+          ...tiles,
+          ...artisansTiles
+        ];
+
+        rows = 6;
+        cols = 6;
+
+        restrictedArtisans = true;
+
+      }
+
+
+      /*
+       * Apenas Whims
+       * 36 tiles
+       * 6 x 6
+       */
+
+      else if (!artisans && whims) {
+
+        tiles = [
+          ...tiles,
+          ...whimsTiles
+        ];
+
+        rows = 6;
+        cols = 6;
+
+      }
+
+
+      /*
+       * Ambas as expansões
+       * 42 tiles
+       * 6 x 7
+       * Artisans ficam no centro 4 x 5
+       */
+
+      else {
+
+        tiles = [
+          ...tiles,
+          ...artisansTiles,
+          ...whimsTiles
+        ];
+
+        rows = 6;
+        cols = 7;
+
+        restrictedArtisans = true;
+      }
+
+
+      const grid = createGrid(
+        tiles,
+        rows,
+        cols,
+        restrictedArtisans
+      );
+
+      displayGrid(grid, rows, cols);
+    }
+
+
+    /*
+     * ============================================================
+     * CRIAÇÃO DO GRID
+     * ============================================================
+     *
+     * Quando Artisans está ativo, os tiles dessa expansão
+     * são colocados somente nas posições internas do grid.
+     */
+
+    function createGrid(tiles, rows, cols, restrictedArtisans) {
+
+      const totalCells = rows * cols;
+
+      const grid = Array(totalCells).fill(null);
+
+      let shuffledTiles = shuffle(tiles);
+
+
+      /*
+       * Se não existe restrição, simplesmente distribuímos
+       * os tiles embaralhados pelo grid.
+       */
+
+      if (!restrictedArtisans) {
+
+        for (let i = 0; i < totalCells; i++) {
+          grid[i] = shuffledTiles[i];
+        }
+
+        return grid;
+      }
+
+
+      /*
+       * Se Artisans está ativo:
+       *
+       * Separamos os 6 tiles de Artisans dos demais.
+       */
+
+      const artisans = shuffledTiles.filter(
+        tile => tile.expansion === "artisans"
+      );
+
+      const otherTiles = shuffledTiles.filter(
+        tile => tile.expansion !== "artisans"
+      );
+
+
+      /*
+       * Identificamos as posições do centro.
+       *
+       * Para 6x6:
+       *   linhas 1-4
+       *   colunas 1-4
+       *
+       * Para 6x7:
+       *   linhas 1-4
+       *   colunas 1-5
+       *
+       * Os índices começam em zero.
+       */
+
+      const centralPositions = [];
+
+      for (let r = 1; r < rows - 1; r++) {
+        for (let c = 1; c < cols - 1; c++) {
+          centralPositions.push(r * cols + c);
+        }
+      }
+
+
+      /*
+       * Embaralhamos também as posições centrais.
+       */
+
+      const shuffledPositions = shuffle(centralPositions);
+
+
+      /*
+       * Colocamos os 6 tiles de Artisans em posições
+       * aleatórias dentro da região central.
+       */
+
+      for (let i = 0; i < artisans.length; i++) {
+
+        grid[shuffledPositions[i]] = artisans[i];
+
+      }
+
+
+      /*
+       * Preenchemos todas as outras posições com os
+       * tiles restantes.
+       */
+
+      let otherIndex = 0;
+
+      for (let i = 0; i < totalCells; i++) {
+
+        if (grid[i] === null) {
+
+          grid[i] = otherTiles[otherIndex];
+
+          otherIndex++;
+
+        }
+      }
+
+
+      return grid;
+    }
+
+
+    /*
+     * ============================================================
+     * EXIBIÇÃO
+     * ============================================================
+     */
+
+    function displayGrid(grid, rows, cols) {
+
+      const gridContainer =
+        document.getElementById("gridContainer");
+
+      gridContainer.innerHTML = "";
+
+      gridContainer.className = "grid";
+
+      gridContainer.style.gridTemplateColumns =
+        `repeat(${cols}, 70px)`;
+
+
+      for (let i = 0; i < grid.length; i++) {
+
+        const tile = grid[i];
+
+        const cell = document.createElement("div");
+
+        cell.className = `cell ${tile.color}`;
+
+
+        const emoji =
+          emojiMap[tile.name] || "❓";
+
+
+        const number =
+          tile.number !== null
+            ? tile.number
+            : "";
+
+
+        cell.innerHTML = `
+          <span class="emoji">${emoji}</span>
+          ${number}
+        `;
+
+
+        gridContainer.appendChild(cell);
+      }
+    }
+
+  </script>
+
+</body>
+</html>

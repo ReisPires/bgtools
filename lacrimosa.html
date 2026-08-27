@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lacrimosa</title>
+
+  <style>
+    :root {
+      --bg: #3d0d16;
+      --bg-gradient: #1e050a;
+      --panel: #591522;
+      --panel-light: #6d1c2a;
+      --yellow: #fff2b8;
+      --yellow-muted: #e6d58f;
+      --text: #fff8df;
+      --radius: 12px;
+      --shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-gradient) 100%);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      padding: 28px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 22px;
+      color: var(--yellow);
+      font-size: 30px;
+    }
+
+    button.generate {
+      padding: 11px 22px;
+      font-size: 17px;
+      font-weight: bold;
+      background: var(--yellow);
+      color: var(--bg);
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: background-color 0.2s, transform 0.2s;
+      margin-bottom: 22px;
+    }
+
+    button.generate:hover {
+      background: #fff8d4;
+      transform: translateY(-2px);
+    }
+
+    .output {
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid rgba(255, 242, 184, 0.45);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      text-align: left;
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--yellow-muted);
+      color: var(--yellow);
+      font-size: 19px;
+    }
+
+    .item {
+      background: var(--panel-light);
+      border-radius: 8px;
+      padding: 14px;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .constanze-card {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--yellow);
+      padding: 22px;
+    }
+
+    .composers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .composer-card {
+      display: flex;
+      align-items: center;
+      background: var(--panel-light);
+      border-radius: 8px;
+      overflow: hidden;
+      min-height: 58px;
+    }
+
+    .stripe {
+      width: 10px;
+      align-self: stretch;
+      flex: 0 0 10px;
+    }
+
+    .composer-name {
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--text);
+    }
+
+    .c-blue {
+      background: #3f7fbd;
+    }
+
+    .c-yellow {
+      background: #e5c34d;
+    }
+
+    .c-black {
+      background: #111111;
+    }
+
+    .c-gray {
+      background: #9a9a9a;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 18px 14px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .section {
+        padding: 14px;
+      }
+
+      .section h2 {
+        font-size: 17px;
+      }
+
+      .item {
+        padding: 12px;
+      }
+
+      button.generate {
+        width: 100%;
+        max-width: 320px;
+      }
+
+      .constanze-card {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🎼 Lacrimosa 🎼</h1>
+
+  <button class="generate" onclick="gerarPartida()">
+    Monte uma partida!
+  </button>
+
+  <div class="output" id="output" hidden></div>
+
+  <script>
+    const COMPOSITORES = [
+      {
+        nome: "Eybler",
+        cor: "c-blue"
+      },
+      {
+        nome: "Stadler",
+        cor: "c-yellow"
+      },
+      {
+        nome: "Süßmayr",
+        cor: "c-black"
+      },
+      {
+        nome: "Freystadler",
+        cor: "c-gray"
+      }
+    ];
+
+    function shuffle(array) {
+      const arr = array.slice();
+
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+
+      return arr;
+    }
+
+    function gerarPartida() {
+      const output = document.getElementById("output");
+
+      output.hidden = false;
+      output.innerHTML = "";
+
+      // Constanze
+      const cartaConstanze = Math.floor(Math.random() * 5) + 1;
+
+      const secConstanze = document.createElement("section");
+      secConstanze.className = "section";
+
+      secConstanze.innerHTML = `
+        <h2>🎹 Constanze</h2>
+        <div class="item constanze-card">
+          Carta ${cartaConstanze}
+        </div>
+      `;
+
+      output.appendChild(secConstanze);
+
+
+      // Compositores
+      const compositoresSelecionados = shuffle(COMPOSITORES).slice(0, 2);
+
+      const secCompositores = document.createElement("section");
+      secCompositores.className = "section";
+
+      secCompositores.innerHTML = `
+        <h2>🎻 Compositores</h2>
+      `;
+
+      const lista = document.createElement("div");
+      lista.className = "composers-list";
+
+      compositoresSelecionados.forEach(compositor => {
+        const card = document.createElement("div");
+        card.className = "composer-card";
+
+        card.innerHTML = `
+          <div class="stripe ${compositor.cor}"></div>
+          <div class="composer-name">${compositor.nome}</div>
+        `;
+
+        lista.appendChild(card);
+      });
+
+      secCompositores.appendChild(lista);
+      output.appendChild(secCompositores);
+
+      setTimeout(() => {
+        output.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 80);
+    }
+  </script>
+
+</body>
+</html>

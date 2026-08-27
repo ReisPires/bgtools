@@ -173,7 +173,6 @@
       {emoji: "🪖", nome: "Soldado"},
       {emoji: "⚓", nome: "Marujo"},
       {emoji: "🎲", nome: "Jogador"},
-      {emoji: "✝️", nome: "Missionário"},
     ];
 
     const itens = [
@@ -196,15 +195,10 @@
     const tripulantes = [
       {emoji: "🛞", nome: "Contramestre"},
       {emoji: "🍲", nome: "Velho Cozinheiro"},
-      {emoji: "🪚", nome: "Operador"},
+      {emoji: "🪚", nome: "Cirurgião"},
       {emoji: "🎨", nome: "Artista"},
       {emoji: "🛖", nome: "Membro da Tribo"},
       {emoji: "🥾", nome: "Peregrino"},
-      {emoji: "👦🏻", nome: "Garoto"},
-      {emoji: "🦜", nome: "Papagaio"},
-      {emoji: "🔭", nome: "Vigia"},
-      {emoji: "🐎", nome: "Cavalo"},
-      {emoji: "💉", nome: "Cirurgião"},
     ];
 
     const tetosAvancados = [
@@ -215,8 +209,15 @@
     ];
 
 
-    function embaralhar(array) {
-      return array.sort(() => 0.5 - Math.random());
+    function shuffle(array) {
+      const arr = array.slice();
+
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+
+      return arr;
     }
 
     function gerarSetup() {
@@ -227,7 +228,7 @@
       // Cenário
       const cenarioDiv = document.createElement('div');
       cenarioDiv.className = 'section';
-      const cenario = cenarios[Math.floor(Math.random() * cenarios.length)];
+      const cenario = shuffle(cenarios)[0];
       cenarioDiv.innerHTML = `
         <h2>Cenário</h2>
         <div class="item">
@@ -253,7 +254,7 @@
       // Decks
       const decksDiv = document.createElement('div');
       decksDiv.className = 'section';
-      const deck = Math.random() < 0.5 ? decks[0] : decks[Math.floor(Math.random() * 3) + 1];
+      const deck = shuffle(decks)[0];
       decksDiv.innerHTML = `
         <h2>Decks de Aventura</h2>
         <div class="item"><span class="emoji">${deck.emoji}</span> ${deck.nome}</strong>
@@ -264,7 +265,7 @@
       const personagemDiv = document.createElement('div');
       personagemDiv.className = 'section';
       personagemDiv.innerHTML = `<h2>Personagens</h2>`;
-      const selecionados = embaralhar([...personagens]).slice(0, numJogadores);
+      const selecionados = shuffle([...personagens]).slice(0, numJogadores);
       selecionados.forEach((c, i) => {
         personagemDiv.innerHTML += `<div class="item"><span class="emoji">${c.emoji}</span> ${c.nome}</div>`;
       });
@@ -273,24 +274,26 @@
       // Itens Iniciais
       const itemDiv = document.createElement('div');
       itemDiv.className = 'section';
-      const iniciais = embaralhar([...itens]).slice(0, 2);
+      const iniciais = shuffle([...itens]).slice(0, 2);
       itemDiv.innerHTML = `<h2>Itens Iniciais</h2>` +
         iniciais.map(item => `<div class="item"><span class="emoji">${item.emoji}</span> ${item.nome}</div>`).join('');
       resultadoDiv.appendChild(itemDiv);
-
-      // Destroços
-      const destrocoDiv = document.createElement('div');
-      destrocoDiv.className = 'section';
-      const destroco = destrocos[Math.floor(Math.random() * destrocos.length)];
-      destrocoDiv.innerHTML = `<h2>Destroços</h2><div class="item"><span class="emoji">${destroco.emoji}</span> ${destroco.nome}</div>`;
-      resultadoDiv.appendChild(destrocoDiv);
+      
+      if (deck.nome === "Clássico") {
+        // Destroços
+        const destrocoDiv = document.createElement('div');
+        destrocoDiv.className = 'section';
+        const destroco = destrocos[Math.floor(Math.random() * destrocos.length)];
+        destrocoDiv.innerHTML = `<h2>Destroços</h2><div class="item"><span class="emoji">${destroco.emoji}</span> ${destroco.nome}</div>`;
+        resultadoDiv.appendChild(destrocoDiv);
+      }
 
       // Tripulante
       const tripDiv = document.createElement('div');
       tripDiv.className = 'section';
       const trip = tripulantes[Math.floor(Math.random() * tripulantes.length)];
       if (numJogadores == 1) {
-        const dog = 0.5<Math.random() ? `<span class="emoji">🐶</span> Cão` : `<span class="emoji">🐕</span> Cão de Caça`;
+        const dog = 0.5 < Math.random() ? `<span class="emoji">🐶</span> Cão` : `<span class="emoji">🐕</span> Cão de Caça`;
         tripDiv.innerHTML = `<h2>Tripulação</h2><div class="item">${dog}</div><div class="item"><span class="emoji">🪶</span> Sexta-Feira</div><div class="item"><span class="emoji">${trip.emoji}</span> ${trip.nome}</div>`;
         
       } else if (numJogadores == 2) {
