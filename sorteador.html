@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sorteador</title>
+
+  <style>
+    :root {
+      --bg: #f7faf7;
+      --green-dark: #1f5c3a;
+      --green: #2e8b57;
+      --green-light: #e7f3eb;
+      --green-lighter: #f1f8f3;
+      --white: #ffffff;
+      --text: #294236;
+      --muted: #718078;
+      --red: #c94c4c;
+      --radius: 12px;
+      --shadow: 0 5px 18px rgba(31, 92, 58, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      padding: 28px 18px;
+      text-align: center;
+    }
+
+    h1 {
+      color: var(--green-dark);
+      font-size: 28px;
+      margin: 0 0 24px;
+    }
+
+    h2 {
+      color: var(--green-dark);
+      font-size: 18px;
+      margin: 0 0 14px;
+    }
+
+    .screen {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .section {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid #dce9df;
+      text-align: left;
+    }
+
+    .player-count {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .player-count label {
+      font-weight: bold;
+      color: var(--green-dark);
+    }
+
+    select {
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--green);
+      background: var(--green-lighter);
+      color: var(--green-dark);
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .add-area {
+      display: flex;
+      gap: 8px;
+    }
+
+    .name-input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #b9d2c1;
+      border-radius: 9px;
+      background: #fff;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .name-input:focus {
+      border-color: var(--green);
+    }
+
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 11px 16px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .add-button {
+      background: var(--green);
+      color: white;
+      white-space: nowrap;
+    }
+
+    .clear-button {
+      width: 100%;
+      background: transparent;
+      color: var(--red);
+      border: 1px solid #e3b7b7;
+      margin-top: 12px;
+    }
+
+    .clear-button:hover {
+      background: #fff5f5;
+    }
+
+    .names-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--green-light);
+      border-radius: 8px;
+      padding: 10px 12px;
+      border-left: 7px solid var(--green);
+    }
+
+    .name-text {
+      font-size: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    .remove-button {
+      flex: 0 0 auto;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--red);
+      font-size: 18px;
+      line-height: 30px;
+      box-shadow: none;
+    }
+
+    .remove-button:hover {
+      background: #f9dddd;
+    }
+
+    .empty-list {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    .draw-button {
+      width: 100%;
+      background: var(--green-dark);
+      color: white;
+      font-size: 18px;
+      padding: 13px;
+      box-shadow: var(--shadow);
+    }
+
+    .draw-button:hover {
+      background: #17482d;
+    }
+
+    /* Tela de contagem */
+    .countdown-screen {
+      display: none;
+      min-height: 60vh;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .countdown-screen.active {
+      display: flex;
+    }
+
+    .countdown {
+      font-size: clamp(90px, 30vw, 180px);
+      font-weight: bold;
+      color: var(--green);
+    }
+
+    /* Tela de resultados */
+    .results-screen {
+      display: none;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .results-screen.active {
+      display: block;
+    }
+
+    .results-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid #dce9df;
+    }
+
+    .results-title {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .result-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .result-card {
+      background: var(--green-light);
+      border-radius: 9px;
+      border-left: 9px solid var(--green);
+      padding: 17px 15px;
+      font-size: clamp(22px, 6vw, 32px);
+      font-weight: bold;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+
+    .result-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .reroll-button {
+      flex: 1;
+      background: var(--green);
+      color: white;
+    }
+
+    .back-button {
+      flex: 1;
+      background: var(--green-lighter);
+      color: var(--green-dark);
+      border: 1px solid #bdd4c4;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 20px 12px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .section {
+        padding: 15px;
+      }
+
+      .add-area {
+        flex-direction: column;
+      }
+
+      .add-button {
+        width: 100%;
+      }
+
+      .result-buttons {
+        flex-direction: column;
+      }
+
+      .player-count {
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🌿 Sorteador 🌿</h1>
+
+  <!-- TELA PRINCIPAL -->
+  <div class="screen" id="mainScreen">
+
+    <div class="section player-count">
+      <label for="numNames">Quantidade de nomes:</label>
+
+      <select id="numNames">
+        <option value="1" selected>1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+    </div>
+
+
+    <div class="section">
+
+      <h2>✏️ Adicionar nomes</h2>
+
+      <div class="add-area">
+        <input
+          type="text"
+          id="nameInput"
+          class="name-input"
+          placeholder="Digite um ou mais nomes..."
+          autocomplete="off"
+        />
+
+        <button class="add-button" onclick="adicionarNomes()">
+          ＋ Adicionar
+        </button>
+      </div>
+
+      <div class="section">
+        <button class="draw-button" onclick="sortearNomes()">
+          🎲 Sortear!
+        </button>
+      </div>
+
+      <div class="names-list" id="namesList">
+        <div class="empty-list">
+          Nenhum nome adicionado.
+        </div>
+      </div>
+
+      <button class="clear-button" onclick="limparLista()">
+        🗑️ Limpar lista
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- TELA DE CONTAGEM -->
+  <div class="countdown-screen" id="countdownScreen">
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+
+  <!-- TELA DE RESULTADOS -->
+  <div class="results-screen" id="resultsScreen">
+
+    <div class="results-section">
+
+      <h2 class="results-title">🎉 Nomes sorteados</h2>
+
+      <div class="result-list" id="resultList"></div>
+
+      <div class="result-buttons">
+        <button class="reroll-button" onclick="resortearNomes()">
+          🔄 Sortear novamente
+        </button>
+
+        <button class="back-button" onclick="voltarInicio()">
+          ✏️ Alterar nomes
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    let nomes = [];
+
+
+    // Fisher-Yates
+    function shuffle(array) {
+      const arr = array.slice();
+
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+
+      return arr;
+    }
+
+
+    function adicionarNomes() {
+      const input = document.getElementById("nameInput");
+      const texto = input.value.trim();
+
+      if (!texto) {
+        input.focus();
+        return;
+      }
+
+      // Aceita vírgulas e quebras de linha
+      const novosNomes = texto
+        .split(/[,\n]+/)
+        .map(nome => nome.trim())
+        .filter(nome => nome.length > 0);
+
+      nomes.push(...novosNomes);
+
+      input.value = "";
+
+      atualizarLista();
+
+      input.focus();
+    }
+
+
+    function atualizarLista() {
+      const lista = document.getElementById("namesList");
+
+      lista.innerHTML = "";
+
+      if (nomes.length === 0) {
+        lista.innerHTML = `
+          <div class="empty-list">
+            Nenhum nome adicionado.
+          </div>
+        `;
+        return;
+      }
+
+      nomes.forEach((nome, index) => {
+
+        const row = document.createElement("div");
+        row.className = "name-row";
+
+        row.innerHTML = `
+          <div class="name-text">${nome}</div>
+          <button
+            class="remove-button"
+            onclick="removerNome(${index})"
+            title="Remover"
+          >
+            ×
+          </button>
+        `;
+
+        lista.appendChild(row);
+      });
+    }
+
+
+    function removerNome(index) {
+      nomes.splice(index, 1);
+      atualizarLista();
+    }
+
+
+    function limparLista() {
+      nomes = [];
+      atualizarLista();
+    }
+
+
+    async function sortearNomes() {
+
+      const quantidade = parseInt(
+        document.getElementById("numNames").value,
+        10
+      );
+
+      if (nomes.length === 0) {
+        alert("Adicione pelo menos um nome antes de sortear.");
+        return;
+      }
+
+      if (quantidade > nomes.length) {
+        alert("A quantidade de nomes a sortear não pode ser maior que a quantidade de nomes cadastrados.");
+        return;
+      }
+
+      // Esconde a tela principal
+      document.getElementById("mainScreen").style.display = "none";
+
+      // Mostra contagem
+      const countdownScreen =
+        document.getElementById("countdownScreen");
+
+      const countdown =
+        document.getElementById("countdown");
+
+      countdownScreen.classList.add("active");
+
+      for (let numero = 3; numero >= 1; numero--) {
+        countdown.textContent = numero;
+
+        await new Promise(resolve =>
+          setTimeout(resolve, 700)
+        );
+      }
+
+      countdownScreen.classList.remove("active");
+
+      mostrarResultados(quantidade);
+    }
+
+
+    function mostrarResultados(quantidade) {
+
+      const resultado = document.getElementById("resultList");
+
+      resultado.innerHTML = "";
+
+      // Fisher-Yates garante sorteio sem repetição
+      const sorteados = shuffle(nomes).slice(0, quantidade);
+
+      sorteados.forEach((nome, index) => {
+
+        const card = document.createElement("div");
+        card.className = "result-card";
+
+        card.textContent = nome;
+
+        resultado.appendChild(card);
+      });
+
+      document
+        .getElementById("resultsScreen")
+        .classList.add("active");
+    }
+
+
+    async function resortearNomes() {
+
+      const quantidade = parseInt(
+        document.getElementById("numNames").value,
+        10
+      );
+
+      // Esconde os resultados durante a contagem
+      document
+        .getElementById("resultsScreen")
+        .classList.remove("active");
+
+      // Mostra contagem
+      const countdownScreen =
+        document.getElementById("countdownScreen");
+
+      const countdown =
+        document.getElementById("countdown");
+
+      countdownScreen.classList.add("active");
+
+      for (let numero = 3; numero >= 1; numero--) {
+        countdown.textContent = numero;
+
+        await new Promise(resolve =>
+          setTimeout(resolve, 700)
+        );
+      }
+
+      countdownScreen.classList.remove("active");
+
+      mostrarResultados(quantidade);
+    }
+
+
+    function voltarInicio() {
+
+      document
+        .getElementById("resultsScreen")
+        .classList.remove("active");
+
+      document
+        .getElementById("countdownScreen")
+        .classList.remove("active");
+
+      document
+        .getElementById("mainScreen")
+        .style.display = "block";
+
+      atualizarLista();
+    }
+
+
+    // Permite adicionar usando Enter
+    document
+      .getElementById("nameInput")
+      .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+          adicionarNomes();
+        }
+
+      });
+
+  </script>
+
+</body>
+</html>
